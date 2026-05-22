@@ -1,0 +1,8 @@
++ cd /cfs/scratch/example-user/oscillator_sweep
++ source modules.sh
++ python scripts/run_sweep_local.py --config configs/sweep_parameters.csv
+Loaded 10 runs from configs/sweep_parameters.csv
+[run_01] solver=euler dt=0.01 n_steps=2000 mass=1.0 k=1.0
+[run_02] solver=semi_implicit_euler dt=0.01 n_steps=2000 mass=1.0 k=1.0
+[run_03] solver=verlet dt=0.01 n_steps=2000 mass=1.0 k=1.0
+slurmstepd: error: *** JOB 5129403 ON nid001098 CANCELLED AT 2026-05-22T03:14:51 DUE TO TIME LIMIT ***

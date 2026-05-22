@@ -1,0 +1,6 @@
+outputs/
+local_scratch/
+__pycache__/
+.pytest_cache/
+*.pyc
+.ipynb_checkpoints/

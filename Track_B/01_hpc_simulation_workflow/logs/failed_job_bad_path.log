@@ -1,0 +1,7 @@
++ cd /cfs/scratch/example-user/oscillator_sweep
++ python run_sweep_local.py --config configs/sweep_parameters.csv
+python: can't open file '/cfs/scratch/example-user/oscillator_sweep/run_sweep_local.py': [Errno 2] No such file or directory
+slurmstepd: error: Detected 1 oom_kill event in step. (none)
++ echo 'Sweep finished with exit code 2'
+Sweep finished with exit code 2
+slurmstepd: error: *** JOB 5128833 ON nid001020 FAILED ***

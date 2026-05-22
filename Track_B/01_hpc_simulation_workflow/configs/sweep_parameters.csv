@@ -1,0 +1,11 @@
+run_id,mass,spring_constant,x0,v0,dt,n_steps,solver
+run_01,1.0,1.0,1.0,0.0,0.01,2000,euler
+run_02,1.0,1.0,1.0,0.0,0.01,2000,semi_implicit_euler
+run_03,1.0,1.0,1.0,0.0,0.01,2000,verlet
+run_04,1.0,2.0,1.0,0.0,0.005,4000,verlet
+run_05,2.0,1.0,1.0,0.0,0.005,4000,verlet
+run_06,1.0,4.0,0.5,0.0,0.002,5000,semi_implicit_euler
+run_07,1.0,1.0,1.0,0.0,0.01,-100,verlet
+run_08,1.0,1.0,0.0,1.0,0.01,3000,euler
+run_09,0.5,2.0,1.0,0.0,0.004,5000,verlet
+run_10,1.0,1.0,1.0,0.5,0.008,2500,semi_implicit_euler

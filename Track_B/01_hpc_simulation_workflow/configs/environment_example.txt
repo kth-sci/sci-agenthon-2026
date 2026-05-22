@@ -1,0 +1,13 @@
+# Example environment for this workflow (informational only — not installed automatically).
+#
+# Locally, the dependencies come from Track_B/requirements.txt. On a cluster you would
+# typically reproduce an equivalent environment via your site's modules and/or a virtual
+# environment. The names below are generic examples, not site-specific module names.
+
+python >= 3.10
+numpy
+pandas
+matplotlib
+
+# Cluster-side environment is assumed, not verified locally. Confirm the real module
+# names and versions with your site's documentation before submitting.

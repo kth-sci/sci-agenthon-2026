@@ -1,0 +1,9 @@
++ cd /cfs/scratch/example-user/oscillator_sweep
++ python scripts/run_sweep_local.py --config configs/sweep_parameters.csv
+Traceback (most recent call last):
+  File "scripts/run_sweep_local.py", line 14, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
++ echo 'Sweep finished with exit code 1'
+Sweep finished with exit code 1
+slurmstepd: error: *** JOB 5128977 ON nid001044 FAILED ***
