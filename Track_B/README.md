@@ -1,4 +1,4 @@
-# Track B — Harmonic-oscillator research workflow
+# Track B — Research coding and HPC workflow agents
 
 Track B of the SCI Agentathon 2026 is a one-day, three-sub-team exercise built around
 a shared scenario: a small harmonic-oscillator research workflow, end to end. Each
