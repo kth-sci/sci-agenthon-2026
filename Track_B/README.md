@@ -1,47 +1,28 @@
-# Track B — Research coding and HPC workflow agents
+# SCI Agentathon 2026 Track B
 
-Track B of the SCI Agentathon 2026 is a one-day, three-sub-team exercise built around
-a shared scenario: a small harmonic-oscillator research workflow, end to end. Each
-sub-team owns one stage of that workflow and uses an AI coding assistant (e.g. Claude
-Code) to make real, demonstrable progress on it in a single day.
+Track B is for KTH SCI faculty working with research-code, HPC workflow, and scientific data-analysis agents.
 
-The skill Track B teaches is **how to set up, constrain, and drive a coding agent** on
-a research-code task — scoping it to a folder, giving it a role document, working in a
-propose → approve → verify loop, and reporting only what you can actually verify.
+The shared message is simple: agents help research computing when they make assumptions visible, checks explicit, and outputs reproducible.
 
-## Where to begin
+Start here:
 
-Open [`00_start_here/README.md`](00_start_here/README.md) first. It explains how to
-pick your sub-team, copy the right role template into your sub-team folder, and scope
-your agent. From there you follow your sub-team's own README.
+<a href="00_START_HERE.md" target="_blank" rel="noopener noreferrer">Open 00_START_HERE.md</a>
 
-The files in `00_start_here/prompts/` are **optional example phrasings and
-checkpoints**, not mandatory scripts — use them only if you want a model phrasing.
+## Layout
 
-## Repo layout
-
-```
+```text
 Track_B/
-  README.md                              this file
-  00_start_here/                         front door — open this first
-  01_hpc_simulation_workflow/            sub-team 1: HPC simulation workflow assistant
-  02_research_code_debugging/            sub-team 2: research-code debugging + features
-  03_scientific_postprocessing/          sub-team 3: post-processing + interpretation
+  README.md
+  00_START_HERE.md
+  01_COMMON_GUIDE.md
+  02_COMMANDS_AND_VERIFY.md
+  agent_role_templates/
+  01_hpc_simulation_workflow/
+  02_research_code_debugging/
+  03_scientific_postprocessing/
+  _facilitator/
 ```
 
-## Deliverable — a working notebook
+`_facilitator/` contains room-lead material and is not part of the participant reading order.
 
-Each sub-team has (or will have) a local `DEMO_REPORT_TEMPLATE.md`. Treat it as a
-**working notebook**, not an end-of-day form: at the end of each task, update the
-matching section of the report before moving on. Record what you observed, what the agent
-suggested, what you changed, what you verified, and what you should not overclaim. The
-finished report can be used directly to prepare your 5-minute presentation.
-
-All three sub-teams have their local templates now.
-
-## Ground rules
-
-- Work only inside your assigned sub-team folder unless the track lead says otherwise.
-- Do not assume access to Dardel, external APIs, credentials, or private data.
-- Ask the track lead before installing anything outside `requirements.txt`.
-- Do not commit generated files (figures, outputs, run artefacts).
+Next: <a href="00_START_HERE.md" target="_blank" rel="noopener noreferrer">open 00_START_HERE.md</a>.

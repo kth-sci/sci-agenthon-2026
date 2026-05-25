@@ -1,69 +1,59 @@
-# Demo report — Sub-team 02 (research-code debugging)
+# Demo Report: Sub-team 02 (research-code debugging)
 
-This report is **not only for the end**. Use it during the exercise: update the relevant
-section after each task, before moving on. It can later become your 5-minute presentation
-outline. Fill in each section yourself, from what your team actually did and observed —
-do not copy text out of the README.
+Use this during the exercise. Update the relevant section after each task so the final demo is grounded in tests, plots, and physical expectations.
 
-## Sub-team
-
-02 — Research-code debugging
-
-## Team members
+## Team Members
 
 -
 
-## Task 1 — Agent setup
+## Task 1: Agent Setup
 
 - Which agent tool did you use?
-- Which role file did you use, and what did you rename it to
-  (`CLAUDE.md` / `AGENT_ROLE.md` / pasted as a system prompt)?
-- Which folder did you give the agent access to?
+- How did you scope the agent to `Track_B/02_research_code_debugging`?
+- What role, scope, restrictions, and workflow did the agent summarize?
 
-## Task 2 — First observation before agent diagnosis
+## Task 2: First Observation Before Agent Diagnosis
 
 - Which commands did you run before asking the agent to inspect the code?
 - What did the tests show?
 - What did the diagnostic plot show?
+- What looked physically suspicious?
 
-## Task 3 — Diagnosis, fix, and verification
+## Task 3: Diagnosis, Fix, and Verification
 
-- What did the agent explain about the files, and which turned out to matter most?
-- What did your team conclude was wrong, and what evidence supported that conclusion?
-- What was changed, and why was it the smallest reasonable change?
-- Which commands did you run after the fix, what passed, and what changed in the plot?
-- After the first fix, what limitation or imperfection remained, and how did you verify
-  it?
+- What did the agent explain about the files, and which files mattered most?
+- What did the group conclude was wrong, and what evidence supported that conclusion?
+- What changed, and why was it the smallest reasonable change?
+- Which commands did you run after the fix?
+- What passed, and what changed in the plot?
 
-## Task 4 — Verlet stepper, test-first implementation
+## Task 4: Verlet Stepper, Test-first Implementation
 
 - What test did you ask the agent to propose first?
-- What behaviour did the test encode?
-- Which file(s) changed?
+- What behavior did the test encode?
+- Which file changed?
 - What command verified the new stepper?
 - What is still not proven?
 
-## Task 5 — Open-ended extension
+## Task 5: Open-ended Extension
 
 - What extension did you choose?
+- Did you build a phase-space plot, phase-diagram, or another diagnostic?
 - What did you test or verify first?
-- What did the implementation change?
-- If you added a command-line interface, which parameters and solver options can be
-  specified?
+- What changed in the implementation?
 - How did you verify the extension?
 - What command demonstrates the new functionality?
 
-## Final demo outline
+## Final Demo Outline
 
-- What will you show in 5 minutes? (commands, before/after, the one result worth
-  presenting)
-
-## What not to overclaim
-
-- What is still not proven by your checks?
+- What will you show in 3-5 minutes?
+- Which command or plot is the strongest evidence?
+- What should the audience not overclaim?
 
 ## Links
 
-Paths to the key files, figures, or notebooks inside this sub-team folder.
+Paths to the key files, figures, or reports inside `Track_B/02_research_code_debugging`.
 
 -
+
+Next: return to <a href="00_SUBTEAM_GUIDE.md" target="_blank" rel="noopener noreferrer">00_SUBTEAM_GUIDE.md</a> or open <a href="../02_COMMANDS_AND_VERIFY.md" target="_blank" rel="noopener noreferrer">../02_COMMANDS_AND_VERIFY.md</a>.

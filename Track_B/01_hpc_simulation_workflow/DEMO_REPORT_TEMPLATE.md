@@ -1,63 +1,63 @@
-# Demo report — Sub-team 01 (HPC workflow preparation)
+# Demo Report: Sub-team 01 (HPC workflow preparation)
 
-This report is **not only for the end**. Use it during the exercise: update the relevant
-section after each task, before moving on. It can later become your 5-minute presentation
-outline. Fill in each section yourself, from what your team actually did and observed —
-do not copy text out of the README.
+Use this during the exercise. Update the relevant section after each task so the final demo is grounded in what the group actually observed.
 
-## Team members
+## Team Members
 
 -
 
-## Task 1 — Agent setup
+## Task 1: Agent Setup
 
 - Which agent tool did you use?
-- Which role file did you copy, and what did you rename it to
-  (`CLAUDE.md` / `AGENT_ROLE.md` / pasted as a system prompt)?
-- Which folder did you scope the agent to?
+- Which role file did you copy into `Track_B/01_hpc_simulation_workflow`?
+- How did you scope the agent to `Track_B/01_hpc_simulation_workflow`?
+- What role, scope, restrictions, and workflow did the agent summarize?
 
-## Task 2 — Workflow inspection
+## Task 2: Workflow Exploration
 
 - What parameters are swept, and how many runs are there?
-- What command runs a single simulation? What command runs the local sweep?
+- What command appears to run a single simulation?
+- What command appears to run the local sweep?
 - What is the job script trying to do?
 - What do the sample logs suggest?
-- Which issues look like local workflow issues, and which would only be verifiable on a
-  real cluster?
+- Which issues look local, and which would only be verifiable on a real cluster?
+- After your own exploration, what did the agent clarify about the scripts or codebase?
 
-## Task 3 — Local reproducibility
+## Task 3: Participant-built Validator
 
-- What did the validation report and dry-run show?
-- What happened when you ran the full local sweep?
-- What fixes did the agent propose, and which did you approve and why?
-- Which commands did you run after the fixes, and what outputs were produced?
+- Which checks did you implement in `scripts/validate_package.py`?
+- What command did you run to execute the validator?
+- Which checks passed, warned, or failed?
+- What evidence did the validator report?
+- What did the validator reveal before any workflow repair?
 
-## Task 4 — Pre-submission guardrails
+## Task 4: Local Reproducibility
 
-- Before editing, which checks did you decide the package should pass, and what does each
-  catch or rule out?
-- Which checks did you add to `validate_package.py` (or a helper script)?
-- What does the validation report now show (PASS / WARN / FAIL)?
-- Which problems are now caught before submission?
+- What minimal fixes did the agent propose, and which did you approve?
+- Which validator results changed after the fixes?
+- What happened when you ran the dry-run and the full local sweep?
+- Which commands did you run after the fixes?
+- What outputs were produced?
+- What is verified locally, and what remains a cluster assumption?
 
-## Task 5 — Submission-ready package or diagnosis tool
+## Task 5: Hardening, Diagnosis, or Packaging
 
-- What did you build, and what is it meant to communicate?
-- What command regenerates it, and what file(s) does it produce?
-- What check or command verifies it was produced correctly?
+- What creative hardening or diagnosis artifact did you build?
+- What is it meant to communicate or catch?
+- What command regenerates it, and what file does it produce?
+- What check or command verifies it?
+- How does it help another researcher reuse or inspect the workflow?
 
-## Final demo outline
+## Final Demo Outline
 
-- What will you show in 5 minutes? (commands, the validation report, the one improvement
-  worth presenting)
-
-## What not to overclaim
-
-- What is verified only locally, and what remains an unverified cluster assumption?
-- What would still need a real cluster (or more information) to confirm?
+- What will you show in 3-5 minutes?
+- Which command will you run or show?
+- What should the audience not overclaim?
 
 ## Links
 
-Paths to the key files, reports, or figures inside this sub-team folder.
+Paths to the key files, reports, or figures inside `Track_B/01_hpc_simulation_workflow`.
 
 -
+
+Next: return to <a href="00_SUBTEAM_GUIDE.md" target="_blank" rel="noopener noreferrer">00_SUBTEAM_GUIDE.md</a> or open <a href="../02_COMMANDS_AND_VERIFY.md" target="_blank" rel="noopener noreferrer">../02_COMMANDS_AND_VERIFY.md</a>.

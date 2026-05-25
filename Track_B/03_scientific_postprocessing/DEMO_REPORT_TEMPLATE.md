@@ -1,69 +1,61 @@
-# Demo report — Sub-team 03 (scientific post-processing)
+# Demo Report: Sub-team 03 (scientific post-processing)
 
-This report is **not only for the end**. Use it during the exercise: update the relevant
-section after each task, before moving on. It can later become your 5-minute presentation
-outline. Fill in each section yourself, from what your team actually did and observed —
-do not copy text out of the README.
+Use this during the exercise. Update the relevant section after each task so the final demo is grounded in reproducible analysis and defensible interpretation.
 
-## Team members
+## Team Members
 
 -
 
-## Task 1 — Agent setup
+## Task 1: Agent Setup
 
 - Which agent tool did you use?
-- Which role file did you copy, and what did you rename it to
-  (`CLAUDE.md` / `AGENT_ROLE.md` / pasted as a system prompt)?
-- Which folder did you scope the agent to?
+- How did you scope the agent to `Track_B/03_scientific_postprocessing`?
+- What role, scope, restrictions, and workflow did the agent summarize?
 
-## Task 2 — Dataset structure
+## Task 2: Dataset Structure
 
 - Which files exist?
 - What does one row mean in `raw_runs.csv`?
 - What does one row mean in `trajectories_sample.csv`?
 - How does `run_id` connect the files?
 - What did `quicklook.py` plot?
-- Did anything look visually surprising (reference vs challenge)?
+- Did anything look visually surprising?
 
-## Task 3 — Reference analysis
+## Task 3: Reference Analysis
 
 - Before implementing, what outputs and checks did you define?
 - What analysis script did you build, and how is it run?
 - Which figures and tables did it produce?
-- Which check did you run before or immediately after implementation, and what did it
-  confirm?
+- Which check confirmed the outputs were produced?
 - What claims did you make, and which figure, table, or computed value supports each?
-- Did anything look off in the reference data?
 
-## Task 4 — Challenge dataset and guardrails
+## Task 4: Challenge Dataset and Guardrails
 
 - What changed when you applied the analysis to the challenge dataset?
-- What did the agent identify?
-- Before implementing, which checks did you decide should exist, and what was each
-  expected to catch or rule out?
+- What did the agent suggest checking, and what did your own checks show?
 - Which checks did you implement, and how are they run?
-- Which run(s) or group(s) were flagged?
-- What evidence supports each flag?
+- Did any run, group, or trend need extra attention? If so, what evidence supports that?
 - How did the guardrails change your interpretation?
 
-## Task 5 — Visual product
+## Task 5: Visual or Reporting Product
 
 - What did you build, and what is it meant to communicate?
-- What command regenerates it, and what file(s) does it produce?
+- Did you build a phase-space plot, phase-diagram, quality map, or another visual product?
+- What command regenerates it, and what files does it produce?
 - What minimal check proves it was generated correctly?
-- Why is it useful for communicating the analysis?
+- Why is it useful for defensible interpretation?
 
-## Final demo outline
+## Final Demo Outline
 
-- What will you show in 5 minutes? (commands, figures, the one finding worth presenting)
-
-## What not to overclaim
-
-- What is still not proven by your checks?
-- What would require more data or further checks?
+- What will you show in 3-5 minutes?
+- Which command, figure, or table is the strongest evidence?
+- Which conclusion remains valid?
+- Which conclusion should be treated carefully?
 
 ## Links
 
-Paths to the key files, figures, or reports inside this sub-team folder.
+Paths to the key files, figures, or reports inside `Track_B/03_scientific_postprocessing`.
 
 -
+
+Next: return to <a href="00_SUBTEAM_GUIDE.md" target="_blank" rel="noopener noreferrer">00_SUBTEAM_GUIDE.md</a> or open <a href="../02_COMMANDS_AND_VERIFY.md" target="_blank" rel="noopener noreferrer">../02_COMMANDS_AND_VERIFY.md</a>.
