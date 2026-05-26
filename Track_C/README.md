@@ -3,6 +3,24 @@
 Automate KTH IT services (expenses, invoices, purchasing, intranet)
 using AI agent skills and the Claude Chrome extension.
 
+> **⚠️ Disclaimer — please read before using**
+>
+> These skills are provided **for educational purposes only** as part of
+> the SCI Agenthon 2026. They demonstrate how AI agents can interact
+> with SAML-protected enterprise web services.
+>
+> - **KTH IT policy may not permit automation** of every service this
+>   repo touches. Automating interactions with KTH systems may violate
+>   institutional IT policies or individual service terms of use.
+>   **Use is entirely at your own risk.**
+> - **AI agents make mistakes.** Every action must be verified by a
+>   human — especially anything irreversible (purchase orders, invoice
+>   approvals, expense submissions).
+> - The agent is designed to **never auto-submit money-moving actions**.
+>   It prepares the form; you click the final button.
+> - This project is **not affiliated with or endorsed by KTH IT**.
+>   There is no warranty or support.
+
 ---
 
 ## Quick Start (5 minutes)
