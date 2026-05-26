@@ -7,6 +7,26 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="assets/style.css">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<style>
+@keyframes flow { from{stroke-dashoffset:60} to{stroke-dashoffset:0} }
+@keyframes pulse-node { 0%,100%{opacity:1} 50%{opacity:.7} }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+@keyframes shimmer { 0%{opacity:.4} 50%{opacity:.8} 100%{opacity:.4} }
+@keyframes spin-slow { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+@keyframes fade-in-up { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+.agent-line { stroke-dasharray: 8 4; animation: flow 2s linear infinite; }
+.agent-line-rev { stroke-dasharray: 8 4; animation: flow 2s linear infinite reverse; }
+.llm-glow { animation: pulse-node 3s ease-in-out infinite; }
+.hero-svg { animation: float 6s ease-in-out infinite; }
+.shimmer-ring { animation: shimmer 3s ease-in-out infinite; }
+.stat-num { animation: fade-in-up .6s ease both; }
+
+.track-card { transition: transform .2s ease, box-shadow .2s ease; }
+.track-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px -8px rgba(99,102,241,.18); }
+
+.timeline-dot-active { box-shadow: 0 0 0 4px white, 0 0 0 7px #6366f1; }
+</style>
 </head>
 <body class="font-sans text-slate-800 bg-white antialiased">
 
@@ -41,29 +61,119 @@
   </div>
 </nav>
 
-<!-- Hero -->
-<header class="relative bg-gradient-to-br from-slate-900 via-slate-800 to-kth-dark text-white py-20 px-6 overflow-hidden">
+<!-- Hero — two-column layout -->
+<header class="relative bg-gradient-to-br from-slate-900 via-slate-800 to-kth-dark text-white overflow-hidden">
+  <!-- Subtle dot grid background -->
   <div class="absolute inset-0 opacity-[0.04]" style="background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22><circle cx=%2230%22 cy=%2230%22 r=%221%22 fill=%22white%22/></svg>');"></div>
-  <div class="relative max-w-3xl mx-auto text-center">
-    <div class="inline-flex items-center gap-2 bg-accent/20 text-accent-light text-xs font-semibold px-3 py-1 rounded-full mb-6 border border-accent/30">
-      <span class="w-1.5 h-1.5 bg-accent-light rounded-full"></span>
-      School of Engineering Sciences (SCI) &bull; KTH &bull; May 26, 2026
+  <!-- Accent glow blob -->
+  <div class="absolute top-0 right-0 w-96 h-96 rounded-full" style="background:radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%); transform:translate(30%,-30%);"></div>
+
+  <div class="relative max-w-6xl mx-auto px-6 py-16 md:py-20 grid md:grid-cols-2 gap-10 items-center">
+    <!-- Left column: text -->
+    <div>
+      <div class="inline-flex items-center gap-2 bg-accent/20 text-accent-light text-xs font-semibold px-3 py-1 rounded-full mb-6 border border-accent/30">
+        <span class="w-1.5 h-1.5 bg-accent-light rounded-full"></span>
+        School of Engineering Sciences (SCI) &bull; KTH &bull; May 26, 2026
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 leading-tight">
+        SCI Agentathon<br><span class="text-accent-light">2026</span>
+      </h1>
+      <p class="text-lg text-slate-300 mb-4 font-light leading-relaxed max-w-lg">A full-day agentic AI hackathon for KTH SCI faculty and researchers. Build real tools. Demo them to your colleagues. Keep using them.</p>
+      <div class="flex flex-wrap gap-2 mb-8 text-xs font-mono text-slate-400">
+        <span class="bg-slate-800 px-2.5 py-1 rounded">09:00 – 17:00</span>
+        <span class="bg-slate-800 px-2.5 py-1 rounded">KTH Library + Teknikringen 8</span>
+        <span class="bg-slate-800 px-2.5 py-1 rounded">~45 participants</span>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a href="program.html" class="bg-accent hover:bg-accent-dark text-white font-semibold px-6 py-2.5 rounded-lg transition shadow-lg shadow-accent/25">View Program</a>
+        <a href="track-c.html" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-2.5 rounded-lg border border-white/20 transition">Track C Guide</a>
+      </div>
     </div>
-    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
-      SCI Agentathon 2026
-    </h1>
-    <p class="text-lg text-slate-300 max-w-xl mx-auto mb-4 font-light leading-relaxed">A full-day agentic AI hackathon for KTH SCI faculty and researchers. Build real tools. Demo them to your colleagues. Keep using them.</p>
-    <div class="flex flex-wrap gap-2 justify-center mb-8 text-xs font-mono text-slate-400">
-      <span class="bg-slate-800 px-2.5 py-1 rounded">09:00 – 17:00</span>
-      <span class="bg-slate-800 px-2.5 py-1 rounded">KTH Library + Teknikringen 8</span>
-      <span class="bg-slate-800 px-2.5 py-1 rounded">~45 participants</span>
-    </div>
-    <div class="flex flex-wrap gap-3 justify-center">
-      <a href="program.html" class="bg-accent hover:bg-accent-dark text-white font-semibold px-6 py-2.5 rounded-lg transition shadow-lg shadow-accent/25">View Program</a>
-      <a href="track-c.html" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-2.5 rounded-lg border border-white/20 transition">Track C Guide</a>
+
+    <!-- Right column: animated agent loop SVG -->
+    <div class="flex justify-center md:justify-end">
+      <svg class="hero-svg w-full max-w-xs md:max-w-sm" viewBox="0 0 280 260" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="AI agent loop diagram">
+        <!-- Outer shimmer ring -->
+        <circle cx="140" cy="130" r="110" stroke="#6366f1" stroke-width="0.5" opacity="0.2" class="shimmer-ring"/>
+        <circle cx="140" cy="130" r="88" stroke="#818cf8" stroke-width="0.5" opacity="0.15" class="shimmer-ring" style="animation-delay:.8s"/>
+
+        <!-- Connection lines (dashed, animated flow) -->
+        <!-- LLM to Memory (top) -->
+        <line x1="140" y1="110" x2="140" y2="32" stroke="#818cf8" stroke-width="1.5" class="agent-line" opacity="0.7"/>
+        <!-- LLM to Terminal (top-right) -->
+        <line x1="157" y1="118" x2="218" y2="64" stroke="#6366f1" stroke-width="1.5" class="agent-line" style="animation-delay:.4s" opacity="0.7"/>
+        <!-- LLM to Web (right) -->
+        <line x1="162" y1="133" x2="238" y2="133" stroke="#818cf8" stroke-width="1.5" class="agent-line-rev" style="animation-delay:.2s" opacity="0.7"/>
+        <!-- LLM to Files (bottom-left) -->
+        <line x1="123" y1="148" x2="62" y2="196" stroke="#6366f1" stroke-width="1.5" class="agent-line" style="animation-delay:.6s" opacity="0.7"/>
+        <!-- LLM to Tools (top-left) -->
+        <line x1="123" y1="118" x2="62" y2="64" stroke="#818cf8" stroke-width="1.5" class="agent-line-rev" style="animation-delay:.3s" opacity="0.7"/>
+
+        <!-- Satellite node: Memory (top) -->
+        <circle cx="140" cy="24" r="18" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5"/>
+        <text x="140" y="21" text-anchor="middle" fill="#a5b4fc" font-family="Inter,sans-serif" font-size="7" font-weight="600">Memory</text>
+        <path d="M130 26h20M130 29h15" stroke="#818cf8" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
+
+        <!-- Satellite node: Terminal (top-right) -->
+        <circle cx="228" cy="58" r="18" fill="#1e1b4b" stroke="#f97316" stroke-width="1.5"/>
+        <text x="228" y="55" text-anchor="middle" fill="#fdba74" font-family="Inter,sans-serif" font-size="7" font-weight="600">Terminal</text>
+        <path d="M220 60l3-3 3 3M223 61h8" stroke="#f97316" stroke-width="1.2" stroke-linecap="round" opacity="0.8"/>
+
+        <!-- Satellite node: Web (right) -->
+        <circle cx="248" cy="133" r="18" fill="#1e1b4b" stroke="#0ea5e9" stroke-width="1.5"/>
+        <text x="248" y="130" text-anchor="middle" fill="#7dd3fc" font-family="Inter,sans-serif" font-size="7" font-weight="600">Web</text>
+        <circle cx="248" cy="135" r="5" stroke="#0ea5e9" stroke-width="1.1" opacity="0.8"/>
+        <path d="M243 135h10M248 130v10" stroke="#0ea5e9" stroke-width="1" opacity="0.6"/>
+
+        <!-- Satellite node: Files (bottom-left) -->
+        <circle cx="52" cy="202" r="18" fill="#1e1b4b" stroke="#10b981" stroke-width="1.5"/>
+        <text x="52" y="199" text-anchor="middle" fill="#6ee7b7" font-family="Inter,sans-serif" font-size="7" font-weight="600">Files</text>
+        <path d="M44 202h16M44 205h12M44 208h10" stroke="#10b981" stroke-width="1.1" stroke-linecap="round" opacity="0.7"/>
+
+        <!-- Satellite node: Tools (top-left) -->
+        <circle cx="52" cy="58" r="18" fill="#1e1b4b" stroke="#a855f7" stroke-width="1.5"/>
+        <text x="52" y="55" text-anchor="middle" fill="#d8b4fe" font-family="Inter,sans-serif" font-size="7" font-weight="600">Tools</text>
+        <path d="M46 62a3 3 0 004 0l4-4a3 3 0 000-4" stroke="#a855f7" stroke-width="1.2" stroke-linecap="round" opacity="0.8"/>
+        <circle cx="56" cy="56" r="2" fill="#a855f7" opacity="0.7"/>
+
+        <!-- Central LLM node -->
+        <circle cx="140" cy="130" r="32" fill="url(#llmGrad)" class="llm-glow"/>
+        <circle cx="140" cy="130" r="36" fill="none" stroke="#6366f1" stroke-width="1" opacity="0.4" class="shimmer-ring" style="animation-delay:.5s"/>
+        <text x="140" y="127" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="14" font-weight="800">LLM</text>
+        <text x="140" y="141" text-anchor="middle" fill="#c7d2fe" font-family="Inter,sans-serif" font-size="7" font-weight="500">Agent Core</text>
+
+        <defs>
+          <radialGradient id="llmGrad" cx="40%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#818cf8"/>
+            <stop offset="100%" stop-color="#4338ca"/>
+          </radialGradient>
+        </defs>
+      </svg>
     </div>
   </div>
 </header>
+
+<!-- Stats band -->
+<div class="bg-slate-900 border-y border-slate-800">
+  <div class="max-w-5xl mx-auto px-4 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+    <div class="stat-num" style="animation-delay:.1s">
+      <div class="text-3xl font-extrabold text-white tracking-tight">3</div>
+      <div class="text-slate-400 text-xs mt-1 font-medium uppercase tracking-wide">Tracks</div>
+    </div>
+    <div class="stat-num" style="animation-delay:.2s">
+      <div class="text-3xl font-extrabold text-accent-light tracking-tight">~45</div>
+      <div class="text-slate-400 text-xs mt-1 font-medium uppercase tracking-wide">Participants</div>
+    </div>
+    <div class="stat-num" style="animation-delay:.3s">
+      <div class="text-3xl font-extrabold text-white tracking-tight">1</div>
+      <div class="text-slate-400 text-xs mt-1 font-medium uppercase tracking-wide">Full Day</div>
+    </div>
+    <div class="stat-num" style="animation-delay:.4s">
+      <div class="text-3xl font-extrabold text-fire tracking-tight">EOD</div>
+      <div class="text-slate-400 text-xs mt-1 font-medium uppercase tracking-wide">End-of-Day Demos</div>
+    </div>
+  </div>
+</div>
 
 <div class="max-w-5xl mx-auto px-4 py-12">
 
@@ -72,27 +182,110 @@
     <h2 class="text-2xl font-bold text-slate-900 mb-2">Three Tracks</h2>
     <p class="text-slate-500 mb-6">Each track explores a different family of agentic problems. Pick the one closest to your work.</p>
     <div class="grid md:grid-cols-3 gap-5">
-      <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm border-t-4 border-t-kth-light">
-        <span class="inline-block bg-blue-100 text-kth text-xs font-semibold px-2.5 py-0.5 rounded-full mb-3">Teaching</span>
-        <h3 class="font-bold text-slate-900 text-lg mb-2">Track A</h3>
-        <p class="text-slate-600 text-sm font-medium mb-1">Course syllabus to teaching assistant</p>
-        <p class="text-slate-500 text-sm mb-3">Grading &amp; feedback agents, student-facing Q&amp;A agents built from your course materials.</p>
-        <p class="text-xs text-slate-400 font-mono">Lead: Artem Kulachenko &bull; Salongen, KTHB</p>
+
+      <!-- Track A -->
+      <div class="track-card bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+        <div class="h-1.5 bg-gradient-to-r from-kth to-kth-light"></div>
+        <div class="p-6">
+          <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mb-4">
+            <!-- Graduation cap SVG icon -->
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#004791" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+              <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+          </div>
+          <span class="inline-block bg-blue-100 text-kth text-xs font-semibold px-2.5 py-0.5 rounded-full mb-3">Teaching</span>
+          <h3 class="font-bold text-slate-900 text-lg mb-2">Track A</h3>
+          <p class="text-slate-600 text-sm font-medium mb-1">Course syllabus to teaching assistant</p>
+          <p class="text-slate-500 text-sm mb-3">Grading &amp; feedback agents, student-facing Q&amp;A agents built from your course materials.</p>
+          <p class="text-xs text-slate-400 font-mono">Lead: Artem Kulachenko &bull; Salongen, KTHB</p>
+        </div>
       </div>
-      <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm border-t-4 border-t-fire">
-        <span class="inline-block bg-orange-100 text-orange-700 text-xs font-semibold px-2.5 py-0.5 rounded-full mb-3">HPC &amp; Research</span>
-        <h3 class="font-bold text-slate-900 text-lg mb-2">Track B</h3>
-        <p class="text-slate-600 text-sm font-medium mb-1">Research and HPC workflow agents</p>
-        <p class="text-slate-500 text-sm mb-3">Cluster orchestration, agentic debugging, interactive post-processing agents for scientific data.</p>
-        <p class="text-xs text-slate-400 font-mono">Lead: Marco Laudato &bull; Faxén, Teknikringen 8</p>
+
+      <!-- Track B -->
+      <div class="track-card bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+        <div class="h-1.5 bg-gradient-to-r from-fire to-orange-400"></div>
+        <div class="p-6">
+          <div class="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center mb-4">
+            <!-- Server/cluster SVG icon -->
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="8" rx="2"/>
+              <rect x="2" y="14" width="20" height="8" rx="2"/>
+              <circle cx="6" cy="6" r="1" fill="#ea580c"/>
+              <circle cx="6" cy="18" r="1" fill="#ea580c"/>
+              <path d="M10 6h8M10 18h8"/>
+            </svg>
+          </div>
+          <span class="inline-block bg-orange-100 text-orange-700 text-xs font-semibold px-2.5 py-0.5 rounded-full mb-3">HPC &amp; Research</span>
+          <h3 class="font-bold text-slate-900 text-lg mb-2">Track B</h3>
+          <p class="text-slate-600 text-sm font-medium mb-1">Research and HPC workflow agents</p>
+          <p class="text-slate-500 text-sm mb-3">Cluster orchestration, agentic debugging, interactive post-processing agents for scientific data.</p>
+          <p class="text-xs text-slate-400 font-mono">Lead: Marco Laudato &bull; Faxén, Teknikringen 8</p>
+        </div>
       </div>
-      <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm border-t-4 border-t-accent">
-        <span class="inline-block bg-indigo-100 text-accent text-xs font-semibold px-2.5 py-0.5 rounded-full mb-3">Free Exploration</span>
-        <h3 class="font-bold text-slate-900 text-lg mb-2">Track C</h3>
-        <p class="text-slate-600 text-sm font-medium mb-1">Open agent exploration</p>
-        <p class="text-slate-500 text-sm mb-3">Anything goes — KTH admin workflows, knowledge agents, lab automation, productivity tools.</p>
-        <p class="text-xs text-slate-400 font-mono">Lead: Wei Ouyang &bull; Hållfasthetslära, Teknikringen 8D</p>
-        <a href="track-c.html" class="text-accent text-sm font-medium hover:underline mt-2 inline-block">Track C guide &rarr;</a>
+
+      <!-- Track C -->
+      <div class="track-card bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+        <div class="h-1.5 bg-gradient-to-r from-accent to-indigo-400"></div>
+        <div class="p-6">
+          <div class="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center mb-4">
+            <!-- Compass / explore SVG icon -->
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="#6366f1" opacity="0.3" stroke="#6366f1"/>
+            </svg>
+          </div>
+          <span class="inline-block bg-indigo-100 text-accent text-xs font-semibold px-2.5 py-0.5 rounded-full mb-3">Free Exploration</span>
+          <h3 class="font-bold text-slate-900 text-lg mb-2">Track C</h3>
+          <p class="text-slate-600 text-sm font-medium mb-1">Open agent exploration</p>
+          <p class="text-slate-500 text-sm mb-3">Anything goes — KTH admin workflows, knowledge agents, lab automation, productivity tools.</p>
+          <p class="text-xs text-slate-400 font-mono">Lead: Wei Ouyang &bull; Hållfasthetslära, Teknikringen 8D</p>
+          <a href="track-c.html" class="text-accent text-sm font-medium hover:underline mt-2 inline-block">Track C guide &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What can AI agents do? -->
+  <section class="mb-16 reveal-on-scroll">
+    <h2 class="text-2xl font-bold text-slate-900 mb-2">What Can AI Agents Do?</h2>
+    <p class="text-slate-500 mb-8">Agents go beyond chat — they plan, use tools, and iterate toward a goal. Here are three domains where they excel.</p>
+    <div class="grid md:grid-cols-3 gap-5">
+
+      <!-- Research -->
+      <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl p-6">
+        <div class="w-12 h-12 rounded-xl bg-indigo-600 flex items-center justify-center mb-4 shadow-md shadow-indigo-200">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+            <path d="M11 8v6M8 11h6" opacity="0.7"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-slate-900 mb-2">Research</h3>
+        <p class="text-slate-600 text-sm leading-relaxed">Search the literature, summarise papers, run analysis pipelines, generate figures, and iterate on hypotheses — all with natural language commands.</p>
+      </div>
+
+      <!-- Teaching -->
+      <div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-orange-100 rounded-xl p-6">
+        <div class="w-12 h-12 rounded-xl bg-orange-500 flex items-center justify-center mb-4 shadow-md shadow-orange-200">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20h9"/>
+            <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-slate-900 mb-2">Teaching</h3>
+        <p class="text-slate-600 text-sm leading-relaxed">Auto-grade submissions with rubric-aware feedback, build Q&amp;A bots from course slides, generate personalised practice problems, and track student progress.</p>
+      </div>
+
+      <!-- Productivity -->
+      <div class="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 rounded-xl p-6">
+        <div class="w-12 h-12 rounded-xl bg-emerald-600 flex items-center justify-center mb-4 shadow-md shadow-emerald-200">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-slate-900 mb-2">Productivity</h3>
+        <p class="text-slate-600 text-sm leading-relaxed">Automate KTH admin workflows, draft grant sections and reports, manage scheduling, and connect any web UI or API with browser-automation agents.</p>
       </div>
     </div>
   </section>
@@ -111,7 +304,7 @@
         </div>
       </div>
       <div class="relative">
-        <div class="absolute -left-12 top-1 w-4 h-4 rounded-full bg-accent ring-4 ring-white"></div>
+        <div class="absolute -left-12 top-1 w-4 h-4 rounded-full ring-4 ring-white" style="background:#6366f1; box-shadow:0 0 0 4px white, 0 0 0 7px #6366f1;"></div>
         <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4">
           <div class="text-xs font-semibold text-accent mb-1 font-mono">10:15 – 12:00 &bull; Track rooms</div>
           <h3 class="font-bold text-slate-900">Coding Session 1</h3>
