@@ -137,6 +137,29 @@
 }
 
 .mono { font-family: 'JetBrains Mono', monospace; }
+
+/* ── Section group dividers ─────────────────────── */
+.section-group {
+  margin-top: 4rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.section-group-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+.section-group-line {
+  flex: 1;
+  height: 1px;
+  background: #e2e8f0;
+}
 </style>
 </head>
 <body class="font-sans text-slate-800 bg-white antialiased">
@@ -187,7 +210,8 @@
         <div class="text-amber-300 text-lg mt-0.5">⚠️</div>
         <div>
           <div class="font-semibold text-white text-sm mb-1">Personal curation — not a textbook</div>
-          <p class="text-slate-300 text-sm leading-relaxed">This page is Wei's highly opinionated selection of ideas he finds important right now. It draws heavily on Andrej Karpathy's thinking, plus pieces from Anthropic's engineering blog, Matt Pocock, Simon Willison, and others. It is not exhaustive, not balanced, and not officially endorsed by anyone. Many of these ideas are also contradictory or evolving. Use it as a starting point for your own exploration — follow the sources, disagree freely, and go deeper on what resonates with your own work.</p>
+          <p class="text-slate-300 text-sm leading-relaxed mb-2">This page is Wei's highly opinionated selection of ideas he finds important right now. It draws heavily on Andrej Karpathy's thinking, plus pieces from Anthropic's engineering blog, Matt Pocock, Simon Willison, and others. It is not exhaustive, not balanced, and not officially endorsed by anyone. Many of these ideas are also contradictory or evolving. Use it as a starting point for your own exploration — follow the sources, disagree freely, and go deeper on what resonates with your own work.</p>
+          <p class="text-amber-200 text-xs leading-relaxed font-mono">⚙ This page was compiled with the assistance of Claude Code. Summaries, statistics, and quotes are paraphrased from the original sources and may contain inaccuracies or omissions. Always verify important claims against the primary sources linked in the References section.</p>
         </div>
       </div>
     </div>
@@ -214,8 +238,8 @@
         <a href="#trust-sandbox" class="toc-link">10. Trust &amp; Sandboxing</a>
         <a href="#security" class="toc-link">11. Security: Lethal Trifecta</a>
         <a href="#agentic-lessons" class="toc-link">12. Agentic Coding Lessons</a>
-        <a href="#html-output" class="toc-link">12. HTML as Output</a>
-        <a href="#anthropic-blog" class="toc-link">13. Anthropic Blog</a>
+        <a href="#html-output" class="toc-link">13. HTML as Output</a>
+        <a href="#anthropic-blog" class="toc-link">14. Anthropic Blog</a>
         <a href="#quotes" class="toc-link">Key Quotes</a>
         <a href="#sources" class="toc-link">Sources</a>
       </nav>
@@ -269,7 +293,7 @@
       <p class="text-slate-600 leading-relaxed mb-4">Karpathy argues LLMs are better understood as a new kind of operating system than as a utility like electricity. The analogy: <strong>context window = working memory, LLM = CPU orchestrating resources</strong>, tool use = expanding OS capabilities. Closed-source providers parallel Windows/macOS; open-source models parallel Linux.</p>
       <p class="text-slate-600 leading-relaxed mb-4">Practical implication: just as software had to be rewritten when operating systems changed, <strong>all infrastructure must now be redesigned for agents as primary users</strong> — docs, APIs, logging, permissioning, setup flows.</p>
 
-      <h3 class="text-lg font-bold text-slate-900 mb-2 mt-8">LLM Psychology: What You Must Never Forget</h3>
+      <h3 id="llm-psychology" class="text-lg font-bold text-slate-900 mb-2 mt-8">LLM Psychology: What You Must Never Forget</h3>
       <p class="text-slate-600 leading-relaxed mb-3">From Karpathy's "Software is Changing Again" talk — a practical mental model for working with LLMs without being caught off-guard:</p>
       <div class="grid md:grid-cols-2 gap-3 mb-5">
         <div class="insight-card border-t-4" style="border-top-color:#10b981">
@@ -302,6 +326,7 @@
     <!-- ─────────────────────────────────────
          2. CONTEXT ROT
     ───────────────────────────────────── -->
+    <div class="section-group"><span class="section-group-label">Working with context</span><div class="section-group-line"></div></div>
     <section id="context-rot" class="section-anchor mb-14">
       <div class="flex items-center gap-2 mb-1">
         <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-research">Research · Chroma · 18 LLMs tested</span>
@@ -315,7 +340,6 @@
           <h4 class="font-bold text-red-800 mb-2 text-sm">What Context Rot Does</h4>
           <ul class="text-red-700 text-sm space-y-1 list-disc pl-4">
             <li>Performance degrades non-uniformly — some distractors are far more disruptive than others</li>
-            <li>Tool selection accuracy drops from 43% to below 14% as tool count increases</li>
             <li>Models under-generate, hallucinate, or refuse tasks they'd handle easily in short contexts</li>
             <li>Structured, coherent haystacks can <em>hurt</em> performance vs. shuffled content (attention anomaly)</li>
           </ul>
@@ -336,7 +360,7 @@
       <p class="text-slate-600 leading-relaxed mb-3">These are not the same thing. Prompt engineering optimises the instruction sent to a model — <em>how you ask</em>. Context engineering curates the entire information architecture during inference: code, decisions, documentation, tool results, conversation history, examples — <em>what the model knows when it answers</em>.</p>
       <div class="quote">
         <p>You can write a brilliant prompt, but if it's buried behind thousands of tokens of irrelevant chat history or poorly structured retrieved documents, the model won't follow it. Context engineering builds the container that gives the prompt room to work.</p>
-        <cite>— Port.io analysis of the context engineering paradigm shift</cite>
+        <cite>— Port.io, "Context Engineering vs Prompt Engineering" (2025) · <a href="https://www.port.io/blog/context-engineering-vs-prompt-engineering" target="_blank" style="color:inherit;text-decoration:underline;opacity:0.7">port.io/blog</a></cite>
       </div>
       <p class="text-slate-600 text-sm leading-relaxed mb-5">Prompt engineering gets you the first good output. Context engineering makes sure the 1,000th output is still good. Endorsed publicly by Andrej Karpathy and Shopify CEO Tobi Lütke in mid-2025 — Shopify now requires teams to demonstrate AI cannot do a job before requesting human headcount.</p>
 
@@ -369,8 +393,8 @@
           <p>Beyond 35 minutes of continuous agent work, <strong>doubling task duration quadruples the failure rate</strong>. This is the point where context accumulation crosses 80K–150K tokens. Agents spend over 60% of their first turn just retrieving context, not reasoning. Break long sessions into checkpointed sub-tasks.</p>
         </div>
         <div class="insight-card border-t-4" style="border-top-color:#f59e0b">
-          <h4>Lost-in-the-middle (30% accuracy drop)</h4>
-          <p>Relevant documents placed in positions 5–15 of a list cause <strong>more than 30% accuracy loss</strong> vs. position 1 or last. Attention is U-shaped. Put critical instructions <em>early</em> (before 50% of context is full) or at the very end. Never let them drift to mid-context.</p>
+          <h4>Lost-in-the-middle effect</h4>
+          <p>Liu et al. (2024, TACL) found that accuracy drops significantly when relevant documents appear in the middle of a long context vs. at the start or end — attention is U-shaped. Put critical instructions <em>early</em> (before context is half full) or at the very end. Never let key guidance drift to mid-context as history accumulates.</p>
         </div>
       </div>
       <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm text-slate-600">
@@ -381,6 +405,7 @@
     <!-- ─────────────────────────────────────
          3. AGENT PATTERNS
     ───────────────────────────────────── -->
+    <div class="section-group"><span class="section-group-label">Designing agents</span><div class="section-group-line"></div></div>
     <section id="agent-patterns" class="section-anchor mb-14">
       <div class="flex items-center gap-2 mb-1">
         <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-anthropic">Anthropic · Building Effective Agents</span>
@@ -449,7 +474,7 @@
       <p class="text-slate-600 leading-relaxed mb-4">MCP (Model Context Protocol) was positioned as the universal standard for agent tool integration. In practice, it has a serious context cost problem — and for most research and admin workflows, a combination of CLIs and Skills is far more efficient.</p>
 
       <div class="bg-red-50 border-l-4 border-red-400 rounded-r-lg p-4 mb-5 text-sm text-red-900">
-        <strong>The MCP context cost:</strong> Three MCP servers (GitHub, Playwright, IDE integration) consumed <strong>143K tokens</strong> on a 200K-token model, leaving less than 30% usable space. Tool selection accuracy drops from 43% to below 14% as the number of tools increases. Every tool definition loads into context even if unused.
+        <strong>The MCP context cost <a href="https://dev.to/chen_zhang_bac430bc7f6b95/mcp-is-being-abandoned-how-fast-can-a-standard-die-2f7c" target="_blank" class="underline">[Zhang, 2025]</a>:</strong> Three MCP servers (GitHub, Playwright, IDE integration) consumed <strong>143K tokens</strong> on a 200K-token model, leaving less than 30% usable space. The author observed tool selection accuracy drop from 43% to below 14% as tool count grew — every tool definition loads into context even when unused, compounding context rot.
       </div>
 
       <div class="grid md:grid-cols-3 gap-4 mb-6">
@@ -484,6 +509,7 @@
     <!-- ─────────────────────────────────────
          5. THE HUMAN ROLE
     ───────────────────────────────────── -->
+    <div class="section-group"><span class="section-group-label">Working effectively</span><div class="section-group-line"></div></div>
     <section id="human-role" class="section-anchor mb-14">
       <div class="flex items-center gap-2 mb-1">
         <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-karpathy">Karpathy · Sequoia Ascent 2026</span>
@@ -565,8 +591,8 @@
 
       <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm">
         <p class="text-slate-600 mb-2">Install these as a skill in your project:</p>
-        <div class="font-mono text-xs bg-white border border-slate-200 px-3 py-2 rounded text-slate-600">npx skills@latest add multica-ai/andrej-karpathy-skills/skills/karpathy-guidelines</div>
-        <p class="text-slate-400 text-xs mt-2">Or create <code>.claude/skills/karpathy-guidelines/SKILL.md</code> and paste the four rules.</p>
+        <div class="font-mono text-xs bg-white border border-slate-200 px-3 py-2 rounded text-slate-600">npx skills@latest add forrestchang/andrej-karpathy-skills/skills/karpathy-guidelines</div>
+        <p class="text-slate-400 text-xs mt-2">Or manually create <code>.claude/skills/karpathy-guidelines/SKILL.md</code> — see <a href="https://github.com/forrestchang/andrej-karpathy-skills" target="_blank" class="text-accent">github.com/forrestchang/andrej-karpathy-skills</a></p>
       </div>
     </section>
 
@@ -609,7 +635,7 @@
 
       <div class="quote">
         <p>Pocock's philosophy: AI is an opinionated team member who has internalized your workflow standards. Constraints are encoded in the tooling, not dependent on you remembering to include them in every prompt.</p>
-        <cite>— Analysis of mattpocock/skills (68k GitHub stars)</cite>
+        <cite>— Distilled from <a href="https://github.com/mattpocock/skills" target="_blank" style="color:inherit;text-decoration:underline;opacity:0.7">mattpocock/skills</a> README and documentation</cite>
       </div>
 
       <h3 class="text-lg font-bold text-slate-900 mb-3 mt-6">grill-with-docs: Full Workflow</h3>
@@ -783,6 +809,7 @@
     <!-- ─────────────────────────────────────
          10. TRUST ESCALATION & SANDBOXING
     ───────────────────────────────────── -->
+    <div class="section-group"><span class="section-group-label">Autonomy &amp; security</span><div class="section-group-line"></div></div>
     <section id="trust-sandbox" class="section-anchor mb-14">
       <div class="flex items-center gap-2 mb-1">
         <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-research">Vercel · Anthropic · 2025–2026 trend</span>
@@ -893,7 +920,7 @@
       <div class="flex items-center gap-2 mb-1">
         <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-research">Simon Willison · Agent Security</span>
       </div>
-      <h2 class="text-2xl font-bold text-slate-900 mb-4">10. The Lethal Trifecta: Agent Security</h2>
+      <h2 class="text-2xl font-bold text-slate-900 mb-4">11. The Lethal Trifecta: Agent Security</h2>
 
       <p class="text-slate-600 leading-relaxed mb-4">Simon Willison identified a critical security pattern: three capabilities, harmless individually, become a critical vulnerability when combined in one agent.</p>
 
@@ -963,6 +990,7 @@
     <!-- ─────────────────────────────────────
          11. AGENTIC CODING LESSONS
     ───────────────────────────────────── -->
+    <div class="section-group"><span class="section-group-label">Practical techniques</span><div class="section-group-line"></div></div>
     <section id="agentic-lessons" class="section-anchor mb-14">
       <div class="flex items-center gap-2 mb-1">
         <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-research">dbreunig · Anthropic · Willison</span>
@@ -1046,7 +1074,7 @@
       <div class="flex items-center gap-2 mb-1">
         <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-anthropic">Thariq Shihipar · Anthropic · ~8M views</span>
       </div>
-      <h2 class="text-2xl font-bold text-slate-900 mb-2">12. HTML as Output — The Unreasonable Effectiveness</h2>
+      <h2 class="text-2xl font-bold text-slate-900 mb-2">13. HTML as Output — The Unreasonable Effectiveness</h2>
       <p class="text-slate-500 text-sm mb-5">Thariq Shihipar (Claude Code team at Anthropic) wrote a widely-shared post arguing that HTML has replaced Markdown as the better default output format for AI agents. Simon Willison experimented with it and agreed. This is a simple, practical shift with outsized impact for demos and presentations.</p>
 
       <div class="bg-indigo-50 border-l-4 border-accent rounded-r-lg p-5 mb-5 text-slate-700">
@@ -1097,11 +1125,12 @@
     <!-- ─────────────────────────────────────
          13. ANTHROPIC ENGINEERING BLOG
     ───────────────────────────────────── -->
+    <div class="section-group"><span class="section-group-label">Further resources</span><div class="section-group-line"></div></div>
     <section id="anthropic-blog" class="section-anchor mb-14">
       <div class="flex items-center gap-2 mb-1">
         <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-anthropic">Anthropic Engineering Blog · 2024–2026</span>
       </div>
-      <h2 class="text-2xl font-bold text-slate-900 mb-2">13. Anthropic Engineering Blog — Key Posts</h2>
+      <h2 class="text-2xl font-bold text-slate-900 mb-2">14. Anthropic Engineering Blog — Key Posts</h2>
       <p class="text-slate-500 text-sm mb-5">Wei's selection of the most practically useful posts from <a href="https://www.anthropic.com/engineering" target="_blank" class="text-accent">anthropic.com/engineering</a>. Each entry links to the original. Read them in order if you can — they build on each other.</p>
 
       <h3 class="text-lg font-bold text-slate-900 mb-3">Foundations</h3>
@@ -1281,6 +1310,7 @@
         <div class="ref-entry"><span class="ref-num">[30]</span><span>Vercel Engineering. (2025). We removed 80% of our agent's tools. <em>Vercel Blog</em>. <a href="https://vercel.com/blog/we-removed-80-percent-of-our-agents-tools" target="_blank" class="text-accent hover:underline">vercel.com/blog</a></span></div>
         <div class="ref-entry"><span class="ref-num">[31]</span><span>Anthropic. (2025, Oct). Beyond permission prompts: making Claude Code more secure and autonomous. <em>Anthropic Engineering Blog</em>. <a href="https://www.anthropic.com/engineering/claude-code-sandboxing" target="_blank" class="text-accent hover:underline">anthropic.com/engineering/claude-code-sandboxing</a></span></div>
         <div class="ref-entry"><span class="ref-num">[32]</span><span>Northflank Engineering. (2026). How to sandbox AI agents in 2026: Firecracker, gVisor and isolation strategies. <a href="https://northflank.com/blog/how-to-sandbox-ai-agents" target="_blank" class="text-accent hover:underline">northflank.com/blog</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[33]</span><span>Port.io. (2025). Context engineering vs prompt engineering. <a href="https://www.port.io/blog/context-engineering-vs-prompt-engineering" target="_blank" class="text-accent hover:underline">port.io/blog</a></span></div>
       </div>
 
       <h3 class="text-base font-bold text-slate-700 uppercase tracking-wide mb-3" style="margin-top:2rem!important">Additional resources</h3>
