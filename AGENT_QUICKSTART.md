@@ -1,7 +1,9 @@
 # Track C: Agent Quickstart — KTH IT Service Skills
 
 > **For AI agents** (Claude Code, or any agent that reads CLAUDE.md).
-> Give this file to your agent to get started.
+> This file is the FIRST thing you read. It tells you how to onboard a
+> new user step by step — the user may not know any commands, so YOU
+> run everything for them and ask only what you need.
 
 ## What this repo is
 
@@ -16,82 +18,166 @@ A collection of **reusable AI agent skills** for automating KTH IT services:
 | `kth-intra` | [Intranet](https://intra.kth.se/) | Internal news, HR info, service directory |
 | `kth-service-onboarding` | (meta) | How to add a NEW KTH service as a skill |
 
-## Prerequisites
+---
 
-1. **Claude Code** installed ([claude.ai/download](https://claude.ai/download))
-2. **Claude Chrome extension** installed and connected to Claude Code
-   - Install from: https://support.claude.com/en/articles/12012173-get-started-with-claude-in-chrome
-   - The extension lets the agent see and interact with your Chrome browser
-3. **KTH account** with Microsoft Authenticator MFA set up
-4. **Python 3** + **curl** on PATH
+## First-time onboarding (agent: follow these steps)
 
-## Setup
+The user just cloned this repo and started `claude --chrome`. They may
+not know what to do next. **You drive the setup — ask the user only
+when you need their input** (name, KTH ID, which school they're in).
+
+### Step 0: Check prerequisites
+
+Run these checks silently. If anything fails, tell the user what to
+install and how.
 
 ```bash
-# 1. Clone the repo
-git clone -b track-c git@github.com:kth-sci/sci-agenthon-2026.git
-cd sci-agenthon-2026
-
-# 2. Install CLIs + skills
-./install.sh        # symlinks CLIs + skills, seeds config templates
-
-# 3. Edit your KTH identity
-$EDITOR ~/.config/kth-cli/config.env   # name, unit, delivery address
-
-# 4. Start Claude Code WITH Chrome extension enabled
-claude --chrome
+# Agent runs these — don't ask the user to type commands
+python3 --version          # need Python 3
+curl --version             # need curl
+which claude               # Claude Code must be installed
 ```
 
-**Important**: always start Claude Code with `claude --chrome` so the
-agent can use the Chrome extension tools (`mcp__claude-in-chrome__*`)
-for browser automation.
+If the Chrome extension isn't connected, tell the user:
+> "I need the Claude Chrome extension to interact with KTH websites.
+> Please install it from https://support.claude.com/en/articles/12012173-get-started-with-claude-in-chrome
+> and make sure you started Claude Code with `claude --chrome`."
 
-## How the agent should work
+### Step 1: Install skills + CLIs
 
-Read `CLAUDE.md` first — it describes the architecture and operating principles.
-
-### Step 1: Login (once per ~7-day session)
-
-```
-Agent: Load skill `kth`, then navigate Chrome to https://www.kth.se/social/?login
-User: Complete MFA + tick "Keep me signed in"
-Agent: Verify session via javascript_tool on intra.kth.se
+```bash
+# Agent runs this
+./install.sh
 ```
 
-### Step 2: Use a service
+This symlinks the CLIs to `~/.local/bin/` and skills to `~/.claude/skills/`.
+If `~/.local/bin` is not on PATH, tell the user to add it.
 
-Tell the agent what you want. Examples:
+### Step 2: Gather user identity (ask the user)
 
-- **"Upload my receipts to Findity"** → agent loads `kth-findity` skill, captures bearer via `javascript_tool` fetch intercept, uses the 3-step upload API
-- **"Check my pending invoices"** → agent loads `kth-efh` skill, runs `kth efh count`
-- **"Search WISUM for a USB-C hub"** → agent loads `kth-wisum` skill, runs `kth wisum search "usb-c hub"`
-- **"Order Simin's forwarded cart"** → agent loads `kth-wisum`, drives the checkout wizard via Chrome extension
+The config file needs a few values. **Ask the user conversationally**
+— don't dump a config file on them. Questions to ask:
 
-### Step 3: Add a new service
+1. **"What's your full name as it appears in KTH systems?"**
+   → saves as `KTH_USER_NAME`
+2. **"What's your KTH user ID? (the 4-letter code, e.g. ABCD)"**
+   → saves as `KTH_USER_ID`
+3. **"Which KTH school are you in? (e.g. SCI, EECS, CBH, ITM, ABE)"**
+   → helps pick default unit + delivery address later
 
-Tell the agent: "I want to automate [service URL]". The agent loads `kth-service-onboarding` and walks through:
-1. Navigate to the service in Chrome
-2. Discover API endpoints via `read_network_requests`
-3. Probe endpoints via `javascript_tool` + `fetch()`
-4. Write a SKILL.md + optional CLI wrapper
-5. Test it
+Then write the config file for them:
+
+```bash
+# Agent writes this file based on user's answers
+cat > ~/.config/kth-cli/config.env << 'EOF'
+export KTH_USER_NAME="<their name>"
+export KTH_USER_ID="<their ID>"
+# Other fields filled in after first WISUM/EFH use
+# export KTH_WISUM_ENHET="..."
+# export KTH_WISUM_ADDRESS="..."
+EOF
+chmod 600 ~/.config/kth-cli/config.env
+```
+
+**Don't ask about WISUM unit/address yet** — those are discovered
+interactively later when the user first uses WISUM.
+
+### Step 3: KTH Login + MFA
+
+Navigate Chrome to the KTH login page. The user does MFA on their phone.
+
+```
+Agent: Use mcp__claude-in-chrome__navigate to open https://www.kth.se/social/?login
+Agent: Take a screenshot to see the login form
+Agent: Tell the user: "Please sign in with your KTH credentials in Chrome.
+       Enter your password, then approve the Microsoft Authenticator prompt
+       on your phone. Make sure to tick 'Keep me signed in'."
+Agent: Wait, then screenshot again to confirm login succeeded
+Agent: Navigate to https://intra.kth.se/ and verify no "Logga in" link
+```
+
+### Step 4: Explore available services
+
+Once logged in, show the user what they can do:
+
+> "You're logged in to KTH! Here's what I can help with:
+>
+> - **Expenses** — upload receipts and create expense reports in Findity
+> - **Invoices** — check and review pending e-invoices in EFH
+> - **Purchasing** — search products, manage carts, and order in WISUM
+> - **Intranet** — find information on intra.kth.se
+>
+> What would you like to do first? Or if you have a specific KTH
+> service you want to automate, I can help set that up too."
+
+### Step 5: First service use (discover + configure)
+
+When the user picks a service, load the matching skill and follow its
+SKILL.md. The first use of each service may need extra setup:
+
+- **Findity**: navigate to hogia.findity.com/app/, complete email login
+  (silent SAML), capture bearer via fetch intercept. Discover the user's
+  organizationId and custom field values (project, unit, account code).
+  Save these for future use.
+
+- **EFH**: navigate to agrprodweb01.ug.kth.se/agrprod/, export cookies
+  for curl. The session is established silently via KTH SSO.
+
+- **WISUM**: navigate to wisum.its.umu.se/KTH/, accept the Shibboleth
+  consent screen if it appears. Discover the user's available units
+  (`kth wisum enheter`) and delivery addresses (`kth wisum addresses`)
+  and save their choices to config.env.
+
+**Always tell the user what you're doing and why.** Don't silently
+navigate to pages — say "I'm opening Findity in your Chrome to set up
+the connection" first.
+
+---
+
+## For returning users (agent: skip to here if setup is done)
+
+Read `CLAUDE.md` for the full architecture. Quick reference:
+
+### Service commands
+
+| Want to... | Do this |
+|-----------|---------|
+| Upload receipts | Load `kth-findity` skill → capture bearer → use 3-step upload API |
+| Check pending invoices | `kth efh count` or `kth efh tasks` |
+| Search products | `kth wisum search "search terms"` |
+| View cart | `kth wisum cart` |
+| Read intranet | Load `kth-intra` skill → navigate + read via `javascript_tool` |
+| Add a new KTH service | Load `kth-service-onboarding` skill |
+
+### Bearer / session expired?
+
+If you get HTTP 401 from any service:
+1. Navigate Chrome to the service's login URL
+2. KTH SSO should federate silently (if not, user needs MFA again)
+3. Re-capture the bearer via fetch intercept
+
+---
 
 ## Key architecture principle: discovery-then-script
 
-**Phase 1 (discovery)**: Use Chrome extension's `computer` tool (screenshot + click) to explore a new page. Slow, interactive — that's expected for first contact.
+**Phase 1 (discovery)**: Use Chrome extension's `computer` tool
+(screenshot + click) to explore a new page. Slow, interactive.
 
-**Phase 2 (script)**: Write JS via `javascript_tool` that does everything without screenshots. Capture auth by intercepting `window.fetch`. Call APIs via in-page `fetch()`. This is the fast path — no round-trip screenshots.
+**Phase 2 (script)**: Write JS via `javascript_tool` that does
+everything without screenshots. Fast, reliable.
 
-**Phase 3 (CLI)**: Wrap the API calls in a `bin/kth-*` CLI for reuse outside the browser.
+**Phase 3 (CLI)**: Wrap API calls in a `bin/kth-*` CLI for reuse.
 
-**The goal**: after discovering a service once, every repeat operation is a **scripted one-shot**.
+**The goal**: after discovering a service once, every repeat operation
+is a **scripted one-shot**.
+
+---
 
 ## Discovered API patterns (copy-paste ready)
 
-### Findity bearer capture (run in page context via javascript_tool)
+### Findity bearer capture (via javascript_tool)
 
 ```javascript
-// Override fetch to intercept the bearer token
 const origFetch = window.fetch;
 window._b = null;
 window._origF = origFetch;
@@ -104,67 +190,71 @@ window.fetch = function(input, init) {
   }
   return origFetch.call(this, input, init);
 };
-// Then click something in the SPA to trigger an API call → window._b is set
+// Click something in the SPA to trigger an API call → window._b is set
 ```
 
-### Findity receipt upload (3-step, all from javascript_tool)
+### Findity receipt upload (3-step)
 
 ```javascript
 // Step 1: Upload PDF
-const resp = await fetch(pdfUrl);
-const blob = await resp.blob();
-const upload = await window._origF('/api/v1/expense/content?organizationId=' + orgId, {
-  method: 'POST', headers: {'Authorization': 'Bearer ' + bearer, 'Content-Type': 'application/pdf'}, body: blob
-});
-const contentId = (await upload.json()).id;
+const blob = await (await fetch(pdfUrl)).blob();
+const contentId = (await (await window._origF(
+  '/api/v1/expense/content?organizationId=' + orgId,
+  {method: 'POST', headers: {'Authorization': 'Bearer ' + bearer, 'Content-Type': 'application/pdf'}, body: blob}
+)).json()).id;
 
 // Step 2: OCR scan
-const scan = await (await window._origF('/api/v1/expense/content/' + contentId + '?action=scan&organizationId=' + orgId, {
-  method: 'PUT', headers: {'Authorization': 'Bearer ' + bearer}
-})).json();
-const sr = scan.scanResult;
+const sr = (await (await window._origF(
+  '/api/v1/expense/content/' + contentId + '?action=scan&organizationId=' + orgId,
+  {method: 'PUT', headers: {'Authorization': 'Bearer ' + bearer}}
+)).json()).scanResult;
 
 // Step 3: Create expense
 await window._origF('/api/v1/expense/expenses', {
   method: 'POST',
   headers: {'Authorization': 'Bearer ' + bearer, 'Content-Type': 'application/json'},
   body: JSON.stringify({
-    organizationId: orgId,
-    expenseReportId: reportId,
+    organizationId: orgId, expenseReportId: reportId,
     categoryId: sr.categoryIds[0],
     verification: {
       type: 'ReceiptVerification',
       amount: sr.amount, taxAmount: sr.taxAmount, currency: sr.currency,
-      description: 'Your description here',
+      description: 'Description here',
       purchaseDate: sr.purchaseDate + 'T12:00:00Z',
       receiptAttachment: {id: contentId},
-      customFields: [/* project, unit, account fields */]
+      customFields: [/* discovered per-user */]
     },
     reimbursementCurrency: 'SEK'
   })
 });
 ```
 
-### KTH session check (via javascript_tool on intra.kth.se)
+### KTH session check
 
 ```javascript
-// Returns true if logged in, false if session expired
+// Returns true if logged in
 !document.querySelector('a')?.textContent?.match(/Logga in|Log in|Sign in/)
 ```
 
+---
+
 ## Important rules
 
-1. **Never auto-submit money-moving actions.** The agent prepares; the user clicks Slutför / Submit / Ekonomisk attest.
+1. **Never auto-submit money-moving actions.** The agent prepares; the
+   user clicks Slutför / Submit / Ekonomisk attest.
 2. **3-second delay between Findity API calls** to avoid rate limiting.
-3. **Bearer tokens expire** — re-capture via fetch intercept when you get HTTP 401.
-4. **User config lives at `~/.config/kth-cli/`** — never committed to git.
+3. **Bearer tokens expire** — re-capture when you get HTTP 401.
+4. **User config at `~/.config/kth-cli/`** — never commit to git.
+5. **Always tell the user what you're doing** before navigating their
+   Chrome or making API calls on their behalf.
 
 ## File structure
 
 ```
-bin/                    CLIs (pure curl/API, no browser dependency)
+bin/                    CLIs (pure curl/API)
 skills/                 Agent skill definitions (SKILL.md per service)
 config/                 Template files for user config
 install.sh              Symlinks + config seeding
-CLAUDE.md               Architecture + operating principles (read this!)
+CLAUDE.md               Architecture + operating principles
+AGENT_QUICKSTART.md     This file — start here
 ```
