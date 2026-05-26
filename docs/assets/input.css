@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  --color-kth: #004791;
+  --color-kth-light: #2563eb;
+  --color-kth-dark: #003366;
+  --color-accent: #6366f1;
+  --color-accent-light: #818cf8;
+  --color-accent-dark: #4f46e5;
+  --color-fire: #f97316;
+  --color-fire-light: #fb923c;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Scroll reveal */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reveal-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Accordion */
+.accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+.accordion-item.open .accordion-body {
+  max-height: 1200px;
+}
+.accordion-item.open .chevron {
+  transform: rotate(180deg);
+}
+.chevron { transition: transform 0.3s; }
+
+/* Tab panels */
+.tab-panel { display: none; animation: fadeIn 0.25s ease; }
+.tab-panel.active { display: block; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Quiz feedback */
+.quiz-feedback { display: none; }
+
+/* Code copy button */
+pre { position: relative; }
+
+/* Prompt label */
+.prompt-box::before {
+  content: 'PROMPT';
+  position: absolute;
+  top: -0.5rem;
+  left: 0.75rem;
+  background: #6366f1;
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.1rem 0.45rem;
+  border-radius: 3px;
+  letter-spacing: 0.06em;
+}

@@ -1,0 +1,898 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Track C Intro · SCI Agentathon 2026 · Wei Ouyang</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#ffffff; --bg-2:#f8fafc; --bg-3:#f1f5f9;
+  --fg:#0f172a; --fg-2:#334155; --fg-3:#64748b;
+  --line:#e2e8f0; --line-2:#cbd5e1;
+  --indigo:#6366f1; --indigo-d:#4f46e5; --indigo-l:#818cf8;
+  --sky:#2563eb; --green:#10b981; --amber:#f59e0b; --red:#ef4444;
+  --violet:#7c3aed; --slate:#475569;
+  --fs-h1:42px; --fs-h2:32px; --fs-lead:20px; --fs-body:16px;
+  --s1:8px;--s2:16px;--s3:24px;--s4:32px;--s5:48px;--s6:64px;
+  --pad-x:88px;--pad-y:64px;--inner:1280px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth;background:var(--bg)}
+body{background:var(--bg);color:var(--fg);font-family:'Inter',system-ui,sans-serif;
+  font-feature-settings:"ss01","cv11";-webkit-font-smoothing:antialiased;
+  font-size:var(--fs-body);line-height:1.55}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+a{color:var(--indigo);text-decoration:none;border-bottom:1px solid rgba(99,102,241,0.3)}
+a:hover{border-bottom-color:var(--indigo)}
+
+.slide{width:100%;min-height:100vh;background:var(--bg);color:var(--fg);
+  padding:var(--pad-y) var(--pad-x);scroll-snap-align:start;position:relative;
+  display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.slide>.inner{max-width:var(--inner);margin:0 auto;width:100%}
+.slide .brand{position:absolute;top:var(--s4);left:var(--pad-x);
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--fg-3);letter-spacing:.04em}
+.slide .brand b{color:var(--fg);font-weight:700}
+.slide .page{position:absolute;top:var(--s4);right:var(--pad-x);
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--fg-3);letter-spacing:.18em}
+
+.kicker{font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;
+  letter-spacing:.22em;color:var(--indigo);margin-bottom:var(--s3);display:inline-block}
+.rule{height:2px;width:52px;background:var(--indigo);margin:var(--s2) 0 var(--s4)}
+h1,h2,h3{font-weight:800;letter-spacing:-0.03em;line-height:1}
+.slide h1{font-size:var(--fs-h1);line-height:.98;margin-bottom:var(--s3)}
+.slide h2{font-size:var(--fs-h2);line-height:1.1;font-weight:700;margin-bottom:var(--s2)}
+.slide h3{font-size:18px;font-weight:700;line-height:1.2;margin-bottom:var(--s1);color:var(--fg)}
+.slide p{font-size:var(--fs-body);line-height:1.6;color:var(--fg-2);max-width:1000px}
+.slide p.lead{font-size:var(--fs-lead);line-height:1.5;color:var(--fg);max-width:1100px;font-weight:400}
+
+.callout{border-left:3px solid var(--indigo);padding:var(--s3) var(--s4);
+  background:var(--bg-2);font-size:15px;line-height:1.65;color:var(--fg-2);max-width:none}
+.callout b{color:var(--fg)}
+.callout.green{border-left-color:var(--green);background:rgba(16,185,129,0.04)}
+.callout.amber{border-left-color:var(--amber);background:rgba(245,158,11,0.04)}
+.callout.red{border-left-color:var(--red);background:rgba(239,68,68,0.04)}
+.callout.sky{border-left-color:var(--sky);background:rgba(37,99,235,0.04)}
+.callout.violet{border-left-color:var(--violet);background:rgba(124,58,237,0.04)}
+
+.title-slide .inner{display:grid;grid-template-columns:1.2fr 1fr;gap:var(--s5);align-items:center}
+.title-slide .logo{font-size:52px;line-height:.95;font-weight:900;letter-spacing:-0.04em;color:var(--fg)}
+.title-slide .logo span{color:var(--indigo)}
+.title-slide .bar{height:3px;background:var(--indigo);width:80px;margin:var(--s4) 0 var(--s3)}
+.title-side{background:var(--bg-2);border:1px solid var(--line);padding:var(--s4);
+  display:flex;flex-direction:column;gap:var(--s3)}
+.title-side .stat{border-left:2px solid var(--indigo);padding-left:var(--s2)}
+.title-side .stat .l{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;
+  letter-spacing:.16em;color:var(--indigo);margin-bottom:4px}
+.title-side .stat .v{font-size:24px;font-weight:800;color:var(--fg);letter-spacing:-0.03em}
+.title-side .stat .s{font-size:13px;color:var(--fg-3);margin-top:2px}
+
+.pillars{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:var(--s4)}
+.pillars.four{grid-template-columns:repeat(4,1fr)}
+.pillars.three{grid-template-columns:repeat(3,1fr)}
+.pillars.two{grid-template-columns:repeat(2,1fr)}
+.pillar{background:var(--bg);padding:var(--s4);display:flex;flex-direction:column;min-height:200px}
+.pillar .n{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;
+  font-weight:700;margin-bottom:var(--s2);text-transform:uppercase}
+.pillar.p1 .n{color:var(--red)}   .pillar.p2 .n{color:var(--indigo)}
+.pillar.p3 .n{color:var(--amber)} .pillar.p4 .n{color:var(--sky)}
+.pillar.p5 .n{color:var(--green)} .pillar.p6 .n{color:var(--violet)}
+.pillar h3{font-size:18px;margin-bottom:var(--s2);line-height:1.2}
+.pillar p{font-size:13px;line-height:1.6;color:var(--fg-2);flex:1}
+.pillar .eg{font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.5;
+  color:var(--fg-3);border-top:1px solid var(--line);padding-top:var(--s2);margin-top:auto}
+
+.two-sys{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);margin-top:var(--s4)}
+.sys{border:2px solid var(--line);padding:var(--s4);position:relative}
+.sys.green-b{border-color:var(--green)} .sys.red-b{border-color:var(--red)}
+.sys.sky-b{border-color:var(--sky)}     .sys.amber-b{border-color:var(--amber)}
+.sys.indigo-b{border-color:var(--indigo)} .sys.violet-b{border-color:var(--violet)}
+.sys .stag{position:absolute;top:-13px;left:var(--s3);background:var(--bg);
+  padding:0 var(--s2);font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.18em;font-weight:700;text-transform:uppercase}
+.sys.green-b .stag{color:var(--green)} .sys.red-b .stag{color:var(--red)}
+.sys.sky-b .stag{color:var(--sky)}     .sys.amber-b .stag{color:var(--amber)}
+.sys.indigo-b .stag{color:var(--indigo)} .sys.violet-b .stag{color:var(--violet)}
+.sys h3{font-size:22px;margin-bottom:var(--s2);color:var(--fg)}
+.sys ul{list-style:none;padding:0}
+.sys li{padding:6px 0 6px 20px;position:relative;font-size:14px;line-height:1.5;color:var(--fg-2)}
+.sys li::before{content:"→";position:absolute;left:0;top:6px;
+  font-family:'JetBrains Mono',monospace;font-size:11px}
+.sys.green-b li::before{color:var(--green)} .sys.red-b li::before{color:var(--red)}
+.sys.sky-b li::before{color:var(--sky)}     .sys.amber-b li::before{color:var(--amber)}
+.sys.indigo-b li::before{color:var(--indigo)} .sys.violet-b li::before{color:var(--violet)}
+
+.lab-bullets{display:flex;flex-direction:column;gap:var(--s2)}
+.lab-card{border-left:2px solid var(--indigo);padding:var(--s2) var(--s3);background:var(--bg-2)}
+.lab-card.sky{border-left-color:var(--sky)} .lab-card.green{border-left-color:var(--green)}
+.lab-card.amber{border-left-color:var(--amber)} .lab-card.red{border-left-color:var(--red)}
+.lab-card.violet{border-left-color:var(--violet)}
+.lab-card h4{font-size:14px;font-weight:700;margin-bottom:3px;color:var(--fg)}
+.lab-card p{font-size:13px;line-height:1.55;color:var(--fg-2);max-width:none}
+
+.fact-row{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:var(--s4)}
+.fact-row.three{grid-template-columns:repeat(3,1fr)}
+.fact-row.four{grid-template-columns:repeat(4,1fr)}
+.fact{background:var(--bg);padding:var(--s3) var(--s4)}
+.fact .l{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;
+  color:var(--indigo);text-transform:uppercase;margin-bottom:6px}
+.fact .v{font-size:22px;font-weight:800;color:var(--fg);line-height:1.15;letter-spacing:-0.02em}
+.fact .s{font-size:13px;color:var(--fg-3);margin-top:4px;line-height:1.5}
+
+.scenario{border:1px solid var(--line);padding:var(--s4);background:var(--bg-2);margin-top:var(--s3)}
+.scenario .q{font-size:17px;font-weight:600;color:var(--fg);line-height:1.45;
+  letter-spacing:-0.01em;margin-bottom:var(--s3)}
+.scenario .q em{font-style:normal;color:var(--indigo);font-weight:700}
+.scenario .steps{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+.scenario .steps.four{grid-template-columns:repeat(4,1fr)}
+.scenario .steps.three{grid-template-columns:repeat(3,1fr)}
+.scenario .step{background:var(--bg);padding:var(--s3);display:flex;flex-direction:column}
+.scenario .step .sn{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--indigo);
+  letter-spacing:.16em;font-weight:700;text-transform:uppercase}
+.scenario .step h4{font-size:14px;font-weight:700;margin:6px 0 4px;line-height:1.25;color:var(--fg)}
+.scenario .step p{font-size:12.5px;line-height:1.5;color:var(--fg-2);max-width:none}
+.scenario .step code{font-family:'JetBrains Mono',monospace;font-size:.85em;
+  background:var(--bg-3);border:1px solid var(--line);padding:1px 4px;border-radius:3px;color:var(--indigo)}
+
+.prompt-box{font-family:'JetBrains Mono',monospace;background:var(--bg-3);
+  border:1px solid rgba(99,102,241,.3);border-radius:4px;
+  padding:var(--s3) var(--s4);font-size:12.5px;line-height:1.75;
+  color:var(--fg-2);white-space:pre-wrap}
+
+.cmd-list{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:var(--s3)}
+.cmd-row{display:grid;grid-template-columns:280px 1fr;background:var(--bg)}
+.cmd-row .cmd{font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:600;color:var(--indigo);
+  padding:var(--s3) var(--s4);background:var(--bg-2);border-right:1px solid var(--line);display:flex;align-items:center}
+.cmd-row .desc{padding:var(--s3) var(--s4);font-size:13.5px;color:var(--fg-2);display:flex;align-items:center;line-height:1.5}
+.cmd-row.danger .cmd{color:var(--red);background:rgba(239,68,68,0.04)}
+
+.idea-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:var(--s3)}
+.idea{background:var(--bg);padding:var(--s3) var(--s4)}
+.idea .tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;margin-bottom:6px;font-weight:700}
+.idea .tag.t1{color:var(--indigo)} .idea .tag.t2{color:var(--sky)}
+.idea .tag.t3{color:var(--green)} .idea .tag.t4{color:var(--amber)}
+.idea .tag.t5{color:var(--red)}   .idea .tag.t6{color:var(--violet)}
+.idea h3{font-size:15px;font-weight:700;margin-bottom:4px;letter-spacing:-0.01em}
+.idea p{font-size:13px;color:var(--fg-3);line-height:1.5;max-width:none}
+
+.divider{background:linear-gradient(135deg,var(--bg-2) 0%,var(--bg) 100%);
+  border-top:3px solid var(--indigo)}
+
+.nav-progress{position:fixed;top:0;left:0;height:2px;background:var(--indigo);
+  z-index:98;transition:width .15s ease}
+
+@keyframes agentflow{from{stroke-dashoffset:26}to{stroke-dashoffset:0}}
+@keyframes llmpulse{0%,100%{opacity:1}50%{opacity:.82}}
+.aflow{stroke-dasharray:8 5;animation:agentflow 1.8s linear infinite}
+.aflow.d1{animation-delay:0s} .aflow.d2{animation-delay:-.36s}
+.aflow.d3{animation-delay:-.72s} .aflow.d4{animation-delay:-1.08s}
+.aflow.d5{animation-delay:-1.44s}
+.llmpulse{animation:llmpulse 3s ease-in-out infinite}
+
+@media(max-width:1100px){
+  :root{--pad-x:36px;--pad-y:44px;--fs-h1:30px;--fs-h2:24px;--fs-lead:17px;--fs-body:14px}
+  .pillars.four,.pillars.three{grid-template-columns:1fr 1fr}
+  .two-sys,.idea-grid{grid-template-columns:1fr}
+  .title-slide .inner{grid-template-columns:1fr}
+  .title-side{display:none}
+  .scenario .steps.four,.scenario .steps.three{grid-template-columns:1fr 1fr}
+  .cmd-row{grid-template-columns:1fr}
+  .cmd-row .cmd{border-right:none;border-bottom:1px solid var(--line)}
+}
+</style>
+</head>
+<body>
+<div class="nav-progress" id="np"></div>
+
+<!-- ═══════════════════════════════════════════
+     01 · TITLE
+═══════════════════════════════════════════ -->
+<section class="slide title-slide" id="s1">
+  <div class="brand"><b>SCI Agentathon 2026</b> · Track C · Wei Ouyang</div>
+  <div class="page">01 / 14</div>
+  <div class="inner">
+    <div>
+      <div class="kicker">Track C Intro · 10:15 – 10:30</div>
+      <div class="logo">Open Agent<br/><span>Exploration</span></div>
+      <div class="bar"></div>
+      <div style="display:flex;flex-direction:column;gap:var(--s1);margin-bottom:var(--s4);">
+        <div style="font-size:20px;color:var(--fg-3);font-weight:500;letter-spacing:-0.01em;">Claude Code crash course &nbsp;<span style="color:var(--line-2);">→</span></div>
+        <div style="font-size:20px;color:var(--fg-2);font-weight:500;letter-spacing:-0.01em;">Agent skills &amp; browser automation &nbsp;<span style="color:var(--line-2);">→</span></div>
+        <div style="font-size:22px;color:var(--indigo);font-weight:700;letter-spacing:-0.02em;">You build whatever matters to you</div>
+      </div>
+      <p style="font-size:15px;color:var(--fg-3);max-width:560px;line-height:1.6;">
+        15 min: tools overview. Then ~5 hours of free exploration in sub-teams of 2–3.<br/>
+        Goal: a live demo at 16:00 that does something real.
+      </p>
+    </div>
+    <div class="title-side">
+      <div class="stat">
+        <div class="l">Track C room</div>
+        <div class="v" style="font-size:16px;letter-spacing:-0.01em;">Hållfasthetslära</div>
+        <div class="s">seminarierum, Teknikringen 8D, floor 1</div>
+      </div>
+      <div class="stat" style="border-color:var(--sky)">
+        <div class="l" style="color:var(--sky)">Coding session 1</div>
+        <div class="v" style="font-size:18px;letter-spacing:-0.01em;">10:30–12:00</div>
+        <div class="s">First prototype — get something running</div>
+      </div>
+      <div class="stat" style="border-color:var(--green)">
+        <div class="l" style="color:var(--green)">Coding session 2</div>
+        <div class="v" style="font-size:18px;letter-spacing:-0.01em;">13:15–15:45</div>
+        <div class="s">Polish for the demo — converge on something demoable</div>
+      </div>
+      <div class="stat" style="border-color:var(--amber)">
+        <div class="l" style="color:var(--amber)">Demo time</div>
+        <div class="v" style="font-size:18px;letter-spacing:-0.01em;">16:00–16:45</div>
+        <div class="s">~10 min per sub-team, live, in Salongen</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     02 · WHAT IS AN AI AGENT
+═══════════════════════════════════════════ -->
+<section class="slide" id="s2">
+  <div class="brand"><b>SCI Agentathon 2026</b> · Track C · Wei Ouyang</div>
+  <div class="page">02 / 14</div>
+  <div class="inner" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);align-items:start;">
+    <div>
+      <div class="kicker">Foundation</div>
+      <h2>What is an AI agent?</h2>
+      <div class="rule"></div>
+      <p class="lead" style="margin-bottom:var(--s3);font-size:18px;">A language model that doesn't just answer — it <strong>decides what to do and does it.</strong></p>
+      <div class="lab-bullets">
+        <div class="lab-card green" style="padding:10px var(--s3);">
+          <h4>Perceive</h4>
+          <p>Reads files, code, data, PDFs, terminal output, web pages.</p>
+        </div>
+        <div class="lab-card sky" style="padding:10px var(--s3);">
+          <h4>Plan</h4>
+          <p>Decides which tools to use, in what order, before acting.</p>
+        </div>
+        <div class="lab-card amber" style="padding:10px var(--s3);">
+          <h4>Act</h4>
+          <p>Writes files, runs code, calls APIs. Output lives on disk.</p>
+        </div>
+        <div class="lab-card" style="padding:10px var(--s3);">
+          <h4>Remember</h4>
+          <p>Context window this session · CLAUDE.md every session.</p>
+        </div>
+        <div class="lab-card red" style="padding:10px var(--s3);">
+          <h4>Iterate</h4>
+          <p>Observe → Plan → Act → Observe → … until done.</p>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:var(--s3);">
+      <svg viewBox="0 0 400 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:400px;">
+        <line x1="200" y1="68" x2="200" y2="110" class="aflow d1" stroke="#6366f1" stroke-width="2.5" opacity="0.55"/>
+        <line x1="94" y1="110" x2="162" y2="136" class="aflow d2" stroke="#10b981" stroke-width="2.5" opacity="0.55"/>
+        <line x1="306" y1="110" x2="238" y2="136" class="aflow d3" stroke="#2563eb" stroke-width="2.5" opacity="0.55"/>
+        <line x1="94" y1="210" x2="162" y2="174" class="aflow d4" stroke="#f59e0b" stroke-width="2.5" opacity="0.55"/>
+        <line x1="306" y1="210" x2="238" y2="174" class="aflow d5" stroke="#7c3aed" stroke-width="2.5" opacity="0.55"/>
+        <rect x="146" y="110" width="108" height="60" rx="10" fill="#6366f1" class="llmpulse"/>
+        <text x="200" y="133" text-anchor="middle" fill="white" font-family="Inter,system-ui" font-size="13" font-weight="800" letter-spacing="-0.5">LLM</text>
+        <text x="200" y="150" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-family="Inter,system-ui" font-size="10">Observe · Plan · Act</text>
+        <text x="200" y="163" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-family="JetBrains Mono,monospace" font-size="8.5">Iterate until done</text>
+        <rect x="148" y="14" width="104" height="46" rx="7" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+        <text x="200" y="32" text-anchor="middle" fill="#4f46e5" font-family="Inter,system-ui" font-size="10" font-weight="700">MEMORY</text>
+        <text x="200" y="47" text-anchor="middle" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7.5">CLAUDE.md · context window</text>
+        <rect x="6" y="82" width="84" height="52" rx="7" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+        <text x="48" y="103" text-anchor="middle" fill="#059669" font-family="Inter,system-ui" font-size="10" font-weight="700">FILES</text>
+        <text x="48" y="120" text-anchor="middle" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7">code · data · PDFs</text>
+        <rect x="310" y="82" width="84" height="52" rx="7" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="352" y="103" text-anchor="middle" fill="#2563eb" font-family="Inter,system-ui" font-size="10" font-weight="700">TERMINAL</text>
+        <text x="352" y="120" text-anchor="middle" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7">python · bash · git</text>
+        <rect x="6" y="184" width="84" height="52" rx="7" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="48" y="205" text-anchor="middle" fill="#d97706" font-family="Inter,system-ui" font-size="10" font-weight="700">TOOLS</text>
+        <text x="48" y="222" text-anchor="middle" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7">MCP · skills · APIs</text>
+        <rect x="310" y="184" width="84" height="52" rx="7" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="352" y="205" text-anchor="middle" fill="#7c3aed" font-family="Inter,system-ui" font-size="10" font-weight="700">WEB</text>
+        <text x="352" y="222" text-anchor="middle" fill="#64748b" font-family="JetBrains Mono,monospace" font-size="7">browser · KTH systems</text>
+      </svg>
+      <div class="callout violet" style="font-size:13px;width:100%;">
+        <b>Chatbot:</b> text in, text out.&nbsp;&nbsp;<b style="color:var(--indigo)">Agent:</b> goal in, result on disk — or in a web form, or in your lab system.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     03 · CHATGPT vs CLAUDE CODE
+═══════════════════════════════════════════ -->
+<section class="slide" id="s3">
+  <div class="brand"><b>SCI Agentathon 2026</b> · Track C · Wei Ouyang</div>
+  <div class="page">03 / 14</div>
+  <div class="inner">
+    <div class="kicker">Crash Course — Tool Choices</div>
+    <h2>Two tools. Different jobs.</h2>
+    <div class="rule"></div>
+    <div class="two-sys">
+      <div class="sys red-b">
+        <div class="stag">ChatGPT</div>
+        <h3 style="color:var(--red);">Text in. Text out.</h3>
+        <ul>
+          <li>Replies once, then waits for you</li>
+          <li>No access to your files or disk</li>
+          <li>No memory between sessions</li>
+          <li>You copy-paste everything manually</li>
+          <li>Good for: quick questions, drafting, brainstorming</li>
+        </ul>
+      </div>
+      <div class="sys green-b">
+        <div class="stag">Claude Code (AI Agent)</div>
+        <h3 style="color:var(--green);">Goal in. Result on disk.</h3>
+        <ul>
+          <li>Reads your files — code, data, PDFs, notebooks</li>
+          <li>Runs terminal commands — python, bash, git</li>
+          <li>Saves output to disk — scripts, reports, figures</li>
+          <li>Loops until the task is done — plan → act → fix → repeat</li>
+          <li>Persists instructions across sessions via CLAUDE.md</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout green" style="margin-top:var(--s4);">
+      <b>The shift:</b> Claude Code doesn't produce text for you to copy — it produces files on your disk, code that runs, web pages that open, forms that fill. Today we use Claude Code.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     04 · FOLDER + CLAUDE.MD
+═══════════════════════════════════════════ -->
+<section class="slide" id="s4">
+  <div class="brand"><b>SCI Agentathon 2026</b> · Track C · Wei Ouyang</div>
+  <div class="page">04 / 14</div>
+  <div class="inner">
+    <div class="kicker">Foundation</div>
+    <h2>Start with a folder. Tell Claude who you are.</h2>
+    <div class="rule"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);">
+      <div>
+        <p class="lead" style="font-size:18px;margin-bottom:var(--s4);">Claude Code's world is a directory. Start there — navigate to your project folder, type <code style="font-family:'JetBrains Mono',monospace;color:var(--indigo);font-weight:600;">claude</code>, run <code style="font-family:'JetBrains Mono',monospace;color:var(--indigo);font-weight:600;">/init</code>.</p>
+        <div class="lab-bullets">
+          <div class="lab-card green">
+            <h4>CLAUDE.md — your standing instructions</h4>
+            <p>Plain text file at the root. Claude reads it automatically at the start of every session — without you saying anything. Keep it to 10–20 lines.</p>
+          </div>
+          <div class="lab-card sky">
+            <h4>What to put in it</h4>
+            <p>Project purpose, data formats, file layout, conventions ("never modify raw data"), constraints. Generate it instantly with <code style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--indigo);">/init</code>, then edit.</p>
+          </div>
+          <div class="lab-card amber">
+            <h4>Git = undo for everything</h4>
+            <p>Run <code style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--indigo);">git init</code> before your first session. If Claude does something unexpected, <code style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--indigo);">git restore .</code> brings it all back.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--indigo);text-transform:uppercase;margin-bottom:var(--s2);">Example CLAUDE.md for a KTH admin agent</div>
+        <div class="prompt-box"># KTH Scheduling Agent
+Project: automate recurring scheduling emails
+and meeting coordination for our group.
+
+Tools available: Python, browser (Claude Chrome),
+  KTH Outlook calendar via web UI.
+Output: draft emails to ./drafts/, logs to ./logs/.
+Never send emails without my explicit approval.
+Language: English for external, Swedish for internal.
+
+Contacts file: ./data/contacts.csv
+  columns: name, email, role, timezone</div>
+        <div class="callout" style="margin-top:var(--s3);font-size:13px;">
+          <b>Keep CLAUDE.md short.</b> It loads every session and burns tokens every time. Use Skills (slide 7) for knowledge that only applies to specific tasks.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     05 · CONTEXT ENGINEERING
+═══════════════════════════════════════════ -->
+<section class="slide" id="s5">
+  <div class="brand"><b>SCI Agentathon 2026</b> · Track C · Wei Ouyang</div>
+  <div class="page">05 / 14</div>
+  <div class="inner">
+    <div class="kicker">The Key Mindset Shift</div>
+    <h2>The question is not: what prompt should I write?<br/>The question is: what should Claude know?</h2>
+    <div class="rule"></div>
+    <p class="lead" style="margin-bottom:var(--s3);">Context engineering — deliberately shaping what's in the context window — is the core skill.</p>
+    <div class="pillars four">
+      <div class="pillar p1">
+        <div class="n">The Constraint</div>
+        <h3>Context fills fast</h3>
+        <p>Every file read, every command output, every message enters the window. Performance degrades as context fills — Claude starts forgetting earlier instructions.</p>
+        <div class="eg">10 files + 20 messages = context half gone before the real task starts.</div>
+      </div>
+      <div class="pillar p2">
+        <div class="n">Three Levers</div>
+        <h3>Shape what Claude knows</h3>
+        <p><strong>CLAUDE.md</strong> — always loaded; <strong>@file</strong> — read when you mention it; <strong>Skills</strong> — description pre-loaded (~100 tokens), full body only on trigger.</p>
+        <div class="eg">CLAUDE.md for universal rules · Skills for domain workflows · @file for one-off context.</div>
+      </div>
+      <div class="pillar p5">
+        <div class="n">Rich Context → Rich Output</div>
+        <h3>The compounding effect</h3>
+        <p>Vague prompt + blank context = generic output. Precise task + tight CLAUDE.md + right files = working domain-specific results.</p>
+        <div class="eg">"Fill the eISP form" → fumbles. "Read student-data.csv, open eISP at the URL below, fill these fields" → done.</div>
+      </div>
+      <div class="pillar p3">
+        <div class="n">Context Management</div>
+        <h3>Keep it clean</h3>
+        <p><code style="font-family:'JetBrains Mono',monospace;font-size:11px;">/clear</code> — reset between unrelated tasks. <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">/btw</code> — side question that never enters history. Subagents — investigate in a separate window.</p>
+        <div class="eg">Corrected Claude twice on the same issue? /clear and restart with a better prompt.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     06 · COMMANDS
+═══════════════════════════════════════════ -->
+<section class="slide" id="s6">
+  <div class="brand"><b>SCI Agentathon 2026</b> · Track C · Wei Ouyang</div>
+  <div class="page">06 / 14</div>
+  <div class="inner">
+    <div class="kicker">Daily Usage</div>
+    <h2>The commands you need today.</h2>
+    <div class="rule"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s3) var(--s4);margin-top:var(--s2);">
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--indigo);text-transform:uppercase;margin-bottom:var(--s2);">Start &amp; Run</div>
+        <div class="cmd-list">
+          <div class="cmd-row">
+            <div class="cmd">claude</div>
+            <div class="desc">Start interactive session — reads directory + CLAUDE.md immediately</div>
+          </div>
+          <div class="cmd-row">
+            <div class="cmd">claude -p "task"</div>
+            <div class="desc">One-shot non-interactive run — pipe into scripts or batch automation</div>
+          </div>
+          <div class="cmd-row">
+            <div class="cmd">--permission-mode auto</div>
+            <div class="desc">Auto-approve routine actions; only prompts for risky steps</div>
+          </div>
+          <div class="cmd-row danger">
+            <div class="cmd">--dangerously-skip-permissions</div>
+            <div class="desc"><strong>Advanced:</strong> fully autonomous — skips all prompts. Use only in git-tracked projects where you can revert.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--green);text-transform:uppercase;margin-bottom:var(--s2);">Build Context</div>
+        <div class="cmd-list">
+          <div class="cmd-row">
+            <div class="cmd">/init</div>
+            <div class="desc">Generate CLAUDE.md from current project — run once, then edit</div>
+          </div>
+          <div class="cmd-row">
+            <div class="cmd">#add a convention</div>
+            <div class="desc">Append a line to CLAUDE.md without executing — build incrementally</div>
+          </div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--amber);text-transform:uppercase;margin:var(--s3) 0 var(--s2);">Manage Context</div>
+        <div class="cmd-list">
+          <div class="cmd-row">
+            <div class="cmd">/clear</div>
+            <div class="desc">Reset context — use between unrelated tasks</div>
+          </div>
+          <div class="cmd-row">
+            <div class="cmd">/btw [question]</div>
+            <div class="desc">Side question that <strong>never enters conversation history</strong></div>
+          </div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--red);text-transform:uppercase;margin:var(--s3) 0 var(--s2);">Control &amp; Undo</div>
+        <div class="cmd-list">
+          <div class="cmd-row">
+            <div class="cmd">Esc · Esc+Esc</div>
+            <div class="desc">Interrupt running action · restore previous file state</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     07 · AGENT SKILLS
+═══════════════════════════════════════════ -->
+<section class="slide" id="s7">
+  <div class="brand"><b>SCI Agentathon 2026</b> · Track C · Wei Ouyang</div>
+  <div class="page">07 / 14</div>
+  <div class="inner">
+    <div class="kicker">Extending Claude Code · Skills</div>
+    <h2>Skills: domain knowledge that costs ~100 tokens.</h2>
+    <div class="rule"></div>
+    <div style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:var(--s4);align-items:start;margin-top:var(--s3);">
+      <div class="lab-bullets">
+        <div class="lab-card">
+          <h4>Progressive disclosure — zero cost until triggered</h4>
+          <p>At startup: only name + description loaded (~100 tokens total for all skills). When triggered: full SKILL.md body loaded. Reference files: loaded only when needed.</p>
+        </div>
+        <div class="lab-card sky">
+          <h4>CLAUDE.md vs Skills — when to use which</h4>
+          <p><strong>CLAUDE.md</strong> — loaded every session, always burns tokens. Use for rules that apply to every task.<br/><strong>Skills</strong> — triggered on demand. Use for domain workflows, system schemas, step-by-step procedures.</p>
+        </div>
+        <div class="lab-card green">
+          <h4>Install: one folder, one file</h4>
+          <p>Create <code style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--indigo);">.claude/skills/my-skill/SKILL.md</code> — that's it. Claude discovers it automatically. Find community skills at <code style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--sky);">github.com/modelcontextprotocol/servers</code></p>
+        </div>
+        <div class="lab-card amber">
+          <h4>The description is critical</h4>
+          <p>Claude picks the right Skill using only the name + description. Write: <em>what it does</em> + <em>when to use it</em>. Vague descriptions → Skill never triggers.</p>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--indigo);text-transform:uppercase;margin-bottom:var(--s2);">Minimal SKILL.md for a KTH system</div>
+        <div class="prompt-box" style="font-size:12px;">---
+name: kth-eisp-form
+description: Fill KTH eISP individual study plan
+  forms for PhD students. Use when asked to
+  update, submit, or review eISP documents,
+  or when working with PhD student plans.
+---
+## eISP workflow
+1. Open eISP at https://eisp.sys.kth.se
+2. Search student by KTH-id
+3. Fill fields per ./data/student-template.csv
+4. Save as draft — NEVER submit without approval
+
+## Field mapping
+- supervisor_1: primary supervisor (required)
+- half_time: expected half-time date (YYYY-MM-DD)
+- courses_planned: comma-separated course codes
+
+## See also
+[FIELD-REFERENCE.md](FIELD-REFERENCE.md) — all 24 fields
+[SUBMIT-CHECKLIST.md](SUBMIT-CHECKLIST.md) — pre-submit review</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     08 · BUILD YOUR OWN SKILL
+═══════════════════════════════════════════ -->
+<section class="slide" id="s8">
+  <div class="brand"><b>SCI Agentathon 2026</b> · Track C · Wei Ouyang</div>
+  <div class="page">08 / 14</div>
+  <div class="inner">
+    <div class="kicker">Extending Claude Code · Build Your Own Skill</div>
+    <h2>Write a Skill. Capture what you know.</h2>
+    <div class="rule"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);margin-top:var(--s3);">
+      <div class="lab-bullets">
+        <div class="lab-card">
+          <h4>The "grill with docs" pattern</h4>
+          <p>One of the most useful Skill patterns: interview-style questioning about a plan or design, one question at a time, with recommended answers. Explores the codebase or docs before asking — never relies solely on user input.</p>
+        </div>
+        <div class="lab-card sky">
+          <h4>How to build a Skill in practice</h4>
+          <p>① Complete a task without a Skill — note what context you kept providing repeatedly.<br/>② Ask Claude to write a SKILL.md that captures that reusable pattern.<br/>③ Test with a fresh session. Iterate based on what Claude misses or gets wrong.</p>
+        </div>
+        <div class="lab-card green">
+          <h4>Skill file structure</h4>
+          <p>Keep SKILL.md under 500 lines. Longer reference material → separate files. Claude reads them on demand via progressive disclosure — zero token cost until needed.</p>
+        </div>
+        <div class="lab-card violet">
+          <h4>The description must say when to trigger</h4>
+          <p><strong>Bad:</strong> "Helps with documents." &nbsp;&nbsp;<strong>Good:</strong> "Processes KTH Canvas course exports and generates structured learning outcome reports. Use when working with Canvas data or course analytics."</p>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--violet);text-transform:uppercase;margin-bottom:var(--s2);">grill-with-docs pattern (adapted)</div>
+        <div class="prompt-box" style="font-size:11.5px;">---
+name: grill-with-docs
+description: Stress-test a plan against existing
+  docs, schemas, or code. Use when user wants
+  to review a design, validate assumptions, or
+  clarify terminology against existing material.
+---
+## Process
+1. EXPLORE first — read relevant files/docs
+   before asking any questions
+2. Ask ONE question at a time
+3. Provide a recommended answer for each question
+4. Challenge terminology against known schemas
+5. Cross-reference claims against actual code
+
+## Question types
+- Terminology: "Does 'user' here mean KTH-id holder
+  or anyone with a local account?"
+- Edge cases: "What happens when the API is down?"
+- Dependencies: "Which service owns this data?"
+
+## After grilling
+Update docs/CONTEXT.md with resolved terms.
+Create an ADR only for hard-to-reverse decisions.</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--fg-3);margin-top:var(--s2);line-height:1.6;">Source: <a href="https://github.com/mattpocock/skills" style="color:var(--sky);border-bottom:none;">github.com/mattpocock/skills</a> (MIT)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     09 · CLI TOOLS + BROWSER AUTOMATION
+═══════════════════════════════════════════ -->
+<section class="slide" id="s9">
+  <div class="brand"><b>SCI Agentathon 2026</b> · Track C · Wei Ouyang</div>
+  <div class="page">09 / 14</div>
+  <div class="inner">
+    <div class="kicker">Extending Claude Code · External World</div>
+    <h2>CLI tools and browser automation.</h2>
+    <div class="rule"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--s3);margin-top:var(--s3);">
+      <div class="sys sky-b" style="border-width:2px;">
+        <div class="stag">CLI Tools</div>
+        <ul>
+          <li>Claude uses <strong>gh, curl, aws, gcloud</strong> natively — already authenticated, no setup</li>
+          <li>New tool with a CLI? Just say: <em>"Use foo --help to learn it, then do X"</em></li>
+          <li>Scripts are better than MCP for most research tasks — zero server overhead</li>
+          <li>KTH: <strong>canvas-cli, ladok-api wrappers</strong> if available — or curl + KTH API token</li>
+        </ul>
+      </div>
+      <div class="sys indigo-b" style="border-width:2px;">
+        <div class="stag">Claude for Chrome</div>
+        <ul>
+          <li><strong>Built into Claude Desktop</strong> Cowork mode</li>
+          <li>Reads web pages, fills forms, navigates, clicks</li>
+          <li>Best for: KTH web UIs (eISP, Canvas, ordering systems) where no API exists</li>
+          <li>Easiest to get started — already installed if you set up Cowork</li>
+          <li>Grant tab access per site when prompted</li>
+        </ul>
+      </div>
+      <div class="sys violet-b" style="border-width:2px;">
+        <div class="stag">Playwright MCP / agent-browser</div>
+        <ul>
+          <li><strong>Playwright MCP:</strong> full browser control via Model Context Protocol</li>
+          <li><strong>agent-browser</strong> (Vercel Labs): headless, Playwright-based, designed for agent tasks</li>
+          <li>Best for: complex multi-step workflows, screenshot capture, structured data extraction</li>
+          <li>More setup than Chrome extension but more powerful and scriptable</li>
+          <li><code style="font-family:'JetBrains Mono',monospace;font-size:10px;">github.com/vercel-labs/agent-browser</code></li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout amber" style="margin-top:var(--s3);font-size:13px;">
+      <b>Rule of thumb:</b> if a CLI exists → use CLI. If you need a web UI and Cowork is installed → Claude for Chrome. If you need headless batch scraping or complex multi-page automation → Playwright MCP or agent-browser.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     10 · TRACK C FORMAT
+═══════════════════════════════════════════ -->
+<section class="slide" id="s10">
+  <div class="brand"><b>SCI Agentathon 2026</b> · Track C · Wei Ouyang</div>
+  <div class="page">10 / 14</div>
+  <div class="inner">
+    <div class="kicker">Track C · The Format</div>
+    <h2>No recipe. You decide what to build.</h2>
+    <div class="rule"></div>
+    <p class="lead" style="margin-bottom:var(--s4);">Track C is free exploration. There is no tutorial, no prescribed problem, no "correct" direction. Your expertise + a capable agent = something no one else could build.</p>
+    <div class="pillars three" style="margin-bottom:var(--s4);">
+      <div class="pillar p2">
+        <div class="n">Sub-team</div>
+        <h3>2–3 people, one Git repo</h3>
+        <p>Small enough to move fast. Use Git so everyone can contribute and the work survives after today. One repo, everyone clones, Claude Code in each copy.</p>
+        <div class="eg">git init → push to GitHub → teammates clone → each runs claude in their copy</div>
+      </div>
+      <div class="pillar p5">
+        <div class="n">Topic</div>
+        <h3>Anything not in Track A or B</h3>
+        <p>Admin workflows (eISP, scheduling), knowledge/RAG agents, lab automation, document generation, KTH system integrations, productivity tools — or your own idea entirely.</p>
+        <div class="eg">Best demos come from real frustrations, not from a list of examples</div>
+      </div>
+      <div class="pillar p3">
+        <div class="n">Demo</div>
+        <h3>~10 min live at 16:00</h3>
+        <p>Show it running. Explain: what problem does it solve? What does the agent do that you couldn't do manually? What surprised you? What broke?</p>
+        <div class="eg">Live demo preferred — slides optional. Rough but real beats polished but fake.</div>
+      </div>
+    </div>
+    <div class="callout green">
+      <b>Wei is in the room all day.</b> Stuck on a concept? Need a second opinion on scope? Want to sanity-check your architecture? Grab Wei — that's what he's there for.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     11 · TOPIC IDEAS GRID
+═══════════════════════════════════════════ -->
+<section class="slide" id="s11">
+  <div class="brand"><b>SCI Agentathon 2026</b> · Track C · Wei Ouyang</div>
+  <div class="page">11 / 14</div>
+  <div class="inner">
+    <div class="kicker">Inspiration · Pick One or Bring Your Own</div>
+    <h2>What could you build today?</h2>
+    <div class="rule"></div>
+    <p style="margin-bottom:var(--s3);color:var(--fg-3);font-size:14px;">Your own frustration beats this list. These are starting points, not constraints.</p>
+    <div class="idea-grid">
+      <div class="idea">
+        <div class="tag t1">KTH Admin</div>
+        <h3>eISP / Ladok workflow agent</h3>
+        <p>Automate KTH PhD administration: individual study plan filling, course registration checks, degree audit. Claude for Chrome navigates the web UIs you already know.</p>
+      </div>
+      <div class="idea">
+        <div class="tag t2">Knowledge · RAG</div>
+        <h3>Group knowledge agent</h3>
+        <p>Drop 10–20 papers or reports into a folder. Ask questions grounded in your actual material. Claude reads and synthesises across documents — not generic AI answers.</p>
+      </div>
+      <div class="idea">
+        <div class="tag t3">Lab</div>
+        <h3>Lab automation / monitoring</h3>
+        <p>Connect an agent to your instrument API or LIMS. Monitor runs, parse results, trigger follow-up protocols. Even a simple "check and notify" loop is demo-worthy.</p>
+      </div>
+      <div class="idea">
+        <div class="tag t4">Productivity</div>
+        <h3>Scheduling / email coordination</h3>
+        <p>Draft recurring emails, coordinate meeting slots from calendar data, generate weekly summaries. Any repetitive communication task that eats 20 minutes a week.</p>
+      </div>
+      <div class="idea">
+        <div class="tag t5">Writing</div>
+        <h3>Grant / report drafting agent</h3>
+        <p>Give Claude your project data and existing text. Have it draft a grant section, annual report paragraph, or lay summary. Then have a second agent review for clarity.</p>
+      </div>
+      <div class="idea">
+        <div class="tag t6">Your idea</div>
+        <h3>Anything else at KTH</h3>
+        <p>Canvas course analytics, conference paper processing, ordering system automation, student feedback synthesis — if it's your daily frustration and not Track A/B, it's Track C.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     12 · SUB-TEAM FORMATION DIVIDER
+═══════════════════════════════════════════ -->
+<section class="slide divider" id="s12">
+  <div class="brand"><b>SCI Agentathon 2026</b> · Track C · Wei Ouyang</div>
+  <div class="page">12 / 14</div>
+  <div class="inner" style="max-width:900px;">
+    <div class="kicker" style="color:var(--sky)">Sub-Team Formation · Now</div>
+    <h1 style="font-size:52px;margin-bottom:var(--s3);">Form your team.<br/>Pick your problem.</h1>
+    <div class="rule" style="background:var(--sky)"></div>
+    <p class="lead" style="margin-bottom:var(--s4);">
+      2–3 people. One Git repo. One demoable result by 15:45.
+    </p>
+    <div class="pillars two">
+      <div class="pillar p4">
+        <div class="n" style="color:var(--sky)">Step 1 · Right now</div>
+        <h3>Find 1–2 people with a shared problem</h3>
+        <p>Talk to the people next to you. What's the shared frustration? What would save you an hour a week? That's your topic.</p>
+        <div class="eg">→ 5 minutes to form, then straight to slide 13</div>
+      </div>
+      <div class="pillar p5">
+        <div class="n" style="color:var(--green)">Step 2 · 10:30</div>
+        <h3>Create a folder and start building</h3>
+        <p>One person creates the Git repo, others clone. Run <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">/init</code>, tell Claude what you want to build, and iterate.</p>
+        <div class="eg">→ go to slide 13 for the 4-step start</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     13 · START YOUR PROJECT
+═══════════════════════════════════════════ -->
+<section class="slide" id="s13">
+  <div class="brand"><b>SCI Agentathon 2026</b> · Track C · Wei Ouyang</div>
+  <div class="page">13 / 14</div>
+  <div class="inner">
+    <div class="kicker">Hands-On · Start Here</div>
+    <h2>Four steps to your first working version.</h2>
+    <div class="rule"></div>
+    <div class="scenario">
+      <div class="q">One person sets up the repo. Others clone and join. Start together.</div>
+      <div class="steps four">
+        <div class="step">
+          <div class="sn">Step 1</div>
+          <h4>Create a Git repo</h4>
+          <p><code>mkdir my-project</code><br/><code>cd my-project</code><br/><code>git init</code><br/><br/>Push to GitHub and add teammates as collaborators. Others: <code>git clone &lt;url&gt;</code></p>
+        </div>
+        <div class="step">
+          <div class="sn">Step 2</div>
+          <h4>Start Claude Code</h4>
+          <p><code>claude</code><br/><br/>Claude reads the folder immediately. Run <code>/init</code> to generate a CLAUDE.md. Edit it to describe your project in 5–10 lines.</p>
+        </div>
+        <div class="step">
+          <div class="sn">Step 3</div>
+          <h4>Tell Claude what you want</h4>
+          <p>Describe your goal in plain language — outcomes, not steps. Mention relevant files by name. "Read contacts.csv, draft scheduling emails for next week's meetings."</p>
+        </div>
+        <div class="step">
+          <div class="sn">Step 4</div>
+          <h4>Iterate toward the demo</h4>
+          <p>Small follow-ups compound. "Handle the case where the email field is empty." "Add a confirmation step." Keep refining the same thread rather than restarting.</p>
+        </div>
+      </div>
+    </div>
+    <div class="callout green" style="margin-top:var(--s3);">
+      <b>If you get stuck:</b> say "read the error and fix it." Don't copy-paste anything yourself — that's the agent loop. If you're stuck on direction, grab Wei.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     14 · RESOURCES + WEI IS HERE
+═══════════════════════════════════════════ -->
+<section class="slide" id="s14">
+  <div class="brand"><b>SCI Agentathon 2026</b> · Track C · Wei Ouyang</div>
+  <div class="page">14 / 14</div>
+  <div class="inner">
+    <div class="kicker">Resources + Support</div>
+    <h2>Useful links. And Wei is in the room.</h2>
+    <div class="rule"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);">
+      <div class="lab-bullets">
+        <div class="lab-card">
+          <h4>Claude Code docs</h4>
+          <p><code style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--sky);">code.claude.com/docs</code><br/>Commands, permissions, CLAUDE.md reference, MCP setup.</p>
+        </div>
+        <div class="lab-card sky">
+          <h4>Agent Skills guide</h4>
+          <p><code style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--sky);">platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices</code><br/>How to write effective Skills: conciseness, progressive disclosure, descriptions.</p>
+        </div>
+        <div class="lab-card green">
+          <h4>Browser automation</h4>
+          <p><code style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--sky);">github.com/vercel-labs/agent-browser</code><br/>agent-browser: headless browser built for Claude agents. Playwright MCP: <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">github.com/microsoft/playwright-mcp</code></p>
+        </div>
+        <div class="lab-card amber">
+          <h4>Community Skills</h4>
+          <p><code style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--sky);">github.com/mattpocock/skills</code><br/>grill-with-docs and other reusable Skill patterns. MCP servers: <code style="font-family:'JetBrains Mono',monospace;font-size:11px;">github.com/modelcontextprotocol/servers</code></p>
+        </div>
+      </div>
+      <div>
+        <div style="border:2px solid var(--indigo);padding:var(--s4);display:flex;flex-direction:column;gap:var(--s3);">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:28px;color:var(--indigo);font-weight:900;">Wei is here.</div>
+          <div style="font-size:16px;color:var(--fg-2);line-height:1.6;">Grab me any time during the day. I can help with:<br/>
+            <span style="color:var(--green);">→</span> Getting unstuck on Claude Code<br/>
+            <span style="color:var(--sky);">→</span> Setting up browser automation<br/>
+            <span style="color:var(--amber);">→</span> Scoping your project to something demoable<br/>
+            <span style="color:var(--violet);">→</span> Designing a Skill for your domain<br/>
+            <span style="color:var(--indigo);">→</span> Anything else
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--fg-3);">
+            wei.ouyang@scilifelab.se
+          </div>
+        </div>
+        <div class="callout green" style="margin-top:var(--s3);font-size:13px;">
+          <b>The goal:</b> one thing that works and that you'll use again next Tuesday. A narrow, real tool beats a broad, impressive demo you never run again.
+          <span style="display:block;margin-top:var(--s2);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--fg-3);">
+            🤖 Built with Claude Code · SCI Agentathon 2026 · KTH
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+const np = document.getElementById('np');
+const slides = document.querySelectorAll('.slide');
+function goToHash(){
+  const id = location.hash.slice(1);
+  if(id){ const el = document.getElementById(id); if(el) el.scrollIntoView({behavior:'instant'}); }
+}
+goToHash();
+window.addEventListener('hashchange', goToHash);
+let updating = false;
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.intersectionRatio > 0.5){
+      const idx = Array.from(slides).indexOf(e.target);
+      np.style.width = ((idx+1)/slides.length*100)+'%';
+      updating = true;
+      history.replaceState(null,'','#'+e.target.id);
+      updating = false;
+    }
+  });
+},{threshold:0.5});
+slides.forEach(s => io.observe(s));
+</script>
+<div style="position:fixed;bottom:0;left:0;right:0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(100,116,139,0.45);padding:5px;pointer-events:none;z-index:99;letter-spacing:0.04em;">🤖 Generated and built with Claude Code &middot; SCI Agentathon 2026 &middot; KTH School of Engineering Sciences</div>
+</body>
+</html>
