@@ -35,3 +35,58 @@ section.reveal-on-scroll .space-y-4 > * + * {
 .border-l-4.rounded-r-lg {
   padding: 1rem 1.25rem;
 }
+
+/* ── List defaults (override Tailwind preflight which resets list-style to none) ── */
+/* Target content areas while leaving nav/flex/grid lists alone */
+.section-anchor ul:not([class*="flex"]):not([class*="grid"]):not(nav ul),
+main ul:not([class*="flex"]):not([class*="grid"]):not(nav ul),
+.content-body ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+.section-anchor ol:not([class*="flex"]):not([class*="grid"]),
+main ol:not([class*="flex"]):not([class*="grid"]),
+.content-body ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+.section-anchor li,
+main li,
+.content-body li {
+  margin-bottom: 0.35rem;
+  line-height: 1.75;
+}
+/* Nested lists */
+.section-anchor ul ul,
+.section-anchor ol ul {
+  list-style-type: circle;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+/* ── Prose paragraph spacing in content sections ── */
+.section-anchor p + p {
+  margin-top: 0.875rem;
+}
+.section-anchor h3 {
+  margin-top: 1.75rem;
+  margin-bottom: 0.625rem;
+}
+
+/* ── toc-link ── */
+.toc-link {
+  display: block;
+  font-size: 0.78rem;
+  padding: 0.2rem 0.5rem;
+  color: #64748b;
+  border-radius: 4px;
+  transition: background 0.12s, color 0.12s;
+  text-decoration: none;
+  line-height: 1.5;
+}
+.toc-link:hover {
+  background: #f1f5f9;
+  color: #312e81;
+}

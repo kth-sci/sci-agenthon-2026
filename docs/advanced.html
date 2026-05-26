@@ -241,15 +241,16 @@
         <a href="#agent-patterns" class="toc-link">3. Agent Patterns</a>
         <a href="#skills-vs-mcp" class="toc-link">4. Skills vs MCP</a>
         <a href="#human-role" class="toc-link">5. The Human Role</a>
-        <a href="#karpathy-rules" class="toc-link">6. Karpathy's 4 Rules</a>
-        <a href="#pocock-skills" class="toc-link">7. Matt Pocock's Skills</a>
-        <a href="#knowledge-base" class="toc-link">8. The Wiki Pattern</a>
-        <a href="#agent-native" class="toc-link">9. Agent-Native Design</a>
-        <a href="#trust-sandbox" class="toc-link">10. Trust &amp; Sandboxing</a>
-        <a href="#security" class="toc-link">11. Security: Lethal Trifecta</a>
-        <a href="#agentic-lessons" class="toc-link">12. Agentic Coding Lessons</a>
-        <a href="#html-output" class="toc-link">13. HTML as Output</a>
-        <a href="#anthropic-blog" class="toc-link">14. Anthropic Blog</a>
+        <a href="#ralph-loop" class="toc-link">6. The Ralph Loop</a>
+        <a href="#karpathy-rules" class="toc-link">7. Karpathy's 4 Rules</a>
+        <a href="#pocock-skills" class="toc-link">8. Matt Pocock's Skills</a>
+        <a href="#knowledge-base" class="toc-link">9. The Wiki Pattern</a>
+        <a href="#agent-native" class="toc-link">10. Agent-Native Design</a>
+        <a href="#trust-sandbox" class="toc-link">11. Trust &amp; Sandboxing</a>
+        <a href="#security" class="toc-link">12. Security: Lethal Trifecta</a>
+        <a href="#agentic-lessons" class="toc-link">13. Agentic Coding Lessons</a>
+        <a href="#html-output" class="toc-link">14. HTML as Output</a>
+        <a href="#anthropic-blog" class="toc-link">15. Anthropic Blog</a>
         <a href="#quotes" class="toc-link">Key Quotes</a>
         <a href="#sources" class="toc-link">Sources</a>
       </nav>
@@ -570,13 +571,116 @@
     </section>
 
     <!-- ─────────────────────────────────────
-         6. KARPATHY'S 4 RULES
+         6. THE RALPH LOOP
+    ───────────────────────────────────── -->
+    <section id="ralph-loop" class="section-anchor mb-14">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-xs font-mono font-bold px-2 py-0.5 rounded" style="background:#fef3c7;color:#92400e">snarktank · ghuntley · Pocock · 2024–2025</span>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-900 mb-4">6. The Ralph Loop: Getting Long-Running Work Done</h2>
+
+      <p class="text-slate-600 leading-relaxed mb-4">Named after Ralph Wiggum from <em>The Simpsons</em> — the character who cheerfully keeps trying regardless of whether he understands why he stopped — the Ralph loop is a pattern for running long autonomous tasks that would overflow a single context window. The core insight: <strong>LLMs exit when they <em>think</em> they are done, not when they have met objectively verifiable criteria.</strong> A loop with external state and a stop hook fixes this.</p>
+
+      <!-- Loop diagram -->
+      <div class="flex justify-center mb-6">
+        <svg width="520" height="155" viewBox="0 0 520 155" fill="none" xmlns="http://www.w3.org/2000/svg" class="max-w-full">
+          <defs>
+            <marker id="rl-arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+              <path d="M0 0 L7 3 L0 6 Z" fill="#64748b"/>
+            </marker>
+            <marker id="rl-arr-b" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+              <path d="M0 0 L7 3 L0 6 Z" fill="#6366f1"/>
+            </marker>
+            <marker id="rl-arr-g" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+              <path d="M0 0 L7 3 L0 6 Z" fill="#10b981"/>
+            </marker>
+          </defs>
+          <!-- Task box -->
+          <rect x="8" y="52" width="110" height="40" rx="7" fill="#f0fdf4" stroke="#10b981" stroke-width="1.5"/>
+          <text x="63" y="69" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#065f46">Task / Prompt</text>
+          <text x="63" y="83" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#6b7280">PROMPT.md</text>
+          <!-- Arrow 1 -->
+          <line x1="118" y1="72" x2="162" y2="72" stroke="#64748b" stroke-width="1.5" marker-end="url(#rl-arr)"/>
+          <!-- Claude box -->
+          <rect x="164" y="42" width="132" height="60" rx="7" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+          <text x="230" y="65" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="#312e81">Claude Code</text>
+          <text x="230" y="80" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#6366f1">fresh context window</text>
+          <text x="230" y="93" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" fill="#64748b">reads files + git history</text>
+          <!-- Arrow 2 -->
+          <line x1="296" y1="72" x2="340" y2="72" stroke="#64748b" stroke-width="1.5" marker-end="url(#rl-arr)"/>
+          <!-- Stop hook box -->
+          <rect x="342" y="52" width="116" height="40" rx="7" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
+          <text x="400" y="69" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#9a3412">Stop Hook</text>
+          <text x="400" y="83" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#6b7280">contains "DONE"?</text>
+          <!-- Loop back path (if not done) -->
+          <path d="M400 52 L400 18 L230 18 L230 42" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="5 3" fill="none" marker-end="url(#rl-arr-b)"/>
+          <text x="310" y="12" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#6366f1" font-style="italic">no — re-inject task, new context</text>
+          <!-- Done path -->
+          <line x1="400" y1="92" x2="400" y2="118" stroke="#10b981" stroke-width="1.5" marker-end="url(#rl-arr-g)"/>
+          <rect x="344" y="120" width="112" height="26" rx="6" fill="#f0fdf4" stroke="#10b981" stroke-width="1.5"/>
+          <text x="400" y="137" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#065f46">✓ Finished</text>
+        </svg>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-4 mb-6">
+        <div class="pattern-box" style="border-left-color:#10b981">
+          <h4 style="color:#059669">External state, not conversation history</h4>
+          <p>Each iteration spawns a fresh Claude session. Continuity lives in the filesystem — a task file, a <code class="font-mono text-xs">progress.txt</code>, and git commits. The agent reads current state on every new start, so context rot never accumulates across iterations.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#6366f1">
+          <h4 style="color:#4f46e5">Stop hooks enforce objective criteria</h4>
+          <p>When Claude tries to exit, a hook intercepts. If the output does not contain the agreed completion marker (e.g., <code class="font-mono text-xs">DONE</code>), the task is re-injected and a new iteration begins. The loop ends only when criteria are provably met — not when the model <em>thinks</em> it finished.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#f97316">
+          <h4 style="color:#ea580c">Night-shift automation</h4>
+          <p>Developers plan during the day: write issues, PRDs, acceptance criteria. At end-of-day, start the Ralph loop and let Claude implement overnight. Morning: review commits, not implementation details. The split is human day-shift / agent night-shift.</p>
+        </div>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3">How to run one</h3>
+      <div class="bg-slate-900 text-slate-200 rounded-xl px-5 py-4 font-mono text-sm mb-5 overflow-x-auto">
+        <div class="text-slate-500 mb-2 text-xs"># Minimal Ralph loop (bash)</div>
+        <div><span class="text-emerald-400">while</span> <span class="text-yellow-300">:</span>; <span class="text-emerald-400">do</span></div>
+        <div class="pl-4"><span class="text-sky-300">cat</span> PROMPT.md | <span class="text-sky-300">claude</span> --continue</div>
+        <div><span class="text-emerald-400">done</span></div>
+        <div class="text-slate-500 mt-3 text-xs"># Or with Svamp's built-in Ralph mode:</div>
+        <div><span class="text-sky-300">svamp session ralph-start</span> &lt;id&gt; <span class="text-green-300">"Implement all open GitHub issues"</span> --promise <span class="text-amber-300">DONE</span> --max <span class="text-amber-300">20</span></div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4 mb-5">
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-sm">
+          <div class="font-semibold text-emerald-800 mb-2">Works well for</div>
+          <ul class="list-disc pl-4 text-emerald-700 space-y-1">
+            <li>Mechanical refactoring across many files</li>
+            <li>Test migration (Jest → Vitest, etc.)</li>
+            <li>Greenfield features with a clear acceptance test</li>
+            <li>Any task where "done" maps to a verifiable, external state</li>
+          </ul>
+        </div>
+        <div class="bg-red-50 border border-red-200 rounded-xl p-4 text-sm">
+          <div class="font-semibold text-red-800 mb-2">Avoid when</div>
+          <ul class="list-disc pl-4 text-red-700 space-y-1">
+            <li>Success criteria are vague or aesthetic</li>
+            <li>Each step requires interactive human judgment</li>
+            <li>A single story exceeds one context window</li>
+            <li>Mistakes are hard to reverse (production systems, billing)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-indigo-50 border-l-4 border-accent rounded-r-lg p-4 text-sm text-slate-700">
+        <strong>Geoffrey Huntley's framing <a href="https://ghuntley.com/loop/" target="_blank" class="underline text-accent">[34]</a>:</strong> "Everything is a Ralph loop." The LLM conversation is a loop. Code review is a loop. The scientific method is a loop. The key engineering question is always the same: <em>what is your stop condition, and how do you encode it externally so the machine can verify it without you?</em>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         7. KARPATHY'S 4 RULES
     ───────────────────────────────────── -->
     <section id="karpathy-rules" class="section-anchor mb-14">
       <div class="flex items-center gap-2 mb-1">
         <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-karpathy">Karpathy guidelines · SKILL.md</span>
       </div>
-      <h2 class="text-2xl font-bold text-slate-900 mb-2">6. Karpathy's Four Rules for Claude Code</h2>
+      <h2 class="text-2xl font-bold text-slate-900 mb-2">7. Karpathy's Four Rules for Claude Code</h2>
       <p class="text-slate-500 text-sm mb-5">From the karpathy-guidelines SKILL.md — a codified set of behavioral rules designed to reduce the most common LLM coding mistakes. "Bias toward caution over speed."</p>
 
       <div class="space-y-3 mb-6">
@@ -606,13 +710,13 @@
     </section>
 
     <!-- ─────────────────────────────────────
-         7. MATT POCOCK'S SKILLS
+         8. MATT POCOCK'S SKILLS
     ───────────────────────────────────── -->
     <section id="pocock-skills" class="section-anchor mb-14">
       <div class="flex items-center gap-2 mb-1">
         <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-pocock">Matt Pocock · github.com/mattpocock/skills</span>
       </div>
-      <h2 class="text-2xl font-bold text-slate-900 mb-2">7. Matt Pocock's Skill Library</h2>
+      <h2 class="text-2xl font-bold text-slate-900 mb-2">8. Matt Pocock's Skill Library</h2>
       <p class="text-slate-500 text-sm mb-5">21 opinionated dev workflows refined from real production TypeScript work. The key idea: <strong>encode discipline into tooling, not into your memory.</strong> When the <code class="font-mono text-xs">tdd</code> skill is active, Claude cannot write implementation before tests — the constraint is in the skill, not in your prompt.</p>
 
       <div class="grid md:grid-cols-2 gap-4 mb-6">
@@ -705,7 +809,7 @@
       <div class="flex items-center gap-2 mb-1">
         <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-karpathy">Karpathy · LLM Knowledge Bases</span>
       </div>
-      <h2 class="text-2xl font-bold text-slate-900 mb-4">8. The LLM Wiki Pattern</h2>
+      <h2 class="text-2xl font-bold text-slate-900 mb-4">9. The LLM Wiki Pattern</h2>
 
       <p class="text-slate-600 leading-relaxed mb-4">Karpathy's most underrated idea: instead of RAG answering questions from raw documents, use agents to incrementally <strong>compile</strong> documents into a structured Markdown wiki — with summaries, entity pages, concept pages, cross-links, and evolving synthesis.</p>
 
@@ -758,7 +862,7 @@
       <div class="flex items-center gap-2 mb-1">
         <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-karpathy">Karpathy · Sensors &amp; Actuators framework</span>
       </div>
-      <h2 class="text-2xl font-bold text-slate-900 mb-4">9. Designing Agent-Native Systems</h2>
+      <h2 class="text-2xl font-bold text-slate-900 mb-4">10. Designing Agent-Native Systems</h2>
 
       <p class="text-slate-600 leading-relaxed mb-4">Everything is still fundamentally written for humans. Docs tell you what to do. GUIs require you to click. This is Karpathy's "favourite pet peeve": <em>"I don't want to do anything. What is the thing I should copy-paste to my agent?"</em></p>
 
@@ -823,7 +927,7 @@
       <div class="flex items-center gap-2 mb-1">
         <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-research">Vercel · Anthropic · 2025–2026 trend</span>
       </div>
-      <h2 class="text-2xl font-bold text-slate-900 mb-2">10. Trust Escalation &amp; Sandboxing</h2>
+      <h2 class="text-2xl font-bold text-slate-900 mb-2">11. Trust Escalation &amp; Sandboxing</h2>
       <p class="text-slate-600 leading-relaxed mb-2">The field is moving in one consistent direction: <strong>give agents more autonomy, protect that autonomy with hard system boundaries rather than permission prompts.</strong> The design question is shifting from "what tools should the agent have?" to "what system-level boundaries keep the agent safe to run freely?"</p>
 
       <h3 class="text-lg font-bold text-slate-900 mb-3">Fewer tools, better agents</h3>
@@ -929,7 +1033,7 @@
       <div class="flex items-center gap-2 mb-1">
         <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-research">Simon Willison · Agent Security</span>
       </div>
-      <h2 class="text-2xl font-bold text-slate-900 mb-4">11. The Lethal Trifecta: Agent Security</h2>
+      <h2 class="text-2xl font-bold text-slate-900 mb-4">12. The Lethal Trifecta: Agent Security</h2>
 
       <p class="text-slate-600 leading-relaxed mb-4">Simon Willison identified a critical security pattern: three capabilities, harmless individually, become a critical vulnerability when combined in one agent.</p>
 
@@ -1004,7 +1108,7 @@
       <div class="flex items-center gap-2 mb-1">
         <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-research">dbreunig · Anthropic · Willison</span>
       </div>
-      <h2 class="text-2xl font-bold text-slate-900 mb-2">11. Ten Lessons for Agentic Coding</h2>
+      <h2 class="text-2xl font-bold text-slate-900 mb-2">13. Ten Lessons for Agentic Coding</h2>
       <p class="text-slate-500 text-sm mb-5">From dbreunig.com's "10 Lessons for Agentic Coding" and the official Claude Code best practices. Hard-won guidance from teams shipping production code with agents.</p>
 
       <div class="grid md:grid-cols-2 gap-3 mb-6">
@@ -1083,7 +1187,7 @@
       <div class="flex items-center gap-2 mb-1">
         <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-anthropic">Thariq Shihipar · Anthropic · ~8M views</span>
       </div>
-      <h2 class="text-2xl font-bold text-slate-900 mb-2">13. HTML as Output — The Unreasonable Effectiveness</h2>
+      <h2 class="text-2xl font-bold text-slate-900 mb-2">14. HTML as Output — The Unreasonable Effectiveness</h2>
       <p class="text-slate-500 text-sm mb-5">Thariq Shihipar (Claude Code team at Anthropic) wrote a widely-shared post arguing that HTML has replaced Markdown as the better default output format for AI agents. Simon Willison experimented with it and agreed. This is a simple, practical shift with outsized impact for demos and presentations.</p>
 
       <div class="bg-indigo-50 border-l-4 border-accent rounded-r-lg p-5 mb-5 text-slate-700">
@@ -1139,7 +1243,7 @@
       <div class="flex items-center gap-2 mb-1">
         <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-anthropic">Anthropic Engineering Blog · 2024–2026</span>
       </div>
-      <h2 class="text-2xl font-bold text-slate-900 mb-2">14. Anthropic Engineering Blog — Key Posts</h2>
+      <h2 class="text-2xl font-bold text-slate-900 mb-2">15. Anthropic Engineering Blog — Key Posts</h2>
       <p class="text-slate-500 text-sm mb-5">Wei's selection of the most practically useful posts from <a href="https://www.anthropic.com/engineering" target="_blank" class="text-accent">anthropic.com/engineering</a>. Each entry links to the original. Read them in order if you can — they build on each other.</p>
 
       <h3 class="text-lg font-bold text-slate-900 mb-3">Foundations</h3>
@@ -1320,6 +1424,9 @@
         <div class="ref-entry"><span class="ref-num">[31]</span><span>Anthropic. (2025, Oct). Beyond permission prompts: making Claude Code more secure and autonomous. <em>Anthropic Engineering Blog</em>. <a href="https://www.anthropic.com/engineering/claude-code-sandboxing" target="_blank" class="text-accent hover:underline">anthropic.com/engineering/claude-code-sandboxing</a></span></div>
         <div class="ref-entry"><span class="ref-num">[32]</span><span>Northflank Engineering. (2026). How to sandbox AI agents in 2026: Firecracker, gVisor and isolation strategies. <a href="https://northflank.com/blog/how-to-sandbox-ai-agents" target="_blank" class="text-accent hover:underline">northflank.com/blog</a></span></div>
         <div class="ref-entry"><span class="ref-num">[33]</span><span>Port.io. (2025). Context engineering vs prompt engineering. <a href="https://www.port.io/blog/context-engineering-vs-prompt-engineering" target="_blank" class="text-accent hover:underline">port.io/blog</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[34]</span><span>Huntley, G. (2025). Everything is a Ralph Loop. <em>ghuntley.com</em>. <a href="https://ghuntley.com/loop/" target="_blank" class="text-accent hover:underline">ghuntley.com/loop</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[35]</span><span>snarktank. (2024). ralph: Autonomous AI agent loop tool. <em>GitHub</em>. <a href="https://github.com/snarktank/ralph" target="_blank" class="text-accent hover:underline">github.com/snarktank/ralph</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[36]</span><span>aihero.dev. (2025). Getting Started With Ralph. <a href="https://www.aihero.dev/getting-started-with-ralph" target="_blank" class="text-accent hover:underline">aihero.dev/getting-started-with-ralph</a></span></div>
       </div>
 
       <h3 class="text-base font-bold text-slate-700 uppercase tracking-wide mb-3" style="margin-top:2rem!important">Additional resources</h3>
@@ -1395,6 +1502,18 @@
         <a href="https://github.com/vercel-labs/agent-browser" target="_blank" class="insight-card hover:border-accent transition block no-underline">
           <h4>agent-browser (Vercel Labs)</h4>
           <p>Headless Playwright-based browser integration designed for Claude agents. Alternative to Playwright MCP with lower overhead. <span class="text-accent">github.com/vercel-labs</span></p>
+        </a>
+        <a href="https://github.com/snarktank/ralph" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>snarktank/ralph — Autonomous Agent Loop</h4>
+          <p>The original Ralph loop tool: stop hook integration, completion marker detection, per-iteration fresh context. A small but instructive codebase. <span class="text-accent">github.com/snarktank/ralph</span></p>
+        </a>
+        <a href="https://ghuntley.com/loop/" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>Geoffrey Huntley — Everything is a Ralph Loop</h4>
+          <p>"The key engineering question is always the same: what is your stop condition, and how do you encode it externally?" The conceptual grounding for why loops beat one-shots. <span class="text-accent">ghuntley.com/loop</span></p>
+        </a>
+        <a href="https://www.aihero.dev/getting-started-with-ralph" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>Getting Started With Ralph (aihero.dev)</h4>
+          <p>Practical walkthrough: PROMPT.md structure, stop hook setup, task file patterns, how to debug iterations, and pitfalls to avoid. <span class="text-accent">aihero.dev</span></p>
         </a>
       </div>
     </section>
