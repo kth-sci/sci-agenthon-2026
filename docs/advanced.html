@@ -65,10 +65,20 @@
   <div class="max-w-4xl mx-auto">
     <div class="inline-flex items-center gap-2 bg-accent/20 text-accent-light text-xs font-semibold px-3 py-1 rounded-full mb-5 border border-accent/30">
       <span class="w-1.5 h-1.5 bg-accent-light rounded-full"></span>
-      Track C · Advanced Reference
+      Track C · Advanced Reference · Curated by Wei Ouyang
     </div>
     <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">Advanced Skills with AI Agents</h1>
-    <p class="text-slate-300 text-lg max-w-2xl leading-relaxed">Mental models, design patterns, and hard-won insights from Karpathy, Anthropic, Matt Pocock, and research on how LLMs actually behave in production.</p>
+    <p class="text-slate-300 text-lg max-w-2xl leading-relaxed mb-6">Mental models, design patterns, and hard-won insights from Karpathy, Anthropic, Matt Pocock, and research on how LLMs actually behave in production.</p>
+    <!-- Disclaimer -->
+    <div class="bg-white/10 border border-white/20 rounded-xl p-5 max-w-2xl">
+      <div class="flex items-start gap-3">
+        <div class="text-amber-300 text-lg mt-0.5">⚠️</div>
+        <div>
+          <div class="font-semibold text-white text-sm mb-1">Personal curation — not a textbook</div>
+          <p class="text-slate-300 text-sm leading-relaxed">This page is Wei's highly opinionated selection of ideas he finds important right now. It draws heavily on Andrej Karpathy's thinking, plus pieces from Anthropic's engineering blog, Matt Pocock, Simon Willison, and others. It is not exhaustive, not balanced, and not officially endorsed by anyone. Many of these ideas are also contradictory or evolving. Use it as a starting point for your own exploration — follow the sources, disagree freely, and go deeper on what resonates with your own work.</p>
+        </div>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -91,6 +101,8 @@
         <a href="#agent-native" class="toc-link">9. Agent-Native Design</a>
         <a href="#security" class="toc-link">10. Security: Lethal Trifecta</a>
         <a href="#agentic-lessons" class="toc-link">11. Agentic Coding Lessons</a>
+        <a href="#html-output" class="toc-link">12. HTML as Output</a>
+        <a href="#anthropic-blog" class="toc-link">13. Anthropic Blog</a>
         <a href="#quotes" class="toc-link">Key Quotes</a>
         <a href="#sources" class="toc-link">Sources</a>
       </nav>
@@ -809,6 +821,172 @@
     </section>
 
     <!-- ─────────────────────────────────────
+         12. HTML AS OUTPUT
+    ───────────────────────────────────── -->
+    <section id="html-output" class="section-anchor mb-14">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-anthropic">Thariq Shihipar · Anthropic · ~8M views</span>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-900 mb-2">12. HTML as Output — The Unreasonable Effectiveness</h2>
+      <p class="text-slate-500 text-sm mb-5">Thariq Shihipar (Claude Code team at Anthropic) wrote a widely-shared post arguing that HTML has replaced Markdown as the better default output format for AI agents. Simon Willison experimented with it and agreed. This is a simple, practical shift with outsized impact for demos and presentations.</p>
+
+      <div class="bg-indigo-50 border-l-4 border-accent rounded-r-lg p-5 mb-5 text-slate-700">
+        <strong>The shift in one sentence:</strong> Markdown is limiting for files over ~100 lines and produces wall-of-text output. HTML lets Claude produce interactive, visually structured, shareable documents — slides, dashboards, annotated reviews, diagrams — with the same effort.
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4 mb-5">
+        <div class="insight-card border-t-4 border-t-accent">
+          <h4>Presentations / slide decks</h4>
+          <p>"Build a 12-slide HTML presentation on [topic] using scroll-snap sections, one slide per concept." Claude generates a complete deck you open in a browser and present immediately. No PowerPoint, no Keynote, no upload required. The track-c-intro.html on this site was built exactly this way.</p>
+        </div>
+        <div class="insight-card border-t-4 border-t-emerald-500">
+          <h4>PR / code reviews</h4>
+          <p>"Help me review this PR by creating an HTML artifact with inline margin annotations and colour-coded findings by severity." The output is a navigable, scannable document rather than a wall of Markdown bullets.</p>
+        </div>
+        <div class="insight-card border-t-4" style="border-top-color:#f59e0b">
+          <h4>Interactive explanations</h4>
+          <p>"Explain this code in detail using HTML, CSS, and JavaScript to make the explanation rich, interactive, and as clear as possible." The result can include syntax highlighting, expandable sections, animated diagrams, step-by-step walkthroughs.</p>
+        </div>
+        <div class="insight-card border-t-4" style="border-top-color:#7c3aed">
+          <h4>Dashboards and data reports</h4>
+          <p>"Analyse this CSV and produce an HTML report with embedded charts." Claude writes the JavaScript inline. The file is self-contained — send it as an attachment, no server needed. Works for lab data, experiment results, literature surveys.</p>
+        </div>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3">Why it works better than Markdown</h3>
+      <div class="space-y-2 mb-5">
+        <div class="pattern-box" style="border-left-color:#6366f1">
+          <h4 class="text-accent">SVG + CSS + JS inline</h4>
+          <p>A single HTML file can contain diagrams (SVG), animations (CSS), interactivity (JS), and structured text — all in one self-contained document. Markdown can do none of these.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#10b981">
+          <h4 style="color:#059669">Shareable with zero infrastructure</h4>
+          <p>One .html file. Open it in a browser, send it over email, drop it in OneDrive. No server, no login, no framework. The recipient needs only a browser tab.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#2563eb">
+          <h4 style="color:#2563eb">Models are excellent at HTML</h4>
+          <p>HTML is heavily represented in pretraining data — Claude is genuinely good at writing it. The reliability gap vs. Markdown has essentially disappeared with recent models.</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm">
+        <p class="font-semibold text-slate-900 mb-2">Try it today</p>
+        <p class="text-slate-600">At the end of any Claude Code session where you've produced analysis or a report, add: <span class="font-mono text-xs bg-white border border-slate-200 px-2 py-0.5 rounded text-accent">Now produce the same content as a well-designed single-page HTML file with navigation and visual hierarchy. Make it self-contained and immediately openable in a browser.</span></p>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         13. ANTHROPIC ENGINEERING BLOG
+    ───────────────────────────────────── -->
+    <section id="anthropic-blog" class="section-anchor mb-14">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-anthropic">Anthropic Engineering Blog · 2024–2026</span>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-900 mb-2">13. Anthropic Engineering Blog — Key Posts</h2>
+      <p class="text-slate-500 text-sm mb-5">Wei's selection of the most practically useful posts from <a href="https://www.anthropic.com/engineering" target="_blank" class="text-accent">anthropic.com/engineering</a>. Each entry links to the original. Read them in order if you can — they build on each other.</p>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3">Foundations</h3>
+      <div class="space-y-3 mb-6">
+        <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" class="insight-card block no-underline hover:border-accent transition">
+          <div class="flex items-start justify-between gap-2 mb-1">
+            <h4>Building Effective Agents <span class="font-normal text-slate-400">Dec 2024</span></h4>
+            <span class="text-xs font-mono text-accent shrink-0">foundational</span>
+          </div>
+          <p>The five agent patterns (prompt chaining, routing, parallelisation, orchestrator-workers, evaluator-optimizer). The ACI concept — invest as much in tool design as in prompt design. "Add complexity only when it demonstrably improves outcomes." Start here.</p>
+        </a>
+        <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" class="insight-card block no-underline hover:border-accent transition">
+          <div class="flex items-start justify-between gap-2 mb-1">
+            <h4>Effective Context Engineering for AI Agents <span class="font-normal text-slate-400">Sep 2025</span></h4>
+            <span class="text-xs font-mono text-accent shrink-0">foundational</span>
+          </div>
+          <p>"Find the smallest set of high-signal tokens that maximise the likelihood of your desired outcome." Just-in-time loading, progressive disclosure, the Goldilocks zone for system prompts. Distinguishes context engineering from prompt engineering. Pairs with the Chroma context rot research.</p>
+        </a>
+        <a href="https://www.anthropic.com/engineering/claude-code-best-practices" target="_blank" class="insight-card block no-underline hover:border-accent transition">
+          <div class="flex items-start justify-between gap-2 mb-1">
+            <h4>Claude Code: Best Practices for Agentic Coding <span class="font-normal text-slate-400">Apr 2025</span></h4>
+            <span class="text-xs font-mono text-accent shrink-0">practical</span>
+          </div>
+          <p>The Explore→Plan→Implement→Commit workflow. CLAUDE.md do's and don'ts. When to use plan mode vs. not. Session management (when to /clear, when to use subagents). The single highest-leverage investment: give the agent a way to verify its own work.</p>
+        </a>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3">Tools and multi-agent systems</h3>
+      <div class="space-y-3 mb-6">
+        <a href="https://www.anthropic.com/engineering/writing-tools-for-agents" target="_blank" class="insight-card block no-underline hover:border-accent transition">
+          <div class="flex items-start justify-between gap-2 mb-1">
+            <h4>Writing Effective Tools for Agents <span class="font-normal text-slate-400">Sep 2025</span></h4>
+            <span class="text-xs font-mono text-accent shrink-0">tool design</span>
+          </div>
+          <p>More tools ≠ better outcomes. Namespace related tools. Return only high-signal information — replace cryptic UUIDs with semantic names. The SWE-bench finding: switching to absolute filepaths eliminated an entire class of errors. "Small refinements to tool descriptions can yield dramatic improvements."</p>
+        </a>
+        <a href="https://www.anthropic.com/engineering/claude-think-tool" target="_blank" class="insight-card block no-underline hover:border-accent transition">
+          <div class="flex items-start justify-between gap-2 mb-1">
+            <h4>The "Think" Tool: Enabling Claude to Stop and Think <span class="font-normal text-slate-400">Mar 2025</span></h4>
+            <span class="text-xs font-mono text-accent shrink-0">tool design</span>
+          </div>
+          <p>A simple tool that gives Claude a scratchpad to reason between tool calls — not extended thinking (before response), but mid-task reflection (after tool outputs). 54% relative improvement on the airline domain of τ-Bench. Use when: processing complex tool output, verifying policy compliance, sequential decision-making where each step builds on the last.</p>
+        </a>
+        <a href="https://www.anthropic.com/engineering/multi-agent-research-system" target="_blank" class="insight-card block no-underline hover:border-accent transition">
+          <div class="flex items-start justify-between gap-2 mb-1">
+            <h4>How We Built Our Multi-Agent Research System <span class="font-normal text-slate-400">Jun 2025</span></h4>
+            <span class="text-xs font-mono text-accent shrink-0">architecture</span>
+          </div>
+          <p>Opus 4 lead + Sonnet 4 subagents outperformed single-agent Opus 4 by 90.2% on internal evaluations. Token usage explains 80% of performance variance on BrowseComp. Parallelisation reduced research time by up to 90%. Scaling rules: simple queries = 1 agent, complex research = 10+ agents with divided responsibilities.</p>
+        </a>
+        <a href="https://www.anthropic.com/engineering/building-c-compiler" target="_blank" class="insight-card block no-underline hover:border-accent transition">
+          <div class="flex items-start justify-between gap-2 mb-1">
+            <h4>Building a C Compiler with a Team of Parallel Claudes <span class="font-normal text-slate-400">Feb 2026</span></h4>
+            <span class="text-xs font-mono text-accent shrink-0">case study</span>
+          </div>
+          <p>16 parallel Opus 4.6 instances in isolated Docker containers built a 100K-line Rust C compiler over 2,000 sessions. Key lesson: tests passing rarely means the job is done — the compiler still couldn't implement a 16-bit x86 code generator. GCC as "known-good oracle" enabled parallel agents on the same codebase. Lock-file synchronisation to prevent duplicate work.</p>
+        </a>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3">Long-running agents and harnesses</h3>
+      <div class="space-y-3 mb-6">
+        <a href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents" target="_blank" class="insight-card block no-underline hover:border-accent transition">
+          <div class="flex items-start justify-between gap-2 mb-1">
+            <h4>Effective Harnesses for Long-Running Agents <span class="font-normal text-slate-400">Nov 2025</span></h4>
+            <span class="text-xs font-mono text-accent shrink-0">architecture</span>
+          </div>
+          <p>Two-agent pattern (Initializer sets up the environment once; Coding agent makes incremental progress per session). Feature lists in JSON prevent premature completion. Progress files + git history replace in-context memory. Mandate single-feature focus per session — attempting too much at once is the primary failure mode.</p>
+        </a>
+        <a href="https://www.anthropic.com/engineering/harness-design-long-running-apps" target="_blank" class="insight-card block no-underline hover:border-accent transition">
+          <div class="flex items-start justify-between gap-2 mb-1">
+            <h4>Harness Design for Long-Running Application Development <span class="font-normal text-slate-400">Mar 2026</span></h4>
+            <span class="text-xs font-mono text-accent shrink-0">architecture</span>
+          </div>
+          <p>GAN-inspired architecture: separate Generator and Evaluator agents. Models have "context anxiety" — they praise their own outputs even when quality is mediocre. Independent evaluators tuned to skepticism outperform self-evaluation. Grading criteria language directly shapes output ("museum quality" drove visual convergence). A 6-hour harness run ($200) vs solo 20-minute run ($9) showed dramatic quality differences.</p>
+        </a>
+        <a href="https://www.anthropic.com/engineering/managed-agents" target="_blank" class="insight-card block no-underline hover:border-accent transition">
+          <div class="flex items-start justify-between gap-2 mb-1">
+            <h4>Scaling Managed Agents: Decoupling Brain from Hands <span class="font-normal text-slate-400">Apr 2026</span></h4>
+            <span class="text-xs font-mono text-accent shrink-0">architecture</span>
+          </div>
+          <p>As agents scale, decoupling planning ("brain") from execution ("hands") becomes essential. The brain sets strategy and evaluates progress; the hands carry out low-level tool calls. This separation prevents the planning context from being polluted by execution noise, and allows specialised models for each role.</p>
+        </a>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3">Safety and practical ops</h3>
+      <div class="space-y-3 mb-5">
+        <a href="https://www.anthropic.com/engineering/claude-code-auto-mode" target="_blank" class="insight-card block no-underline hover:border-accent transition">
+          <div class="flex items-start justify-between gap-2 mb-1">
+            <h4>Claude Code Auto Mode: A Safer Way to Skip Permissions <span class="font-normal text-slate-400">Mar 2026</span></h4>
+            <span class="text-xs font-mono text-accent shrink-0">safety</span>
+          </div>
+          <p>Auto mode automatically approves routine low-risk actions while asking for permission on high-risk ones. The alternative to <code class="font-mono text-xs">--dangerously-skip-permissions</code> for day-to-day use. Use <code class="font-mono text-xs">--permission-mode auto</code> to enable.</p>
+        </a>
+        <a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents" target="_blank" class="insight-card block no-underline hover:border-accent transition">
+          <div class="flex items-start justify-between gap-2 mb-1">
+            <h4>Demystifying Evals for AI Agents <span class="font-normal text-slate-400">Jan 2026</span></h4>
+            <span class="text-xs font-mono text-accent shrink-0">evaluation</span>
+          </div>
+          <p>How to think about evaluating agent systems vs. one-shot models. The key insight: agent performance is path-dependent — the same final state can be reached in ways that differ greatly in reliability, cost, and safety. Evals must measure trajectories, not just outcomes.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
          KEY QUOTES
     ───────────────────────────────────── -->
     <section id="quotes" class="section-anchor mb-14">
@@ -888,6 +1066,14 @@
         <a href="https://code.claude.com/docs/en/best-practices" target="_blank" class="insight-card hover:border-accent transition block no-underline">
           <h4>Claude Code — Official Best Practices</h4>
           <p>Explore→Plan→Implement→Commit workflow, CLAUDE.md do's and don'ts, session management, the 35-minute wall, parallel sessions. <span class="text-accent">code.claude.com/docs</span></p>
+        </a>
+        <a href="https://simonwillison.net/2026/May/8/unreasonable-effectiveness-of-html/" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>The Unreasonable Effectiveness of HTML</h4>
+          <p>Thariq Shihipar (Anthropic) + Simon Willison on why HTML beats Markdown for AI output — slides, interactive explanations, annotated reviews, dashboards. ~8M views on X. <span class="text-accent">simonwillison.net</span></p>
+        </a>
+        <a href="https://www.anthropic.com/engineering" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>Anthropic Engineering Blog (all posts)</h4>
+          <p>The full index of 24 posts covering building effective agents, context engineering, harness design, multi-agent systems, tool design, and Claude Code best practices. <span class="text-accent">anthropic.com/engineering</span></p>
         </a>
         <a href="https://www.mindstudio.ai/blog/andrej-karpathy-llm-wiki-knowledge-base-claude-code" target="_blank" class="insight-card hover:border-accent transition block no-underline">
           <h4>Karpathy's LLM Wiki approach</h4>
