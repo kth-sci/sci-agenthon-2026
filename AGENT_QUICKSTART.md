@@ -18,19 +18,33 @@ A collection of **reusable AI agent skills** for automating KTH IT services:
 
 ## Prerequisites
 
-1. **Claude Chrome extension** (`claude-in-chrome`) installed in the user's Chrome
-2. **KTH account** with Microsoft Authenticator MFA set up
-3. **Python 3** + **curl** on PATH
+1. **Claude Code** installed ([claude.ai/download](https://claude.ai/download))
+2. **Claude Chrome extension** installed and connected to Claude Code
+   - Install from: https://support.claude.com/en/articles/12012173-get-started-with-claude-in-chrome
+   - The extension lets the agent see and interact with your Chrome browser
+3. **KTH account** with Microsoft Authenticator MFA set up
+4. **Python 3** + **curl** on PATH
 
-## Setup (30 seconds)
+## Setup
 
 ```bash
+# 1. Clone the repo
 git clone -b track-c git@github.com:kth-sci/sci-agenthon-2026.git
 cd sci-agenthon-2026
+
+# 2. Install CLIs + skills
 ./install.sh        # symlinks CLIs + skills, seeds config templates
+
+# 3. Edit your KTH identity
+$EDITOR ~/.config/kth-cli/config.env   # name, unit, delivery address
+
+# 4. Start Claude Code WITH Chrome extension enabled
+claude --chrome
 ```
 
-Edit `~/.config/kth-cli/config.env` with your KTH identity (name, unit, address).
+**Important**: always start Claude Code with `claude --chrome` so the
+agent can use the Chrome extension tools (`mcp__claude-in-chrome__*`)
+for browser automation.
 
 ## How the agent should work
 
