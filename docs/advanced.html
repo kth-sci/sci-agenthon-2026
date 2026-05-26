@@ -211,8 +211,9 @@
         <a href="#pocock-skills" class="toc-link">7. Matt Pocock's Skills</a>
         <a href="#knowledge-base" class="toc-link">8. The Wiki Pattern</a>
         <a href="#agent-native" class="toc-link">9. Agent-Native Design</a>
-        <a href="#security" class="toc-link">10. Security: Lethal Trifecta</a>
-        <a href="#agentic-lessons" class="toc-link">11. Agentic Coding Lessons</a>
+        <a href="#trust-sandbox" class="toc-link">10. Trust &amp; Sandboxing</a>
+        <a href="#security" class="toc-link">11. Security: Lethal Trifecta</a>
+        <a href="#agentic-lessons" class="toc-link">12. Agentic Coding Lessons</a>
         <a href="#html-output" class="toc-link">12. HTML as Output</a>
         <a href="#anthropic-blog" class="toc-link">13. Anthropic Blog</a>
         <a href="#quotes" class="toc-link">Key Quotes</a>
@@ -780,7 +781,113 @@
     </section>
 
     <!-- ─────────────────────────────────────
-         10. SECURITY: THE LETHAL TRIFECTA
+         10. TRUST ESCALATION & SANDBOXING
+    ───────────────────────────────────── -->
+    <section id="trust-sandbox" class="section-anchor mb-14">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-research">Vercel · Anthropic · 2025–2026 trend</span>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-900 mb-2">10. Trust Escalation &amp; Sandboxing</h2>
+      <p class="text-slate-600 leading-relaxed mb-2">The field is moving in one consistent direction: <strong>give agents more autonomy, protect that autonomy with hard system boundaries rather than permission prompts.</strong> The design question is shifting from "what tools should the agent have?" to "what system-level boundaries keep the agent safe to run freely?"</p>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3">Fewer tools, better agents</h3>
+      <p class="text-slate-600 leading-relaxed mb-4">Vercel's v0 team built a text-to-SQL agent with 15+ specialised tools — schema lookup, query validation, error recovery, intent clarification, join-path finding. Then they removed 80% of them, leaving only bash and SQL execution. <a href="https://vercel.com/blog/we-removed-80-percent-of-our-agents-tools" target="_blank" class="text-accent hover:underline">Results [Vercel, 2025]</a>:</p>
+
+      <div class="grid md:grid-cols-4 gap-4 mb-5">
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center">
+          <div class="text-2xl font-extrabold text-emerald-700 mb-1">3.5×</div>
+          <div class="text-xs text-emerald-600 font-mono uppercase tracking-wide">Faster</div>
+          <div class="text-xs text-slate-500 mt-1">274s → 77s avg</div>
+        </div>
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center">
+          <div class="text-2xl font-extrabold text-emerald-700 mb-1">100%</div>
+          <div class="text-xs text-emerald-600 font-mono uppercase tracking-wide">Success rate</div>
+          <div class="text-xs text-slate-500 mt-1">was 80%</div>
+        </div>
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center">
+          <div class="text-2xl font-extrabold text-emerald-700 mb-1">37%</div>
+          <div class="text-xs text-emerald-600 font-mono uppercase tracking-wide">Fewer tokens</div>
+          <div class="text-xs text-slate-500 mt-1">102k → 61k</div>
+        </div>
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center">
+          <div class="text-2xl font-extrabold text-emerald-700 mb-1">42%</div>
+          <div class="text-xs text-emerald-600 font-mono uppercase tracking-wide">Fewer steps</div>
+          <div class="text-xs text-slate-500 mt-1">12 → 7 avg</div>
+        </div>
+      </div>
+
+      <div class="quote">
+        <p>We were doing the model's thinking for it. Each tool was a constraint we built because we didn't trust the model to reason. With Claude Opus 4.5, those guardrails became counterproductive.</p>
+        <cite>— Vercel engineering team, "We removed 80% of our agent's tools" (2025)</cite>
+      </div>
+
+      <div class="bg-indigo-50 border-l-4 border-accent rounded-r-lg p-4 mb-5 text-sm text-slate-700">
+        <strong>The prerequisite:</strong> this only works when you have excellent underlying data/documentation. Vercel's semantic layer had well-organized YAML with clear definitions and consistent naming — the agent could reason freely because the foundation was clean. Garbage-in still means garbage-out.
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3">The new design principle</h3>
+      <div class="space-y-3 mb-6">
+        <div class="pattern-box" style="border-left-color:#6366f1">
+          <h4 class="text-accent">Start with model + filesystem + goal</h4>
+          <p>The minimal viable agent: one capable model, access to a filesystem it can read and write, and a clear objective. Add tools only when the agent demonstrably cannot do something it needs to do. This is the opposite of the old approach (enumerate every capability upfront).</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#10b981">
+          <h4 style="color:#059669">Design for tomorrow's models</h4>
+          <p>Tool scaffolding built for today's limitations becomes dead weight as models improve. The Vercel team's principle: "build for the model you expect to have, not the one you have today." Reasoning capabilities are improving faster than tool design patterns are updating.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#f59e0b">
+          <h4 style="color:#d97706">More autonomy → more trust → better sandboxing</h4>
+          <p>Giving agents full filesystem and terminal access is the right direction — but it requires shifting from permission prompts (which cause fatigue) to hard system-level boundaries that are always enforced regardless of what the agent decides.</p>
+        </div>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3">Sandboxing: the security layer that enables autonomy</h3>
+      <p class="text-slate-600 text-sm leading-relaxed mb-4">Claude Code's sandboxing reduced permission prompts by 84% in internal testing — not by granting more permissions, but by defining boundaries the agent can operate freely within. The two non-negotiable boundaries:</p>
+
+      <div class="grid md:grid-cols-2 gap-4 mb-5">
+        <div class="insight-card border-t-4 border-t-accent">
+          <h4>Filesystem isolation</h4>
+          <p>Agent can only access specific directories. Built on Linux <code class="font-mono text-xs">bubblewrap</code> / macOS <code class="font-mono text-xs">seatbelt</code>. Prevents modification of system files, SSH keys, config outside the working directory — even if the agent is compromised via prompt injection.</p>
+        </div>
+        <div class="insight-card border-t-4" style="border-top-color:#10b981">
+          <h4>Network isolation</h4>
+          <p>All connections routed through a proxy enforcing domain allowlists. Blocks exfiltration of credentials, prevents malware downloads, stops unauthorised outbound API calls. Must be paired with filesystem isolation — either alone leaves a gap.</p>
+        </div>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3">Sandbox technology landscape (2026)</h3>
+      <div class="space-y-2 mb-5">
+        <div class="pattern-box" style="border-left-color:#6366f1">
+          <h4 class="text-accent">Firecracker microVMs — strongest isolation</h4>
+          <p>Hardware-enforced isolation with dedicated kernels per workload. ~125ms boot time, under 5 MiB overhead per instance. Used by AWS Lambda, E2B, Vercel Sandbox. Best for: untrusted code, multi-tenant agent platforms, regulated environments.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#2563eb">
+          <h4 style="color:#2563eb">gVisor — syscall interception</h4>
+          <p>Intercepts system calls before they reach the host kernel. Stronger than Docker, lighter than full VMs. 10–30% I/O overhead. Best for: compute-heavy agents where you control the code but want stronger-than-container isolation.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#10b981">
+          <h4 style="color:#059669">OS-level primitives (bubblewrap / seatbelt)</h4>
+          <p>What Claude Code uses by default: lightweight, low-overhead, good for trusted in-house agents running known code on known machines. Provides meaningful protection against accidents without the operational complexity of VMs.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#f59e0b">
+          <h4 style="color:#d97706">Managed platforms (E2B, Vercel Sandbox)</h4>
+          <p>Production-ready microVM infrastructure with sub-second provisioning, pre-built agent runtimes, and billing per second. Right choice for building agent products that run user-provided or untrusted code at scale.</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 text-sm">
+        <h4 class="font-bold text-slate-900 mb-3">Four mandatory boundaries (converged guidance from Microsoft, NVIDIA, Anthropic)</h4>
+        <div class="grid md:grid-cols-2 gap-3">
+          <div class="flex gap-2"><span class="font-mono text-xs text-accent font-bold mt-0.5 shrink-0">①</span><span class="text-slate-600"><strong class="text-slate-800">Network egress</strong> — block all outbound by default, allowlist only required endpoints. No DNS wildcards.</span></div>
+          <div class="flex gap-2"><span class="font-mono text-xs text-accent font-bold mt-0.5 shrink-0">②</span><span class="text-slate-600"><strong class="text-slate-800">Filesystem bounds</strong> — agent reads/writes only its working directory. System files, home directory, and env vars are outside scope.</span></div>
+          <div class="flex gap-2"><span class="font-mono text-xs text-accent font-bold mt-0.5 shrink-0">③</span><span class="text-slate-600"><strong class="text-slate-800">Secrets scoping</strong> — short-lived, task-scoped credentials only. Never pass long-lived API keys into agent context.</span></div>
+          <div class="flex gap-2"><span class="font-mono text-xs text-accent font-bold mt-0.5 shrink-0">④</span><span class="text-slate-600"><strong class="text-slate-800">Audit trail</strong> — immutable log of all agent actions. Permission denials are strong compromise indicators — alert on them.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         11. SECURITY: THE LETHAL TRIFECTA
     ───────────────────────────────────── -->
     <section id="security" class="section-anchor mb-14">
       <div class="flex items-center gap-2 mb-1">
@@ -1171,6 +1278,9 @@
         <div class="ref-entry"><span class="ref-num">[27]</span><span>Willison, S. (2025, Mar). Here's how I use LLMs to help me write code. <a href="https://simonwillison.net/2025/Mar/11/using-llms-for-code/" target="_blank" class="text-accent hover:underline">simonwillison.net</a></span></div>
         <div class="ref-entry"><span class="ref-num">[28]</span><span>Breunig, D. (2026, May). 10 lessons for agentic coding. <a href="https://www.dbreunig.com/2026/05/04/10-lessons-for-agentic-coding.html" target="_blank" class="text-accent hover:underline">dbreunig.com</a></span></div>
         <div class="ref-entry"><span class="ref-num">[29]</span><span>Zhang, C. (2025). MCP is being abandoned: how fast can a standard die? <em>dev.to</em>. <a href="https://dev.to/chen_zhang_bac430bc7f6b95/mcp-is-being-abandoned-how-fast-can-a-standard-die-2f7c" target="_blank" class="text-accent hover:underline">dev.to</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[30]</span><span>Vercel Engineering. (2025). We removed 80% of our agent's tools. <em>Vercel Blog</em>. <a href="https://vercel.com/blog/we-removed-80-percent-of-our-agents-tools" target="_blank" class="text-accent hover:underline">vercel.com/blog</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[31]</span><span>Anthropic. (2025, Oct). Beyond permission prompts: making Claude Code more secure and autonomous. <em>Anthropic Engineering Blog</em>. <a href="https://www.anthropic.com/engineering/claude-code-sandboxing" target="_blank" class="text-accent hover:underline">anthropic.com/engineering/claude-code-sandboxing</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[32]</span><span>Northflank Engineering. (2026). How to sandbox AI agents in 2026: Firecracker, gVisor and isolation strategies. <a href="https://northflank.com/blog/how-to-sandbox-ai-agents" target="_blank" class="text-accent hover:underline">northflank.com/blog</a></span></div>
       </div>
 
       <h3 class="text-base font-bold text-slate-700 uppercase tracking-wide mb-3" style="margin-top:2rem!important">Additional resources</h3>
