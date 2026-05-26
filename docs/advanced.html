@@ -3,28 +3,140 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Advanced Agent Skills · SCI Agentathon 2026</title>
+<title>Further Reading on AI Agents · SCI Agentathon 2026</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="assets/style.css">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
-  .quote { border-left: 3px solid #6366f1; padding: 1rem 1.5rem; background: #f8fafc; margin: 1.5rem 0; }
-  .quote p { font-size: 1.05rem; line-height: 1.7; color: #334155; font-style: italic; margin: 0; }
-  .quote cite { display: block; margin-top: 0.5rem; font-size: 0.78rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; font-style: normal; }
-  .insight-card { border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem 1.5rem; background: white; }
-  .insight-card h4 { font-size: 0.9rem; font-weight: 700; color: #0f172a; margin-bottom: 0.4rem; }
-  .insight-card p { font-size: 0.85rem; line-height: 1.6; color: #475569; margin: 0; }
-  .pattern-box { border-left: 3px solid; padding: 1rem 1.25rem; margin-bottom: 0.75rem; background: #f8fafc; }
-  .pattern-box h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.25rem; }
-  .pattern-box p { font-size: 0.83rem; line-height: 1.6; color: #475569; margin: 0; }
-  .tag-karpathy { background: #fef3c7; color: #92400e; }
-  .tag-anthropic { background: #ede9fe; color: #5b21b6; }
-  .tag-pocock { background: #dcfce7; color: #166534; }
-  .tag-research { background: #fee2e2; color: #991b1b; }
-  .section-anchor { scroll-margin-top: 4rem; }
-  .toc-link { display: block; padding: 0.3rem 0; font-size: 0.85rem; color: #64748b; border-left: 2px solid #e2e8f0; padding-left: 0.75rem; transition: all 0.15s; }
-  .toc-link:hover { color: #6366f1; border-left-color: #6366f1; }
-  .mono { font-family: 'JetBrains Mono', monospace; }
+/* ── Quotes ────────────────────────────────────── */
+.quote {
+  border-left: 3px solid #6366f1;
+  padding: 1.5rem 2rem;
+  background: #f8fafc;
+  margin: 2.5rem 0;
+  border-radius: 0 10px 10px 0;
+}
+.quote p {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: #334155;
+  font-style: italic;
+  margin: 0;
+}
+.quote cite {
+  display: block;
+  margin-top: 0.875rem;
+  font-size: 0.78rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: #94a3b8;
+  font-style: normal;
+  letter-spacing: 0.02em;
+}
+
+/* ── Cards ─────────────────────────────────────── */
+.insight-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 1.5rem 1.75rem;
+  background: white;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+.insight-card:hover { box-shadow: 0 4px 16px rgba(99,102,241,0.08); transform: translateY(-1px); }
+.insight-card h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.6rem;
+  line-height: 1.45;
+}
+.insight-card p {
+  font-size: 0.875rem;
+  line-height: 1.75;
+  color: #4b5563;
+  margin: 0;
+}
+
+/* ── Pattern boxes ──────────────────────────────── */
+.pattern-box {
+  border-left: 3px solid;
+  padding: 1.25rem 1.625rem;
+  margin-bottom: 1rem;
+  background: #f8fafc;
+  border-radius: 0 10px 10px 0;
+}
+.pattern-box h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+.pattern-box p {
+  font-size: 0.855rem;
+  line-height: 1.75;
+  color: #4b5563;
+  margin: 0;
+}
+
+/* ── Section layout ─────────────────────────────── */
+.section-anchor {
+  scroll-margin-top: 4rem;
+  margin-bottom: 5rem;
+  padding-top: 0.5rem;
+}
+.section-anchor > h2 {
+  padding-bottom: 0.875rem;
+  border-bottom: 2px solid #f1f5f9;
+  margin-bottom: 2rem !important;
+}
+.section-anchor h3 {
+  margin-top: 2.5rem !important;
+  margin-bottom: 1.1rem !important;
+}
+/* Larger gaps for all grids inside sections */
+.section-anchor .grid { gap: 1.5rem; }
+.section-anchor .space-y-2 > * + * { margin-top: 0.875rem !important; }
+.section-anchor .space-y-3 > * + * { margin-top: 1.125rem !important; }
+
+/* ── Source tags ────────────────────────────────── */
+.tag-karpathy { background: #fef3c7; color: #92400e; }
+.tag-anthropic { background: #ede9fe; color: #5b21b6; }
+.tag-pocock    { background: #dcfce7; color: #166534; }
+.tag-research  { background: #fee2e2; color: #991b1b; }
+
+/* ── TOC ────────────────────────────────────────── */
+.toc-link {
+  display: block;
+  padding: 0.42rem 0 0.42rem 0.875rem;
+  font-size: 0.82rem;
+  color: #64748b;
+  border-left: 2px solid #e2e8f0;
+  transition: all 0.15s;
+  line-height: 1.5;
+}
+.toc-link:hover { color: #6366f1; border-left-color: #6366f1; }
+
+/* ── References list ────────────────────────────── */
+.ref-entry {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.855rem;
+  line-height: 1.75;
+  color: #374151;
+}
+.ref-entry:last-child { border-bottom: none; }
+.ref-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: #6366f1;
+  font-weight: 700;
+  flex-shrink: 0;
+  padding-top: 0.1rem;
+  min-width: 2rem;
+}
+
+.mono { font-family: 'JetBrains Mono', monospace; }
 </style>
 </head>
 <body class="font-sans text-slate-800 bg-white antialiased">
@@ -55,7 +167,7 @@
       <li><a href="index.html" class="block px-3 py-4 text-slate-300 hover:text-white border-b-2 border-transparent hover:border-accent/50 transition">Home</a></li>
       <li><a href="program.html" class="block px-3 py-4 text-slate-300 hover:text-white border-b-2 border-transparent hover:border-accent/50 transition">Program</a></li>
       <li><a href="track-c.html" class="block px-3 py-4 text-slate-300 hover:text-white border-b-2 border-transparent hover:border-accent/50 transition">Track C</a></li>
-      <li><a href="advanced.html" class="block px-3 py-4 text-white font-medium border-b-2 border-accent">Advanced</a></li>
+      <li><a href="advanced.html" class="block px-3 py-4 text-white font-medium border-b-2 border-accent">Further Reading</a></li>
     </ul>
   </div>
 </nav>
@@ -65,10 +177,10 @@
   <div class="max-w-4xl mx-auto">
     <div class="inline-flex items-center gap-2 bg-accent/20 text-accent-light text-xs font-semibold px-3 py-1 rounded-full mb-5 border border-accent/30">
       <span class="w-1.5 h-1.5 bg-accent-light rounded-full"></span>
-      Track C · Advanced Reference · Curated by Wei Ouyang
+      Track C · Further Reading · Curated by Wei Ouyang
     </div>
-    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">Advanced Skills with AI Agents</h1>
-    <p class="text-slate-300 text-lg max-w-2xl leading-relaxed mb-6">Mental models, design patterns, and hard-won insights from Karpathy, Anthropic, Matt Pocock, and research on how LLMs actually behave in production.</p>
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">Further Reading on AI Agents</h1>
+    <p class="text-slate-300 text-lg max-w-2xl leading-relaxed mb-6">A curated selection of mental models, design patterns, and engineering insights — drawn from Karpathy, Anthropic's engineering blog, Matt Pocock, Simon Willison, and empirical research on how LLMs behave in production.</p>
     <!-- Disclaimer -->
     <div class="bg-white/10 border border-white/20 rounded-xl p-5 max-w-2xl">
       <div class="flex items-start gap-3">
@@ -1006,10 +1118,62 @@
     </section>
 
     <!-- ─────────────────────────────────────
-         SOURCES
+         REFERENCES
     ───────────────────────────────────── -->
     <section id="sources" class="section-anchor mb-6">
-      <h2 class="text-xl font-bold text-slate-900 mb-4">Sources &amp; Further Reading</h2>
+      <h2 class="text-xl font-bold text-slate-900">References</h2>
+      <p class="text-slate-400 text-sm mb-6 mt-1">Ordered by theme. Links go to the original source. Where a formal paper exists, it is cited in addition to the online post.</p>
+
+      <h3 class="text-base font-bold text-slate-700 uppercase tracking-wide mb-3 mt-6" style="margin-top:1.5rem!important">Karpathy</h3>
+      <div>
+        <div class="ref-entry"><span class="ref-num">[1]</span><span>Karpathy, A. (2026, May). <em>Sequoia Ascent 2026</em> [conference talk]. Sequoia Capital AI Ascent. <a href="https://karpathy.bearblog.dev/sequoia-ascent-2026/" target="_blank" class="text-accent hover:underline">karpathy.bearblog.dev/sequoia-ascent-2026</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[2]</span><span>Karpathy, A. (2025). <em>Software is Changing (Again)</em> [talk transcript]. <a href="https://singjupost.com/andrej-karpathy-software-is-changing-again/" target="_blank" class="text-accent hover:underline">singjupost.com</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[3]</span><span>Chang, F. (2026). <em>andrej-karpathy-skills: Karpathy's CLAUDE.md guidelines as an installable skill</em> [Software]. GitHub. <a href="https://github.com/forrestchang/andrej-karpathy-skills" target="_blank" class="text-accent hover:underline">github.com/forrestchang/andrej-karpathy-skills</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[4]</span><span>Karpathy, A. (2026, Apr). <em>LLM Knowledge Bases</em> [blog post]. <a href="https://www.mindstudio.ai/blog/andrej-karpathy-llm-wiki-knowledge-base-claude-code" target="_blank" class="text-accent hover:underline">mindstudio.ai/blog</a></span></div>
+      </div>
+
+      <h3 class="text-base font-bold text-slate-700 uppercase tracking-wide mb-3" style="margin-top:2rem!important">Anthropic Engineering Blog</h3>
+      <div>
+        <div class="ref-entry"><span class="ref-num">[5]</span><span>Anthropic. (2024, Dec). Building effective agents. <em>Anthropic Engineering Blog</em>. <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" class="text-accent hover:underline">anthropic.com/engineering/building-effective-agents</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[6]</span><span>Anthropic. (2025, Sep). Effective context engineering for AI agents. <em>Anthropic Engineering Blog</em>. <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" class="text-accent hover:underline">anthropic.com/engineering/effective-context-engineering-for-ai-agents</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[7]</span><span>Anthropic. (2025, Apr). Claude Code: Best practices for agentic coding. <em>Anthropic Engineering Blog</em>. <a href="https://www.anthropic.com/engineering/claude-code-best-practices" target="_blank" class="text-accent hover:underline">anthropic.com/engineering/claude-code-best-practices</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[8]</span><span>Anthropic. (2025, Sep). Writing effective tools for agents — with agents. <em>Anthropic Engineering Blog</em>. <a href="https://www.anthropic.com/engineering/writing-tools-for-agents" target="_blank" class="text-accent hover:underline">anthropic.com/engineering/writing-tools-for-agents</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[9]</span><span>Anthropic. (2025, Mar). The "think" tool: enabling Claude to stop and think in complex tool use situations. <em>Anthropic Engineering Blog</em>. <a href="https://www.anthropic.com/engineering/claude-think-tool" target="_blank" class="text-accent hover:underline">anthropic.com/engineering/claude-think-tool</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[10]</span><span>Anthropic. (2025, Jun). How we built our multi-agent research system. <em>Anthropic Engineering Blog</em>. <a href="https://www.anthropic.com/engineering/multi-agent-research-system" target="_blank" class="text-accent hover:underline">anthropic.com/engineering/multi-agent-research-system</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[11]</span><span>Anthropic. (2025, Nov). Effective harnesses for long-running agents. <em>Anthropic Engineering Blog</em>. <a href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents" target="_blank" class="text-accent hover:underline">anthropic.com/engineering/effective-harnesses-for-long-running-agents</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[12]</span><span>Anthropic. (2026, Mar). Harness design for long-running application development. <em>Anthropic Engineering Blog</em>. <a href="https://www.anthropic.com/engineering/harness-design-long-running-apps" target="_blank" class="text-accent hover:underline">anthropic.com/engineering/harness-design-long-running-apps</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[13]</span><span>Anthropic. (2026, Feb). Building a C compiler with a team of parallel Claudes. <em>Anthropic Engineering Blog</em>. <a href="https://www.anthropic.com/engineering/building-c-compiler" target="_blank" class="text-accent hover:underline">anthropic.com/engineering/building-c-compiler</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[14]</span><span>Anthropic. (2026, Apr). Scaling managed agents: decoupling the brain from the hands. <em>Anthropic Engineering Blog</em>. <a href="https://www.anthropic.com/engineering/managed-agents" target="_blank" class="text-accent hover:underline">anthropic.com/engineering/managed-agents</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[15]</span><span>Anthropic. (2026, Jan). Demystifying evals for AI agents. <em>Anthropic Engineering Blog</em>. <a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents" target="_blank" class="text-accent hover:underline">anthropic.com/engineering/demystifying-evals-for-ai-agents</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[16]</span><span>Anthropic. (2026, Mar). Claude Code auto mode: a safer way to skip permissions. <em>Anthropic Engineering Blog</em>. <a href="https://www.anthropic.com/engineering/claude-code-auto-mode" target="_blank" class="text-accent hover:underline">anthropic.com/engineering/claude-code-auto-mode</a></span></div>
+      </div>
+
+      <h3 class="text-base font-bold text-slate-700 uppercase tracking-wide mb-3" style="margin-top:2rem!important">Context Rot &amp; Empirical Research</h3>
+      <div>
+        <div class="ref-entry"><span class="ref-num">[17]</span><span>Liu, N. F., Lin, K., Hewitt, J., Paranjape, A., Bevilacqua, M., Petroni, F., &amp; Liang, P. (2024). Lost in the middle: How language models use long contexts. <em>Transactions of the Association for Computational Linguistics</em>, 12, 157–173. <a href="https://doi.org/10.1162/tacl_a_00638" target="_blank" class="text-accent hover:underline">doi.org/10.1162/tacl_a_00638</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[18]</span><span>Chroma Research Team. (2025). <em>Context rot: How LLM performance degrades with longer inputs</em>. <a href="https://www.trychroma.com/research/context-rot" target="_blank" class="text-accent hover:underline">trychroma.com/research/context-rot</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[19]</span><span>Morph Team. (2025). <em>Context rot in agentic coding: The 35-minute wall</em>. <a href="https://www.morphllm.com/context-rot" target="_blank" class="text-accent hover:underline">morphllm.com/context-rot</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[20]</span><span>Jimenez, C. E., Yang, J., Wettig, A., Yao, S., Pei, K., Press, O., &amp; Narasimhan, K. (2024). SWE-bench: Can language models resolve real-world GitHub issues? <em>ICLR 2024</em>. <a href="https://arxiv.org/abs/2310.06770" target="_blank" class="text-accent hover:underline">arxiv.org/abs/2310.06770</a></span></div>
+      </div>
+
+      <h3 class="text-base font-bold text-slate-700 uppercase tracking-wide mb-3" style="margin-top:2rem!important">Skills, Tools &amp; Practice</h3>
+      <div>
+        <div class="ref-entry"><span class="ref-num">[21]</span><span>Pocock, M. (2025). <em>mattpocock/skills: Skills for real engineers, straight from my .claude directory</em> [Software]. GitHub. <a href="https://github.com/mattpocock/skills" target="_blank" class="text-accent hover:underline">github.com/mattpocock/skills</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[22]</span><span>Pocock, M. (2025). <em>grill-with-docs</em> [Skill documentation]. AI Hero. <a href="https://www.aihero.dev/grill-with-docs" target="_blank" class="text-accent hover:underline">aihero.dev/grill-with-docs</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[23]</span><span>Anthropic. (2025). <em>Agent skills best practices</em> [Documentation]. <a href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices" target="_blank" class="text-accent hover:underline">platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[24]</span><span>Shihipar, T. (2026, May). The unreasonable effectiveness of HTML [post on X/Twitter]. Discussed in Willison, S. (2026, May 8). <em>Using Claude Code: the unreasonable effectiveness of HTML</em>. <a href="https://simonwillison.net/2026/May/8/unreasonable-effectiveness-of-html/" target="_blank" class="text-accent hover:underline">simonwillison.net</a></span></div>
+      </div>
+
+      <h3 class="text-base font-bold text-slate-700 uppercase tracking-wide mb-3" style="margin-top:2rem!important">Security &amp; Agentic Engineering</h3>
+      <div>
+        <div class="ref-entry"><span class="ref-num">[25]</span><span>Willison, S. (2025). The lethal trifecta for AI agents. <em>simonw Substack</em>. <a href="https://simonw.substack.com/p/the-lethal-trifecta-for-ai-agents" target="_blank" class="text-accent hover:underline">simonw.substack.com</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[26]</span><span>Willison, S. (2025, Apr). Model Context Protocol has prompt injection security problems. <a href="https://simonwillison.net/2025/Apr/9/mcp-prompt-injection/" target="_blank" class="text-accent hover:underline">simonwillison.net</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[27]</span><span>Willison, S. (2025, Mar). Here's how I use LLMs to help me write code. <a href="https://simonwillison.net/2025/Mar/11/using-llms-for-code/" target="_blank" class="text-accent hover:underline">simonwillison.net</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[28]</span><span>Breunig, D. (2026, May). 10 lessons for agentic coding. <a href="https://www.dbreunig.com/2026/05/04/10-lessons-for-agentic-coding.html" target="_blank" class="text-accent hover:underline">dbreunig.com</a></span></div>
+        <div class="ref-entry"><span class="ref-num">[29]</span><span>Zhang, C. (2025). MCP is being abandoned: how fast can a standard die? <em>dev.to</em>. <a href="https://dev.to/chen_zhang_bac430bc7f6b95/mcp-is-being-abandoned-how-fast-can-a-standard-die-2f7c" target="_blank" class="text-accent hover:underline">dev.to</a></span></div>
+      </div>
+
+      <h3 class="text-base font-bold text-slate-700 uppercase tracking-wide mb-3" style="margin-top:2rem!important">Additional resources</h3>
       <div class="grid md:grid-cols-2 gap-3 text-sm">
         <a href="https://karpathy.bearblog.dev/sequoia-ascent-2026/" target="_blank" class="insight-card hover:border-accent transition block no-underline">
           <h4>Karpathy — Sequoia Ascent 2026</h4>
@@ -1090,8 +1254,8 @@
 </div>
 
 <footer class="bg-slate-900 text-slate-400 text-center py-8 px-4 mt-8 text-sm">
-  <p>Track C · Advanced Reference · SCI Agentathon 2026 · KTH School of Engineering Sciences</p>
-  <p class="mt-1">Compiled by <strong class="text-slate-200">Wei Ouyang</strong> from Karpathy, Anthropic, Pocock, Willison, and primary research &bull; May 2026</p>
+  <p>Track C · Further Reading · SCI Agentathon 2026 · KTH School of Engineering Sciences</p>
+  <p class="mt-1">Compiled by <strong class="text-slate-200">Wei Ouyang</strong> — a personal, opinionated selection from Karpathy, Anthropic, Pocock, Willison, and primary research &bull; May 2026</p>
 </footer>
 
 <script src="assets/main.js"></script>
