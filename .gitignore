@@ -1,0 +1,25 @@
+# Persistent browser profile for KTH SSO.
+# Contains live cookies and possibly bearer tokens — never commit.
+browser-profile/
+
+# Provider API keys, never commit
+secrets.env
+
+# Bearer tokens captured from browser sessions
+*.bearer.txt
+.findity-bearer.txt
+
+# Chrome agent working directory
+chrome-agent/
+
+# Cookie files
+.cookies-*
+
+# HAR captures (may contain credentials in headers)
+*.har
+
+# Python bytecode
+__pycache__/
+
+# macOS metadata
+.DS_Store
