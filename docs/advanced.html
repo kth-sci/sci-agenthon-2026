@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Agent Skills · SCI Agentathon 2026</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<style>
+  .quote { border-left: 3px solid #6366f1; padding: 1rem 1.5rem; background: #f8fafc; margin: 1.5rem 0; }
+  .quote p { font-size: 1.05rem; line-height: 1.7; color: #334155; font-style: italic; margin: 0; }
+  .quote cite { display: block; margin-top: 0.5rem; font-size: 0.78rem; font-family: 'JetBrains Mono', monospace; color: #94a3b8; font-style: normal; }
+  .insight-card { border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem 1.5rem; background: white; }
+  .insight-card h4 { font-size: 0.9rem; font-weight: 700; color: #0f172a; margin-bottom: 0.4rem; }
+  .insight-card p { font-size: 0.85rem; line-height: 1.6; color: #475569; margin: 0; }
+  .pattern-box { border-left: 3px solid; padding: 1rem 1.25rem; margin-bottom: 0.75rem; background: #f8fafc; }
+  .pattern-box h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .pattern-box p { font-size: 0.83rem; line-height: 1.6; color: #475569; margin: 0; }
+  .tag-karpathy { background: #fef3c7; color: #92400e; }
+  .tag-anthropic { background: #ede9fe; color: #5b21b6; }
+  .tag-pocock { background: #dcfce7; color: #166534; }
+  .tag-research { background: #fee2e2; color: #991b1b; }
+  .section-anchor { scroll-margin-top: 4rem; }
+  .toc-link { display: block; padding: 0.3rem 0; font-size: 0.85rem; color: #64748b; border-left: 2px solid #e2e8f0; padding-left: 0.75rem; transition: all 0.15s; }
+  .toc-link:hover { color: #6366f1; border-left-color: #6366f1; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body class="font-sans text-slate-800 bg-white antialiased">
+
+<!-- Navigation -->
+<nav class="bg-slate-900 sticky top-0 z-50 shadow-lg">
+  <div class="max-w-6xl mx-auto px-4 flex items-center justify-between h-14">
+    <a href="index.html" class="flex items-center gap-2.5 text-white font-bold text-sm tracking-tight">
+      <svg width="32" height="32" viewBox="0 0 64 64" class="flex-shrink-0">
+        <ellipse cx="32" cy="32" rx="28" ry="12" fill="none" stroke="#6366f1" stroke-width="1.2" opacity="0.5" transform="rotate(-30 32 32)"/>
+        <ellipse cx="32" cy="32" rx="28" ry="12" fill="none" stroke="#818cf8" stroke-width="1.2" opacity="0.4" transform="rotate(30 32 32)"/>
+        <ellipse cx="32" cy="32" rx="28" ry="12" fill="none" stroke="#6366f1" stroke-width="1.2" opacity="0.3" transform="rotate(90 32 32)"/>
+        <circle cx="32" cy="16" r="4" fill="#818cf8"/>
+        <circle cx="18" cy="40" r="4" fill="#818cf8"/>
+        <circle cx="46" cy="40" r="4" fill="#818cf8"/>
+        <line x1="32" y1="16" x2="18" y2="40" stroke="#6366f1" stroke-width="1.5" opacity="0.6"/>
+        <line x1="32" y1="16" x2="46" y2="40" stroke="#6366f1" stroke-width="1.5" opacity="0.6"/>
+        <line x1="18" y1="40" x2="46" y2="40" stroke="#818cf8" stroke-width="1.5" opacity="0.4"/>
+        <circle cx="32" cy="32" r="7" fill="#6366f1"/>
+        <text x="32" y="35.5" text-anchor="middle" fill="white" font-family="Inter" font-size="8" font-weight="800">AI</text>
+      </svg>
+      SCI Agentathon 2026
+    </a>
+    <button id="nav-toggle" class="md:hidden text-white">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+    </button>
+    <ul id="nav-menu" class="hidden md:flex items-center gap-0 text-sm">
+      <li><a href="index.html" class="block px-3 py-4 text-slate-300 hover:text-white border-b-2 border-transparent hover:border-accent/50 transition">Home</a></li>
+      <li><a href="program.html" class="block px-3 py-4 text-slate-300 hover:text-white border-b-2 border-transparent hover:border-accent/50 transition">Program</a></li>
+      <li><a href="track-c.html" class="block px-3 py-4 text-slate-300 hover:text-white border-b-2 border-transparent hover:border-accent/50 transition">Track C</a></li>
+      <li><a href="advanced.html" class="block px-3 py-4 text-white font-medium border-b-2 border-accent">Advanced</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-800 text-white py-14 px-6">
+  <div class="max-w-4xl mx-auto">
+    <div class="inline-flex items-center gap-2 bg-accent/20 text-accent-light text-xs font-semibold px-3 py-1 rounded-full mb-5 border border-accent/30">
+      <span class="w-1.5 h-1.5 bg-accent-light rounded-full"></span>
+      Track C · Advanced Reference
+    </div>
+    <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">Advanced Skills with AI Agents</h1>
+    <p class="text-slate-300 text-lg max-w-2xl leading-relaxed">Mental models, design patterns, and hard-won insights from Karpathy, Anthropic, Matt Pocock, and research on how LLMs actually behave in production.</p>
+  </div>
+</header>
+
+<div class="max-w-5xl mx-auto px-4 py-12 flex gap-10">
+
+  <!-- Table of Contents (desktop sidebar) -->
+  <aside class="hidden lg:block w-56 flex-shrink-0">
+    <div class="sticky top-20">
+      <div class="text-xs font-mono uppercase tracking-widest text-slate-400 mb-3">On this page</div>
+      <nav class="flex flex-col gap-0.5">
+        <a href="#mental-models" class="toc-link">1. Mental Models</a>
+        <a href="#llm-psychology" class="toc-link">&nbsp;&nbsp;LLM Psychology</a>
+        <a href="#context-rot" class="toc-link">2. Context is Your Lever</a>
+        <a href="#agent-patterns" class="toc-link">3. Agent Patterns</a>
+        <a href="#skills-vs-mcp" class="toc-link">4. Skills vs MCP</a>
+        <a href="#human-role" class="toc-link">5. The Human Role</a>
+        <a href="#karpathy-rules" class="toc-link">6. Karpathy's 4 Rules</a>
+        <a href="#pocock-skills" class="toc-link">7. Matt Pocock's Skills</a>
+        <a href="#knowledge-base" class="toc-link">8. The Wiki Pattern</a>
+        <a href="#agent-native" class="toc-link">9. Agent-Native Design</a>
+        <a href="#sources" class="toc-link">Sources</a>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="min-w-0 flex-1">
+
+    <!-- ─────────────────────────────────────
+         1. MENTAL MODELS
+    ───────────────────────────────────── -->
+    <section id="mental-models" class="section-anchor mb-14">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-karpathy">Karpathy · Sequoia Ascent 2026</span>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-900 mb-4">1. Three Mental Models for the New Era</h2>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-2 mt-6">Software 1.0 → 2.0 → 3.0</h3>
+      <p class="text-slate-600 leading-relaxed mb-4">Karpathy frames the current moment as a third software paradigm. In Software 1.0, humans write explicit rules as code. In Software 2.0, humans curate datasets and train neural networks — the program is learned into the weights. In Software 3.0, humans write prompts. The LLM is the interpreter; <strong>the context window is your primary lever.</strong></p>
+      <div class="bg-indigo-50 border-l-4 border-accent rounded-r-lg p-4 mb-6 text-sm text-slate-700">
+        <strong>The shift in mindset:</strong> What is the piece of text to copy-paste to your agent? That's the programming paradigm now. The agent has its own intelligence — you don't have to precisely spell out every detail. It looks at your environment and follows intelligent instructions.
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-4 mb-6">
+        <div class="insight-card border-t-4 border-t-kth-light">
+          <h4>Software 1.0</h4>
+          <p>Humans write explicit rules in code. Works well for things you can fully specify. Deterministic.</p>
+        </div>
+        <div class="insight-card border-t-4" style="border-top-color:#f97316">
+          <h4>Software 2.0</h4>
+          <p>Humans curate datasets and objectives. Neural networks learn the program. Training = programming.</p>
+        </div>
+        <div class="insight-card border-t-4 border-t-accent">
+          <h4>Software 3.0</h4>
+          <p>Humans write prompts, context, Skills, examples, memory. The LLM interprets. <em>Context is code.</em></p>
+        </div>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-2 mt-8">Jagged Intelligence &amp; Verifiability</h3>
+      <p class="text-slate-600 leading-relaxed mb-4">LLMs have <strong>jagged intelligence</strong> — they spike in capability wherever tasks are verifiable (testable, rewardable), heavily trained by labs, and economically valuable enough for labs to prioritize. They stagnate — sometimes bizarrely — outside those circuits.</p>
+
+      <div class="quote">
+        <p>How is it possible that Opus 4.7 will simultaneously refactor a 100,000-line codebase or find zero-day vulnerabilities, and yet tells me to walk to the car wash 50 meters away? This is insane. It means you need to actually be in the loop and treat these as tools.</p>
+        <cite>— Andrej Karpathy, Sequoia Ascent 2026</cite>
+      </div>
+
+      <p class="text-slate-600 leading-relaxed mb-4"><strong>The practical question to ask constantly:</strong> "Am I on the model's rails?" — are you operating in a verifiable, heavily-trained domain (code, math, structured text) or drifting into circuits where performance is unpredictable?</p>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-2 mt-8">LLMs as Operating Systems</h3>
+      <p class="text-slate-600 leading-relaxed mb-4">Karpathy argues LLMs are better understood as a new kind of operating system than as a utility like electricity. The analogy: <strong>context window = working memory, LLM = CPU orchestrating resources</strong>, tool use = expanding OS capabilities. Closed-source providers parallel Windows/macOS; open-source models parallel Linux.</p>
+      <p class="text-slate-600 leading-relaxed mb-4">Practical implication: just as software had to be rewritten when operating systems changed, <strong>all infrastructure must now be redesigned for agents as primary users</strong> — docs, APIs, logging, permissioning, setup flows.</p>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-2 mt-8">LLM Psychology: What You Must Never Forget</h3>
+      <p class="text-slate-600 leading-relaxed mb-3">From Karpathy's "Software is Changing Again" talk — a practical mental model for working with LLMs without being caught off-guard:</p>
+      <div class="grid md:grid-cols-2 gap-3 mb-5">
+        <div class="insight-card border-t-4" style="border-top-color:#10b981">
+          <h4>Superpowers</h4>
+          <p>Encyclopedic memory surpassing individual humans. Pattern recognition across domains. Knowledge synthesis from internet-scale training. Remarkably good at verifiable, heavily-trained tasks.</p>
+        </div>
+        <div class="insight-card border-t-4 border-t-red-400">
+          <h4>Cognitive deficits</h4>
+          <p><strong>Hallucination</strong> — fabricates information confidently. <strong>Jagged intelligence</strong> — superhuman in some domains, comically wrong in others. <strong>Anterograde amnesia</strong> — cannot learn from interactions; context is wiped between sessions. <strong>Gullibility</strong> — susceptible to prompt injection.</p>
+        </div>
+      </div>
+      <div class="quote">
+        <p>Memento and 50 First Dates — protagonists with fixed memories and wiped context each morning. That's the LLM condition. It's a useful mental model for why you need CLAUDE.md, why you need Skills, and why you must stay in the loop.</p>
+        <cite>— Karpathy, "Software is Changing Again" (via Memento analogy)</cite>
+      </div>
+      <div class="bg-amber-50 border-l-4 border-amber-400 rounded-r-lg p-4 mb-4 text-sm text-amber-900">
+        <strong>Partial autonomy beats full autonomy.</strong> Karpathy's lesson from self-driving cars: "I get concerned seeing '2025 is the year of agents.' This is the <em>decade</em> of agents." Build products that put agents on an autonomy slider — from tab completion to full autonomy — and let users control delegation. Resist flashy demos of full autonomy; build the fast human-AI verification loop instead.
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-2 mt-8">Animals vs. Ghosts</h3>
+      <p class="text-slate-600 leading-relaxed mb-2">Karpathy argues we are <em>not</em> building animals — LLMs lack biological drives, embodiment, or intrinsic motivation. We are summoning <em>ghosts</em>: statistical simulations shaped by pretraining, post-training RL, and economic incentives. Practical implications:</p>
+      <ul class="list-disc pl-5 text-slate-600 text-sm space-y-1.5 mb-4">
+        <li>Don't anthropomorphize. Yelling at them doesn't make them work better or worse.</li>
+        <li>Treat as empirical tools. Learn where they reliably work and where they don't in your domain.</li>
+        <li>They are artifacts of training choices — their capabilities reflect what labs prioritized and rewarded.</li>
+        <li>Neither dismiss nor blindly trust. Stay in the loop on anything critical.</li>
+      </ul>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         2. CONTEXT ROT
+    ───────────────────────────────────── -->
+    <section id="context-rot" class="section-anchor mb-14">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-research">Research · Chroma · 18 LLMs tested</span>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-900 mb-4">2. Context is Your Lever — But It Degrades</h2>
+
+      <p class="text-slate-600 leading-relaxed mb-4">Context engineering — deliberately shaping what's in the context window — is the core skill of working with AI agents. But research shows performance grows <strong>increasingly unreliable as input length grows</strong>, even on intentionally simple tasks. This is "context rot."</p>
+
+      <div class="grid md:grid-cols-2 gap-4 mb-6">
+        <div class="bg-red-50 border border-red-200 rounded-xl p-4">
+          <h4 class="font-bold text-red-800 mb-2 text-sm">What Context Rot Does</h4>
+          <ul class="text-red-700 text-sm space-y-1 list-disc pl-4">
+            <li>Performance degrades non-uniformly — some distractors are far more disruptive than others</li>
+            <li>Tool selection accuracy drops from 43% to below 14% as tool count increases</li>
+            <li>Models under-generate, hallucinate, or refuse tasks they'd handle easily in short contexts</li>
+            <li>Structured, coherent haystacks can <em>hurt</em> performance vs. shuffled content (attention anomaly)</li>
+          </ul>
+        </div>
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+          <h4 class="font-bold text-emerald-800 mb-2 text-sm">What Helps</h4>
+          <ul class="text-emerald-700 text-sm space-y-1 list-disc pl-4">
+            <li>Keep contexts short and focused. Start new sessions for unrelated tasks.</li>
+            <li>Use <code class="font-mono text-xs bg-white px-1 rounded">/clear</code> aggressively — don't let unrelated history accumulate</li>
+            <li>Progressive disclosure: only load what's needed, when it's needed (Skills pattern)</li>
+            <li>Put critical information <em>right before</em> where you need it — recency matters</li>
+            <li>Claude models show lowest hallucination rates and lean toward abstention when uncertain</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3">The Three Levers</h3>
+      <div class="space-y-2 mb-6">
+        <div class="pattern-box" style="border-left-color:#6366f1">
+          <h4 class="text-accent">CLAUDE.md — always loaded</h4>
+          <p>Loaded at the start of every session, consuming tokens every time. Use only for rules that apply to <em>every</em> task. Keep ruthlessly short (10–20 lines). Every token here is always spent.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#10b981">
+          <h4 style="color:#059669">@file — on demand</h4>
+          <p>Mention a file by name and Claude reads it. Zero cost until you reference it. Use for one-off context that only applies to the current task.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#f59e0b">
+          <h4 style="color:#d97706">Skills — triggered by description</h4>
+          <p>Only the name + description (~100 tokens total for all installed skills) is pre-loaded. Full body loads only when the skill is triggered. Reference files load only when needed. Zero cost until relevant — the most token-efficient way to give Claude deep domain knowledge.</p>
+        </div>
+      </div>
+
+      <div class="quote">
+        <p>The question is not: what prompt should I write? The question is: what should Claude know?</p>
+        <cite>— Claude Code documentation</cite>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         3. AGENT PATTERNS
+    ───────────────────────────────────── -->
+    <section id="agent-patterns" class="section-anchor mb-14">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-anthropic">Anthropic · Building Effective Agents</span>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-900 mb-2">3. Agent Design Patterns</h2>
+      <p class="text-slate-500 mb-6 text-sm">Anthropic's canonical guide distinguishes workflows (fixed code paths) from agents (LLM-directed). Start with the simplest pattern that works.</p>
+
+      <div class="bg-amber-50 border-l-4 border-amber-400 rounded-r-lg p-4 mb-6 text-sm text-amber-900">
+        <strong>Start simple first.</strong> Optimized single LLM calls, retrieval augmentation, and in-context examples often outperform elaborate agentic systems. Add complexity only when simpler approaches demonstrably underperform. Agentic systems impose latency and cost for every hop.
+      </div>
+
+      <div class="space-y-3 mb-6">
+        <div class="pattern-box" style="border-left-color:#2563eb">
+          <h4 style="color:#2563eb">① Prompt Chaining</h4>
+          <p>Sequential LLM calls where each processes the previous output. Best for: fixed, decomposable subtasks where accuracy gains justify latency. Example: draft outline → validate → write full document.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#7c3aed">
+          <h4 style="color:#7c3aed">② Routing</h4>
+          <p>Input classification directing to specialized downstream processes. Best for: distinct query types needing different handling. Example: route to Haiku for simple questions, Sonnet for complex reasoning.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#10b981">
+          <h4 style="color:#10b981">③ Parallelization</h4>
+          <p>Independent subtasks run simultaneously, or same task run multiple times for consensus. Best for: speed improvements or confidence through multiple perspectives. Example: 3 agents review code for vulnerabilities, flag issues if ≥2 agree.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#f59e0b">
+          <h4 style="color:#d97706">④ Orchestrator–Workers</h4>
+          <p>Central LLM dynamically decomposes tasks, delegates to specialist workers, synthesises results. Best for: complex tasks where subtask structure varies per input (unlike preset parallelization). Example: multi-file code changes where affected files depend on the task.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#ef4444">
+          <h4 style="color:#ef4444">⑤ Evaluator–Optimizer</h4>
+          <p>Generator LLM produces output; evaluator LLM provides feedback in iterative loops. Best for: tasks with clear evaluation criteria where iterative improvement measurably helps. Example: translation → critique → refine → repeat until quality threshold met.</p>
+        </div>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3">Tool Design: The Agent-Computer Interface (ACI)</h3>
+      <p class="text-slate-600 text-sm leading-relaxed mb-3">Anthropic found that in building their SWE-bench coding agent, <strong>they spent more time optimizing tools than optimizing the overall prompt.</strong> The lesson: tool design is as important as prompt design.</p>
+      <div class="grid md:grid-cols-2 gap-3 mb-4">
+        <div class="insight-card">
+          <h4>Use natural formats</h4>
+          <p>Match formats that naturally occur in internet text. Avoid unusual structures, unnecessary escaping, or formats the model would rarely have seen during training.</p>
+        </div>
+        <div class="insight-card">
+          <h4>Document like you're hiring a junior dev</h4>
+          <p>Include usage examples, edge cases, input format specs, and boundaries. Names should be obvious. Docstrings should be comprehensive.</p>
+        </div>
+        <div class="insight-card">
+          <h4>Poka-yoke your tools</h4>
+          <p>Redesign tool arguments to prevent common errors rather than handling them after. Example: require absolute paths to eliminate relative path confusion.</p>
+        </div>
+        <div class="insight-card">
+          <h4>Test with varied inputs</h4>
+          <p>Identify failure patterns through workbench testing. Every tool should be stress-tested the same way you'd test code for human users.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         4. SKILLS VS MCP
+    ───────────────────────────────────── -->
+    <section id="skills-vs-mcp" class="section-anchor mb-14">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-research">Context research · MCP critique · 2025</span>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-900 mb-4">4. Skills over MCP: Why and When</h2>
+
+      <p class="text-slate-600 leading-relaxed mb-4">MCP (Model Context Protocol) was positioned as the universal standard for agent tool integration. In practice, it has a serious context cost problem — and for most research and admin workflows, a combination of CLIs and Skills is far more efficient.</p>
+
+      <div class="bg-red-50 border-l-4 border-red-400 rounded-r-lg p-4 mb-5 text-sm text-red-900">
+        <strong>The MCP context cost:</strong> Three MCP servers (GitHub, Playwright, IDE integration) consumed <strong>143K tokens</strong> on a 200K-token model, leaving less than 30% usable space. Tool selection accuracy drops from 43% to below 14% as the number of tools increases. Every tool definition loads into context even if unused.
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-4 mb-6">
+        <div class="insight-card border-t-4 border-t-kth-light">
+          <h4>Use CLI tools</h4>
+          <p>For anything with a good CLI — <code class="font-mono text-xs">gh</code>, <code class="font-mono text-xs">curl</code>, <code class="font-mono text-xs">aws</code>, <code class="font-mono text-xs">gcloud</code>. Claude uses these natively. Already authenticated, no server process, zero context overhead until called. New tool? "Use foo --help to learn it, then do X."</p>
+        </div>
+        <div class="insight-card border-t-4 border-t-accent">
+          <h4>Use Skills</h4>
+          <p>For domain knowledge, workflows, and system procedures. Description pre-loads (~100 tokens), body loads only on trigger, reference files load only when needed. Actively guides workflows rather than passively waiting to be called.</p>
+        </div>
+        <div class="insight-card border-t-4" style="border-top-color:#7c3aed">
+          <h4>Use MCP when</h4>
+          <p>You need real-time bidirectional app control (Blender, Figma, live databases). Browser automation via Playwright MCP. Anything requiring two-way state sync that a CLI can't do. Enterprise governance scenarios.</p>
+        </div>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-2">MCP's architectural problems</h3>
+      <ul class="list-disc pl-5 text-slate-600 text-sm space-y-1.5 mb-4">
+        <li><strong>Flat tool design:</strong> MCP treats all tools as flat function signatures — no hierarchy, no subcommands, no workflow awareness. CLIs naturally express <code class="font-mono text-xs">git commit</code> vs <code class="font-mono text-xs">git push</code>; MCP can't.</li>
+        <li><strong>No LLM reuse:</strong> MCP servers can't access the agent's primary language model for filtering or ranking results.</li>
+        <li><strong>Passive tools:</strong> MCP tools wait to be called. Skills actively guide — they contain the procedure, not just the capability.</li>
+        <li><strong>Setup overhead:</strong> Requires a running server process + config file + connection setup. Skills are just a folder with a markdown file.</li>
+      </ul>
+
+      <div class="quote">
+        <p>For most research workflows: MCP is overkill. The better default is Skills + CLI tools. Same power, a fraction of the token cost.</p>
+        <cite>— Claude Code documentation</cite>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         5. THE HUMAN ROLE
+    ───────────────────────────────────── -->
+    <section id="human-role" class="section-anchor mb-14">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-karpathy">Karpathy · Sequoia Ascent 2026</span>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-900 mb-4">5. The Human Role: What You Can't Delegate</h2>
+
+      <div class="quote">
+        <p>You can outsource your thinking, but you can't outsource your understanding.</p>
+        <cite>— Tweet cited by Karpathy as "blew my mind, I keep thinking about it every other day"</cite>
+      </div>
+
+      <p class="text-slate-600 leading-relaxed mb-4">As agents take over execution, <strong>human understanding becomes the bottleneck, not human coding speed.</strong> You can delegate syntax recall and implementation details. You cannot delegate knowing what to build, why it matters, or whether the output is subtly wrong.</p>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3">What becomes more valuable</h3>
+      <div class="grid md:grid-cols-2 gap-3 mb-5">
+        <div class="insight-card">
+          <h4>Taste and judgment</h4>
+          <p>Determining what's worth building, which questions matter, identifying suspicious results. Current agents produce <em>working</em> code but often bloated, copy-pasted, awkwardly abstracted, brittle. Taste is not rewarded in RL — it's still human territory.</p>
+        </div>
+        <div class="insight-card">
+          <h4>System design knowledge</h4>
+          <p>Storage, memory copies, invariants, identity, security boundaries. The MenuGen payment bug: agent matched Stripe emails to Google emails — plausible but wrong. The fix (use persistent user IDs) requires system design intuition agents don't have.</p>
+        </div>
+        <div class="insight-card">
+          <h4>Specification and planning</h4>
+          <p>Working with agents to design detailed specs before implementation. The agent fills in technical details; you own the top-level categories and their correctness. "You're in charge of the spec, this plan."</p>
+        </div>
+        <div class="insight-card">
+          <h4>Domain-specific correction signals</h4>
+          <p>When output is wrong in a domain-specific way, you must explain <em>why</em> it's wrong. "In this system, you must never match across email providers — use the user_id foreign key." That context doesn't exist in the model's training.</p>
+        </div>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3">What becomes less scarce</h3>
+      <div class="flex flex-wrap gap-2 mb-5">
+        <span class="bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-mono">Code generation</span>
+        <span class="bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-mono">API recall</span>
+        <span class="bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-mono">Boilerplate</span>
+        <span class="bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-mono">First drafts</span>
+        <span class="bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-mono">Repetitive setup</span>
+        <span class="bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-mono">Simple transformations</span>
+        <span class="bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-mono">Syntax recall</span>
+        <span class="bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-mono">Literature search</span>
+      </div>
+
+      <div class="bg-indigo-50 border-l-4 border-accent rounded-r-lg p-4 text-sm text-slate-700">
+        <strong>Karpathy on code quality:</strong> "When I look at the code, sometimes I get a little bit of a heart attack. It's not like super amazing code necessarily all the time — it's very bloaty, there's a lot of copy-paste, there are awkward abstractions that are brittle, and it works but it's just really gross. Aesthetics and simplicity are not part of the RL reward — that's still on you."
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         6. KARPATHY'S 4 RULES
+    ───────────────────────────────────── -->
+    <section id="karpathy-rules" class="section-anchor mb-14">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-karpathy">Karpathy guidelines · SKILL.md</span>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-900 mb-2">6. Karpathy's Four Rules for Claude Code</h2>
+      <p class="text-slate-500 text-sm mb-5">From the karpathy-guidelines SKILL.md — a codified set of behavioral rules designed to reduce the most common LLM coding mistakes. "Bias toward caution over speed."</p>
+
+      <div class="space-y-3 mb-6">
+        <div class="pattern-box" style="border-left-color:#6366f1">
+          <h4 class="text-accent">① Think Before Coding</h4>
+          <p>"State your assumptions explicitly. If uncertain, ask." Surface tradeoffs rather than making silent decisions. Clarify confusion <em>before</em> implementation, not after. Never guess at a constraint when you can ask.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#10b981">
+          <h4 style="color:#059669">② Simplicity First</h4>
+          <p>"Minimum code that solves the problem. Nothing speculative." Avoid unrequested features, unnecessary abstractions, or speculative error handling. Test: would a senior engineer call this overcomplicated? If yes, strip it back.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#f59e0b">
+          <h4 style="color:#d97706">③ Surgical Changes</h4>
+          <p>"Touch only what you must. Clean up only your own mess." When editing code, preserve existing style. Avoid improving unrelated areas even if you see issues. Remove only the dead code your changes created.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#ef4444">
+          <h4 style="color:#ef4444">④ Goal-Driven Execution</h4>
+          <p>"Define success criteria. Loop until verified." Transform tasks into testable objectives with clear verification steps before starting implementation. Don't finish until the goal is demonstrably met.</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm">
+        <p class="text-slate-600 mb-2">Install these as a skill in your project:</p>
+        <div class="font-mono text-xs bg-white border border-slate-200 px-3 py-2 rounded text-slate-600">npx skills@latest add multica-ai/andrej-karpathy-skills/skills/karpathy-guidelines</div>
+        <p class="text-slate-400 text-xs mt-2">Or create <code>.claude/skills/karpathy-guidelines/SKILL.md</code> and paste the four rules.</p>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         7. MATT POCOCK'S SKILLS
+    ───────────────────────────────────── -->
+    <section id="pocock-skills" class="section-anchor mb-14">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-pocock">Matt Pocock · github.com/mattpocock/skills</span>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-900 mb-2">7. Matt Pocock's Skill Library</h2>
+      <p class="text-slate-500 text-sm mb-5">21 opinionated dev workflows refined from real production TypeScript work. The key idea: <strong>encode discipline into tooling, not into your memory.</strong> When the <code class="font-mono text-xs">tdd</code> skill is active, Claude cannot write implementation before tests — the constraint is in the skill, not in your prompt.</p>
+
+      <div class="grid md:grid-cols-2 gap-4 mb-6">
+        <div class="insight-card">
+          <h4>tdd — Test-driven development</h4>
+          <p>Red-green-refactor loop enforced at the skill level. Builds features or fixes bugs one vertical slice at a time. Claude <em>cannot</em> skip the test step when this skill is loaded.</p>
+        </div>
+        <div class="insight-card">
+          <h4>grill-me — Adversarial design review</h4>
+          <p>Turns Claude into a relentless technical interviewer. Explores the codebase first, then asks one question at a time with a recommended answer. Hunts every branch, edge case, and assumption. Forces you to defend your design.</p>
+        </div>
+        <div class="insight-card">
+          <h4>grill-with-docs — Design vs. documentation</h4>
+          <p>Stress-tests a plan against existing docs, schemas, or code. Challenges terminology, tests relationships via edge cases, cross-references claims against actual code. Updates CONTEXT.md as terms resolve. Creates ADRs only for hard-to-reverse decisions.</p>
+        </div>
+        <div class="insight-card">
+          <h4>to-prd — Context to GitHub issue</h4>
+          <p>Turns the current conversation into a Product Requirements Document and submits it as a GitHub issue. Captures what you've discussed without you having to re-explain it to a human.</p>
+        </div>
+        <div class="insight-card">
+          <h4>git-guardrails — Safe git operations</h4>
+          <p>Certain git operations require explicit human approval when this skill is loaded. Encodes caution for destructive operations into the tool rather than relying on the prompt.</p>
+        </div>
+        <div class="insight-card">
+          <h4>ubiquitous-language — Terminology consistency</h4>
+          <p>Maintains a shared glossary (CONTEXT.md) as you build. When Claude names a concept, it must match or justify deviating from existing terms. Kills terminology drift in long projects.</p>
+        </div>
+      </div>
+
+      <div class="quote">
+        <p>Pocock's philosophy: AI is an opinionated team member who has internalized your workflow standards. Constraints are encoded in the tooling, not dependent on you remembering to include them in every prompt.</p>
+        <cite>— Analysis of mattpocock/skills (68k GitHub stars)</cite>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3 mt-6">grill-with-docs: Full Workflow</h3>
+      <p class="text-slate-600 text-sm leading-relaxed mb-3">The <code class="font-mono text-xs">grill-with-docs</code> skill merges two patterns: <em>grill-me</em> (relentless questioning) and <em>ubiquitous-language</em> (shared glossary). It stress-tests a design against existing docs, schemas, or code — one question at a time, with recommended answers. The agent explores the codebase <em>before</em> asking, so questions are grounded in what actually exists.</p>
+      <div class="space-y-2 mb-4">
+        <div class="pattern-box" style="border-left-color:#6366f1">
+          <h4 class="text-accent">① CONTEXT.md as foundation</h4>
+          <p>The skill searches for a <code class="font-mono text-xs">CONTEXT.md</code> file containing the shared glossary for this bounded context. This is a <em>pure glossary</em> — totally devoid of implementation details. It's the AI's knowledge base for the project's domain language. Multi-context repos include a <code class="font-mono text-xs">CONTEXT-MAP.md</code> pointing to domain-specific folders.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#10b981">
+          <h4 style="color:#059669">② One question at a time, with a recommended answer</h4>
+          <p>The AI asks cardinality questions ("is this 1:1 or 1:N?"), terminology collision questions ("this term conflicts with X already in CONTEXT.md"), status semantics, deletion behavior, edge case scenarios. For each, it gives a recommended answer — you can accept or override. After each answer, it updates CONTEXT.md inline.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#f59e0b">
+          <h4 style="color:#d97706">③ Verify against the actual codebase</h4>
+          <p>When implementation exists, the agent reads the code to check whether behavior matches claims. It surfaces contradictions immediately rather than relying on your description. This is what makes it different from a generic design review — it reads first, asks second.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#ef4444">
+          <h4 style="color:#ef4444">④ ADRs only for hard decisions</h4>
+          <p>Create Architectural Decision Records only when a decision is hard to reverse, surprising without context, and involves genuine trade-offs. "Should this be ON DELETE CASCADE or RESTRICT?" is ADR territory. "Should I name this variable 'user' or 'account'?" is CONTEXT.md territory.</p>
+        </div>
+      </div>
+      <div class="bg-emerald-50 border-l-4 border-emerald-400 rounded-r-lg p-4 text-sm text-emerald-900 mb-4">
+        <strong>Why it works beyond the immediate session:</strong> "With shared language documented, the AI uses fewer tokens — instead of verbosely re-describing everything, it operates efficiently." Code navigability improves because planning documents align with how the code actually looks. Developers, domain experts, and the codebase all speak the same language.
+      </div>
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm">
+        <p class="font-mono text-xs text-slate-400 mb-1">Install</p>
+        <div class="font-mono text-xs bg-white border border-slate-200 px-3 py-2 rounded text-slate-600 mb-2">npx skills@latest add mattpocock/skills/skills/engineering/grill-with-docs</div>
+        <p class="text-slate-500 text-xs">Or read the full SKILL.md at <a href="https://github.com/mattpocock/skills/blob/main/skills/engineering/grill-with-docs/SKILL.md" target="_blank" class="text-accent">github.com/mattpocock/skills</a></p>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3 mt-6">How to write effective Skills</h3>
+      <p class="text-slate-600 text-sm leading-relaxed mb-3">From Anthropic's skill authoring best practices:</p>
+      <div class="space-y-2 mb-4">
+        <div class="pattern-box" style="border-left-color:#6366f1">
+          <h4 class="text-accent">The description is everything</h4>
+          <p>Claude picks the right skill using only the name + description. Write: <em>what it does</em> + <em>when to use it</em>. "Processes KTH Canvas course exports and generates structured learning outcome reports. Use when working with Canvas data or course analytics." — not "Helps with documents."</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#10b981">
+          <h4 style="color:#059669">Progressive disclosure</h4>
+          <p>SKILL.md is a table of contents, not an encyclopedia. Keep the body under 500 lines. Move longer reference material to separate files (REFERENCE.md, FIELD-MAP.md) and point to them. Claude reads them on demand — zero token cost until needed.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#f59e0b">
+          <h4 style="color:#d97706">Build it with Claude, then test it with Claude</h4>
+          <p>Use "Claude A" to create the skill by capturing what you repeatedly explained during a task. Then test it with "Claude B" (fresh session). Watch where B struggles or misses — bring that back to A. Iterate from observed behavior, not assumptions.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#ef4444">
+          <h4 style="color:#ef4444">Concise is key</h4>
+          <p>Only add context Claude doesn't already have. Challenge every line: "Does Claude really need this explanation? Can I assume Claude knows this?" A concise skill that triggers reliably beats a verbose one that Claude partially reads.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         8. THE WIKI PATTERN
+    ───────────────────────────────────── -->
+    <section id="knowledge-base" class="section-anchor mb-14">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-karpathy">Karpathy · LLM Knowledge Bases</span>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-900 mb-4">8. The LLM Wiki Pattern</h2>
+
+      <p class="text-slate-600 leading-relaxed mb-4">Karpathy's most underrated idea: instead of RAG answering questions from raw documents, use agents to incrementally <strong>compile</strong> documents into a structured Markdown wiki — with summaries, entity pages, concept pages, cross-links, and evolving synthesis.</p>
+
+      <div class="quote">
+        <p>No classical program could robustly maintain that kind of knowledge base across messy human documents. But an LLM can. Every time I read an article I have my wiki that's being built up. I love asking questions about things. These are tools to enhance understanding, not just answer machines.</p>
+        <cite>— Andrej Karpathy, Sequoia Ascent 2026</cite>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3">Why Markdown?</h3>
+      <div class="grid md:grid-cols-3 gap-3 mb-5">
+        <div class="insight-card">
+          <h4>Portable forever</h4>
+          <p>Opens anywhere. Lock-in free. Sync via git, use any editor, maintain full ownership. Still readable in 20 years.</p>
+        </div>
+        <div class="insight-card">
+          <h4>Native to LLMs</h4>
+          <p>Models understand Markdown structure natively. Headers, lists, and links are meaningful to the model, not just formatting.</p>
+        </div>
+        <div class="insight-card">
+          <h4>Clarity-forcing</h4>
+          <p>The format nudges toward well-organized information. Bad notes become obvious; good notes become queryable.</p>
+        </div>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3">Building your wiki</h3>
+      <div class="space-y-2 mb-4">
+        <div class="pattern-box" style="border-left-color:#6366f1">
+          <h4 class="text-accent">Consistent structure per note</h4>
+          <p>Title, one-line summary, tags, timestamps, content. The summary line is what Claude uses to decide if this file is relevant — it's the per-file "description".</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#10b981">
+          <h4 style="color:#059669">Write summaries, use consistent terminology</h4>
+          <p>Pick one term per concept and use it everywhere. <code>[[wiki links]]</code> create richer reasoning graphs. Focused notes outperform sprawling ones.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#2563eb">
+          <h4 style="color:#2563eb">Query via Claude Code</h4>
+          <p>Navigate to the wiki folder and type <code class="font-mono text-xs">claude</code>. Ask: "What notes do I have about X?" or "Summarise what we know about Y across all files." Direct file-reading works for hundreds of notes; add RAG (LlamaIndex) for thousands.</p>
+        </div>
+      </div>
+
+      <div class="bg-indigo-50 border-l-4 border-accent rounded-r-lg p-4 text-sm text-slate-700">
+        <strong>For Track C:</strong> This pattern is directly applicable — build a knowledge agent over your group's papers, internal reports, or KTH documentation. The agent incrementally compiles a wiki; you query it in natural language. No classical search, no RAG infrastructure needed for the prototype.
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         9. AGENT-NATIVE DESIGN
+    ───────────────────────────────────── -->
+    <section id="agent-native" class="section-anchor mb-14">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-karpathy">Karpathy · Sensors &amp; Actuators framework</span>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-900 mb-4">9. Designing Agent-Native Systems</h2>
+
+      <p class="text-slate-600 leading-relaxed mb-4">Everything is still fundamentally written for humans. Docs tell you what to do. GUIs require you to click. This is Karpathy's "favourite pet peeve": <em>"I don't want to do anything. What is the thing I should copy-paste to my agent?"</em></p>
+
+      <p class="text-slate-600 leading-relaxed mb-5">The agentic era requires rewriting infrastructure with agents as primary users. The framework: <strong>sensors</strong> convert world state to digital information that agents can read; <strong>actuators</strong> let agents change things.</p>
+
+      <div class="grid md:grid-cols-2 gap-4 mb-6">
+        <div>
+          <h4 class="font-semibold text-slate-900 mb-2 text-sm">What agents need (design for this)</h4>
+          <ul class="list-disc pl-4 text-sm text-slate-600 space-y-1">
+            <li>Markdown documentation (not just HTML tutorials)</li>
+            <li>CLIs and APIs (not just GUIs)</li>
+            <li>Structured, machine-readable logs</li>
+            <li>Defined schemas with explicit field names</li>
+            <li>Copy-pasteable agent instructions (not step-by-step for humans)</li>
+            <li>Safe permissioning models with clear capability boundaries</li>
+            <li>Auditable action trails</li>
+            <li>Headless setup flows</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-slate-900 mb-2 text-sm">The question to ask</h4>
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+            <p class="text-sm text-slate-700 mb-3">Instead of: <em>"What existing workflows can AI speed up?"</em></p>
+            <p class="text-sm font-semibold text-slate-900 mb-1">Ask:</p>
+            <ul class="list-disc pl-4 text-sm text-slate-600 space-y-1">
+              <li>What information transformations were impossible before but are now natural?</li>
+              <li>What software shouldn't exist as an app — and should just be a model call?</li>
+              <li>What verifiable domains exist that labs haven't heavily trained on yet?</li>
+              <li>Where can we create our own domain-specific feedback loops?</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="quote">
+        <p>The MenuGen web app shouldn't exist. The Software 3.0 version is: take a photo, give it to a model, say "overlay dish images onto the menu." The neural network does the work, no app needed in between. Some apps are working in the old paradigm.</p>
+        <cite>— Andrej Karpathy, Sequoia Ascent 2026</cite>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3 mt-6">Simon Willison: Practical wisdom</h3>
+      <div class="space-y-2 mb-4">
+        <div class="pattern-box" style="border-left-color:#6366f1">
+          <h4 class="text-accent">Speed enables ambition</h4>
+          <p>The primary benefit of AI agents isn't faster coding — it's being able to ship projects previously considered too time-consuming to justify. This creates a compounding loop: faster execution → more experimentation → deeper expertise.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#f59e0b">
+          <h4 style="color:#d97706">Be ready to take over</h4>
+          <p>Sometimes manual intervention beats continued prompting. If you've been fighting the LLM on something for 10 minutes, switch to the docs and fix it yourself. Pragmatism over principle.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#10b981">
+          <h4 style="color:#059669">Favour "boring technology"</h4>
+          <p>Stable, well-documented libraries that were heavily present in pretraining data outperform bleeding-edge tools the model barely knows. The model's knowledge cutoff is real — provide recent docs for anything that changed after it.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         SOURCES
+    ───────────────────────────────────── -->
+    <section id="sources" class="section-anchor mb-6">
+      <h2 class="text-xl font-bold text-slate-900 mb-4">Sources &amp; Further Reading</h2>
+      <div class="grid md:grid-cols-2 gap-3 text-sm">
+        <a href="https://karpathy.bearblog.dev/sequoia-ascent-2026/" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>Karpathy — Sequoia Ascent 2026</h4>
+          <p>Full blog post: Software 3.0, vibe coding vs agentic engineering, verifiability framework. <span class="text-accent">karpathy.bearblog.dev</span></p>
+        </a>
+        <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>Anthropic — Building Effective Agents</h4>
+          <p>The five workflow patterns, ACI design, when to use vs. avoid agents. <span class="text-accent">anthropic.com/engineering</span></p>
+        </a>
+        <a href="https://www.trychroma.com/research/context-rot" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>Chroma — Context Rot Research</h4>
+          <p>18 LLMs, 194K API calls. Performance degradation with context length, distractor effects, haystack structure. <span class="text-accent">trychroma.com/research</span></p>
+        </a>
+        <a href="https://github.com/mattpocock/skills" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>Matt Pocock — Skills for Real Engineers</h4>
+          <p>21 opinionated Claude Code skills: TDD, grill-me, grill-with-docs, git-guardrails, and more. <span class="text-accent">github.com/mattpocock/skills</span></p>
+        </a>
+        <a href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>Anthropic — Skill Authoring Best Practices</h4>
+          <p>How to write descriptions, progressive disclosure, evaluation-driven development, the conciseness principle. <span class="text-accent">platform.claude.com/docs</span></p>
+        </a>
+        <a href="https://dev.to/chen_zhang_bac430bc7f6b95/mcp-is-being-abandoned-how-fast-can-a-standard-die-2f7c" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>MCP context cost analysis</h4>
+          <p>143K tokens for 3 MCP servers, tool selection drops from 43% to 14%, why Skills + CLI beats MCP for most workflows. <span class="text-accent">dev.to</span></p>
+        </a>
+        <a href="https://github.com/multica-ai/andrej-karpathy-skills" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>Karpathy Guidelines — SKILL.md</h4>
+          <p>The four rules (think first, simplicity, surgical changes, goal-driven execution) as an installable Claude Code skill. <span class="text-accent">github.com/multica-ai</span></p>
+        </a>
+        <a href="https://simonwillison.net" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>Simon Willison's blog</h4>
+          <p>Practical LLM tips, tool comparisons, prompting patterns, and extensive notes on building with LLMs. <span class="text-accent">simonwillison.net</span></p>
+        </a>
+        <a href="https://singjupost.com/andrej-karpathy-software-is-changing-again/" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>Karpathy — Software is Changing Again</h4>
+          <p>Full transcript: LLMs as operating systems, partial autonomy vs full autonomy, LLM psychology (hallucination, anterograde amnesia, jagged intelligence), the Iron Man suit metaphor. <span class="text-accent">singjupost.com</span></p>
+        </a>
+        <a href="https://www.aihero.dev/grill-with-docs" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>grill-with-docs — Deep Dive</h4>
+          <p>Complete explanation of the CONTEXT.md workflow, cardinality questions, terminology collision handling, ADR creation criteria, and why shared language improves AI reasoning. <span class="text-accent">aihero.dev/grill-with-docs</span></p>
+        </a>
+        <a href="https://www.mindstudio.ai/blog/andrej-karpathy-llm-wiki-knowledge-base-claude-code" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>Karpathy's LLM Wiki approach</h4>
+          <p>How to build a Markdown knowledge base queryable by Claude Code — setup, structure, scaling to thousands of notes. <span class="text-accent">mindstudio.ai/blog</span></p>
+        </a>
+        <a href="https://github.com/vercel-labs/agent-browser" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>agent-browser (Vercel Labs)</h4>
+          <p>Headless Playwright-based browser integration designed for Claude agents. Alternative to Playwright MCP with lower overhead. <span class="text-accent">github.com/vercel-labs</span></p>
+        </a>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="bg-slate-900 text-slate-400 text-center py-8 px-4 mt-8 text-sm">
+  <p>Track C · Advanced Reference · SCI Agentathon 2026 · KTH School of Engineering Sciences</p>
+  <p class="mt-1">Compiled by <strong class="text-slate-200">Wei Ouyang</strong> from Karpathy, Anthropic, Pocock, Willison, and primary research &bull; May 2026</p>
+</footer>
+
+<script src="assets/main.js"></script>
+</body>
+</html>
