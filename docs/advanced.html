@@ -89,6 +89,9 @@
         <a href="#pocock-skills" class="toc-link">7. Matt Pocock's Skills</a>
         <a href="#knowledge-base" class="toc-link">8. The Wiki Pattern</a>
         <a href="#agent-native" class="toc-link">9. Agent-Native Design</a>
+        <a href="#security" class="toc-link">10. Security: Lethal Trifecta</a>
+        <a href="#agentic-lessons" class="toc-link">11. Agentic Coding Lessons</a>
+        <a href="#quotes" class="toc-link">Key Quotes</a>
         <a href="#sources" class="toc-link">Sources</a>
       </nav>
     </div>
@@ -204,6 +207,14 @@
         </div>
       </div>
 
+      <h3 class="text-lg font-bold text-slate-900 mb-3 mt-6">Context Engineering vs. Prompt Engineering</h3>
+      <p class="text-slate-600 leading-relaxed mb-3">These are not the same thing. Prompt engineering optimises the instruction sent to a model — <em>how you ask</em>. Context engineering curates the entire information architecture during inference: code, decisions, documentation, tool results, conversation history, examples — <em>what the model knows when it answers</em>.</p>
+      <div class="quote">
+        <p>You can write a brilliant prompt, but if it's buried behind thousands of tokens of irrelevant chat history or poorly structured retrieved documents, the model won't follow it. Context engineering builds the container that gives the prompt room to work.</p>
+        <cite>— Port.io analysis of the context engineering paradigm shift</cite>
+      </div>
+      <p class="text-slate-600 text-sm leading-relaxed mb-5">Prompt engineering gets you the first good output. Context engineering makes sure the 1,000th output is still good. Endorsed publicly by Andrej Karpathy and Shopify CEO Tobi Lütke in mid-2025 — Shopify now requires teams to demonstrate AI cannot do a job before requesting human headcount.</p>
+
       <h3 class="text-lg font-bold text-slate-900 mb-3">The Three Levers</h3>
       <div class="space-y-2 mb-6">
         <div class="pattern-box" style="border-left-color:#6366f1">
@@ -223,6 +234,22 @@
       <div class="quote">
         <p>The question is not: what prompt should I write? The question is: what should Claude know?</p>
         <cite>— Claude Code documentation</cite>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3 mt-6">The 35-Minute Wall and Lost-in-the-Middle</h3>
+      <p class="text-slate-600 text-sm leading-relaxed mb-3">Two empirical findings that should shape how you run long Claude Code sessions:</p>
+      <div class="grid md:grid-cols-2 gap-3 mb-4">
+        <div class="insight-card border-t-4 border-t-red-400">
+          <h4>The 35-minute wall (coding agents)</h4>
+          <p>Beyond 35 minutes of continuous agent work, <strong>doubling task duration quadruples the failure rate</strong>. This is the point where context accumulation crosses 80K–150K tokens. Agents spend over 60% of their first turn just retrieving context, not reasoning. Break long sessions into checkpointed sub-tasks.</p>
+        </div>
+        <div class="insight-card border-t-4" style="border-top-color:#f59e0b">
+          <h4>Lost-in-the-middle (30% accuracy drop)</h4>
+          <p>Relevant documents placed in positions 5–15 of a list cause <strong>more than 30% accuracy loss</strong> vs. position 1 or last. Attention is U-shaped. Put critical instructions <em>early</em> (before 50% of context is full) or at the very end. Never let them drift to mid-context.</p>
+        </div>
+      </div>
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm text-slate-600">
+        <strong>Coherent documents are worse distractors.</strong> Counterintuitively, well-structured, logically coherent haystacks create <em>more</em> confusion than shuffled ones — structural coherence makes irrelevant passages look more plausible to the attention mechanism. This is why RAG chunking strategies matter more than they look.
       </div>
     </section>
 
@@ -629,6 +656,178 @@
     </section>
 
     <!-- ─────────────────────────────────────
+         10. SECURITY: THE LETHAL TRIFECTA
+    ───────────────────────────────────── -->
+    <section id="security" class="section-anchor mb-14">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-research">Simon Willison · Agent Security</span>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-900 mb-4">10. The Lethal Trifecta: Agent Security</h2>
+
+      <p class="text-slate-600 leading-relaxed mb-4">Simon Willison identified a critical security pattern: three capabilities, harmless individually, become a critical vulnerability when combined in one agent.</p>
+
+      <div class="bg-red-50 border-2 border-red-300 rounded-xl p-5 mb-6">
+        <h3 class="font-bold text-red-900 mb-3">The Lethal Trifecta</h3>
+        <div class="grid md:grid-cols-3 gap-3">
+          <div class="bg-white rounded-lg p-3 border border-red-200">
+            <div class="text-2xl mb-1">🔒</div>
+            <h4 class="font-bold text-red-800 text-sm mb-1">Private data access</h4>
+            <p class="text-red-700 text-xs">Emails, documents, databases, user records</p>
+          </div>
+          <div class="bg-white rounded-lg p-3 border border-red-200">
+            <div class="text-2xl mb-1">🌐</div>
+            <h4 class="font-bold text-red-800 text-sm mb-1">Untrusted content</h4>
+            <p class="text-red-700 text-xs">Web pages, emails, user uploads, external APIs</p>
+          </div>
+          <div class="bg-white rounded-lg p-3 border border-red-200">
+            <div class="text-2xl mb-1">📤</div>
+            <h4 class="font-bold text-red-800 text-sm mb-1">External communication</h4>
+            <p class="text-red-700 text-xs">HTTP requests, email sends, API calls, file writes</p>
+          </div>
+        </div>
+        <p class="text-red-800 text-sm mt-3"><strong>When all three exist:</strong> attackers embed instructions in untrusted content (a web page, an email) that trick the agent into exfiltrating private data through its external communication channel — without any user action.</p>
+      </div>
+
+      <div class="quote">
+        <p>Once an LLM agent has ingested untrusted input, it must be constrained so that it is impossible for that input to trigger any consequential actions. Everything eventually gets glued together into a sequence of tokens and fed to the model.</p>
+        <cite>— Simon Willison, "The Lethal Trifecta for AI Agents"</cite>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3 mt-6">Why AI-based defences don't work</h3>
+      <p class="text-slate-600 text-sm leading-relaxed mb-4">Unlike parameterised SQL queries (which provide 100% SQL injection protection), confidence-based guardrails are non-deterministic. A 95% attack-blocking rate is a failing grade for security. You cannot defend against prompt injection with another LLM — the attack surface is the model itself.</p>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3">Six Architectural Defences</h3>
+      <div class="space-y-2 mb-5">
+        <div class="pattern-box" style="border-left-color:#6366f1">
+          <h4 class="text-accent">① Action-Selector Pattern</h4>
+          <p>Agents trigger tools but cannot see tool responses. Malicious data in tool output cannot influence subsequent behaviour.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#10b981">
+          <h4 style="color:#059669">② Plan-Then-Execute Pattern</h4>
+          <p>Lock in all actions before any exposure to untrusted content. The plan cannot be modified after untrusted data is read.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#2563eb">
+          <h4 style="color:#2563eb">③ LLM Map-Reduce Pattern</h4>
+          <p>Isolated subagents operate on untrusted content independently. They aggregate results without cross-contamination.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#f59e0b">
+          <h4 style="color:#d97706">④ Dual LLM Pattern</h4>
+          <p>Privileged LLM coordinates a Quarantined LLM. The quarantined instance handles untrusted data and returns only symbolic variables (<code class="font-mono text-xs">$VAR1</code>) back — never raw data.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#7c3aed">
+          <h4 style="color:#7c3aed">⑤ Code-Then-Execute Pattern</h4>
+          <p>Privileged LLM generates code in a custom DSL enabling taint tracking. Untrusted data is tracked through every operation.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#ef4444">
+          <h4 style="color:#ef4444">⑥ Context-Minimisation Pattern</h4>
+          <p>Remove user prompts from context before returning results. Minimum information surface, minimum attack surface.</p>
+        </div>
+      </div>
+
+      <div class="bg-amber-50 border-l-4 border-amber-400 rounded-r-lg p-4 text-sm text-amber-900">
+        <strong>MCP creates the trifecta by design.</strong> MCP's architecture encourages combining private-data tools, untrusted-content tools, and external-communication tools in one agent. Survey data: 43% of tested MCP servers allowed command injection; 22% had arbitrary file read via path traversal; 30% were vulnerable to SSRF. Vet every MCP server before connecting. Never combine all three trifecta capabilities without architectural isolation.
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         11. AGENTIC CODING LESSONS
+    ───────────────────────────────────── -->
+    <section id="agentic-lessons" class="section-anchor mb-14">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-xs font-mono font-bold px-2 py-0.5 rounded tag-research">dbreunig · Anthropic · Willison</span>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-900 mb-2">11. Ten Lessons for Agentic Coding</h2>
+      <p class="text-slate-500 text-sm mb-5">From dbreunig.com's "10 Lessons for Agentic Coding" and the official Claude Code best practices. Hard-won guidance from teams shipping production code with agents.</p>
+
+      <div class="grid md:grid-cols-2 gap-3 mb-6">
+        <div class="insight-card">
+          <h4>① Implement to learn</h4>
+          <p>Writing actual code surfaces overlooked decisions and improves specifications. The act of implementation teaches you what the spec missed.</p>
+        </div>
+        <div class="insight-card">
+          <h4>② Rebuild often</h4>
+          <p>Fork codebases, test radical ideas. Reconstruction is cheap; learning is valuable. Don't be precious about generated code.</p>
+        </div>
+        <div class="insight-card">
+          <h4>③ Invest in end-to-end tests</h4>
+          <p>Test behaviour, not implementation specifics. Behavioural contracts grant freedom to rebuild. Tests are the one thing that survives a rewrite.</p>
+        </div>
+        <div class="insight-card">
+          <h4>④ Document intent, not code</h4>
+          <p>Preserve the reasoning behind decisions, not the code itself. Code is cheap; understanding why it was written this way is not.</p>
+        </div>
+        <div class="insight-card">
+          <h4>⑤ Keep specs in sync</h4>
+          <p>Living documentation compounds learning. Update CLAUDE.md and specs continuously as decisions evolve. Stale specs mislead agents.</p>
+        </div>
+        <div class="insight-card">
+          <h4>⑥ Find the hard stuff</h4>
+          <p>Agents handle boilerplate. Humans tackle intuitive design, security, resilience, system architecture. Route your attention to what agents can't do reliably.</p>
+        </div>
+        <div class="insight-card">
+          <h4>⑦ Automate everything easy</h4>
+          <p>Convert learnings into reusable skills. Avoid getting trapped in endless manual re-prompting of the same workflows.</p>
+        </div>
+        <div class="insight-card">
+          <h4>⑧ Develop your taste</h4>
+          <p>When code generation outpaces your feedback mechanisms, personal judgment becomes critical. Agents produce <em>working</em> code; you produce <em>good</em> code.</p>
+        </div>
+        <div class="insight-card">
+          <h4>⑨ Agents amplify experience</h4>
+          <p>Technical expertise dramatically multiplies agent effectiveness. Experienced developers provide superior prompts, better constraints, better verification. Beginners benefit less.</p>
+        </div>
+        <div class="insight-card">
+          <h4>⑩ Code is free as in puppies</h4>
+          <p>Cheap to generate, expensive to maintain. Every line you accept becomes your responsibility. Prefer deletion to accumulation.</p>
+        </div>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-900 mb-3">The Explore → Plan → Implement → Commit workflow</h3>
+      <p class="text-slate-600 text-sm leading-relaxed mb-3">From Anthropic's official Claude Code best practices — the four-phase workflow that prevents solving the wrong problem at speed:</p>
+      <div class="space-y-2 mb-4">
+        <div class="pattern-box" style="border-left-color:#2563eb">
+          <h4 style="color:#2563eb">① Explore (plan mode on)</h4>
+          <p>Claude reads files and answers questions without making changes. No code written yet. Use this to build a shared understanding of the codebase and the problem.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#6366f1">
+          <h4 class="text-accent">② Plan</h4>
+          <p>Ask Claude to write a detailed implementation plan. Edit the plan directly before proceeding — this is your highest-leverage moment. A wrong plan executed fast is worse than no plan.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#10b981">
+          <h4 style="color:#059669">③ Implement (plan mode off)</h4>
+          <p>Claude codes and verifies against its plan. Provide Claude with a way to verify its own work (tests, screenshots, API responses). This single investment yields the highest returns.</p>
+        </div>
+        <div class="pattern-box" style="border-left-color:#f59e0b">
+          <h4 style="color:#d97706">④ Commit</h4>
+          <p>Ask Claude to commit with a descriptive message and open a PR. Atomic commits with clear messages make it easy to revert if something is wrong.</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm text-slate-600">
+        <strong>CLAUDE.md: what to include and exclude.</strong> Include: bash commands Claude can't guess, code style rules that differ from defaults, testing instructions, repo etiquette, architectural decisions. <strong>Do not include:</strong> things Claude can infer by reading code, standard conventions, detailed API docs (link instead), information that changes frequently. If Claude keeps violating a rule despite it being in CLAUDE.md, the file is probably too long and the rule is getting lost — prune ruthlessly.
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         KEY QUOTES
+    ───────────────────────────────────── -->
+    <section id="quotes" class="section-anchor mb-14">
+      <h2 class="text-2xl font-bold text-slate-900 mb-5">Key Quotes</h2>
+      <div class="space-y-3">
+        <div class="quote"><p>Prompts are the new source code. English is the new programming language. LLMs are the new CPUs.</p><cite>— Andrej Karpathy</cite></div>
+        <div class="quote"><p>2025–2035 is the decade of agents. Not the year — the decade.</p><cite>— Andrej Karpathy, Sequoia Ascent 2026</cite></div>
+        <div class="quote"><p>Demo is <code style="font-family:monospace;font-size:0.9em">works.any()</code>, product is <code style="font-family:monospace;font-size:0.9em">works.all()</code>.</p><cite>— Andrej Karpathy</cite></div>
+        <div class="quote"><p>You can outsource your thinking, but you can't outsource your understanding.</p><cite>— cited by Karpathy as his most re-read tweet</cite></div>
+        <div class="quote"><p>An LLM agent runs tools in a loop to achieve a goal.</p><cite>— Simon Willison, distilling what "agent" actually means</cite></div>
+        <div class="quote"><p>Find the smallest possible set of high-signal tokens that maximise the likelihood of your desired outcome.</p><cite>— Anthropic, Effective Context Engineering</cite></div>
+        <div class="quote"><p>If you haven't seen it run, it's not a working system.</p><cite>— Simon Willison</cite></div>
+        <div class="quote"><p>Code is free as in puppies — cheap to produce, expensive to maintain.</p><cite>— dbreunig, 10 Lessons for Agentic Coding</cite></div>
+        <div class="quote"><p>Software entropy accelerates with AI-assisted development, making daily design investment critical to prevent architectural degradation.</p><cite>— Matt Pocock, mattpocock/skills README</cite></div>
+        <div class="quote"><p>Reflexive AI usage is now a baseline expectation. Teams must demonstrate AI cannot do a job before requesting human headcount.</p><cite>— Tobi Lütke, Shopify internal memo</cite></div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
          SOURCES
     ───────────────────────────────────── -->
     <section id="sources" class="section-anchor mb-6">
@@ -673,6 +872,22 @@
         <a href="https://www.aihero.dev/grill-with-docs" target="_blank" class="insight-card hover:border-accent transition block no-underline">
           <h4>grill-with-docs — Deep Dive</h4>
           <p>Complete explanation of the CONTEXT.md workflow, cardinality questions, terminology collision handling, ADR creation criteria, and why shared language improves AI reasoning. <span class="text-accent">aihero.dev/grill-with-docs</span></p>
+        </a>
+        <a href="https://simonw.substack.com/p/the-lethal-trifecta-for-ai-agents" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>Willison — The Lethal Trifecta</h4>
+          <p>Private data + untrusted content + external comms = critical security vulnerability. Six architectural defences, why AI-based guardrails fail, MCP security problems. <span class="text-accent">simonw.substack.com</span></p>
+        </a>
+        <a href="https://www.dbreunig.com/2026/05/04/10-lessons-for-agentic-coding.html" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>10 Lessons for Agentic Coding</h4>
+          <p>Implement to learn, rebuild often, invest in e2e tests, develop taste, code is cheap but maintenance isn't. Hard-won lessons from shipping with agents. <span class="text-accent">dbreunig.com</span></p>
+        </a>
+        <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>Anthropic — Effective Context Engineering</h4>
+          <p>Just-in-time loading, progressive disclosure, compaction strategies, subagent architecture, 90.2% multi-agent improvement data. <span class="text-accent">anthropic.com/engineering</span></p>
+        </a>
+        <a href="https://code.claude.com/docs/en/best-practices" target="_blank" class="insight-card hover:border-accent transition block no-underline">
+          <h4>Claude Code — Official Best Practices</h4>
+          <p>Explore→Plan→Implement→Commit workflow, CLAUDE.md do's and don'ts, session management, the 35-minute wall, parallel sessions. <span class="text-accent">code.claude.com/docs</span></p>
         </a>
         <a href="https://www.mindstudio.ai/blog/andrej-karpathy-llm-wiki-knowledge-base-claude-code" target="_blank" class="insight-card hover:border-accent transition block no-underline">
           <h4>Karpathy's LLM Wiki approach</h4>
