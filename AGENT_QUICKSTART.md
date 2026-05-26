@@ -1,11 +1,11 @@
-# Agent Quickstart — KTH IT Service Automation Skills
+# Track C: Agent Quickstart — KTH IT Service Skills
 
 > **For AI agents** (Claude Code, or any agent that reads CLAUDE.md).
 > Give this file to your agent to get started.
 
 ## What this repo is
 
-A collection of **reusable agent skills** for automating KTH IT services:
+A collection of **reusable AI agent skills** for automating KTH IT services:
 
 | Skill | Service | What it does |
 |-------|---------|-------------|

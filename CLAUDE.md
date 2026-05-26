@@ -1,8 +1,8 @@
-# agenthon — a collection of agent skills for KTH services
+# Track C: AI Agent Skills for KTH IT Services
 
 ## Aim
 
-This repo is a **collection of reusable agent skills** that let an AI
+This repo (Track C of the SCI Agenthon 2026) is a **collection of reusable agent skills** that let an AI
 agent (Claude, or anything that understands the
 [Agent Skills specification](https://agentskills.io/specification))
 operate KTH IT services from a single command-line interface.
