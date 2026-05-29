@@ -1,0 +1,20 @@
+# OS
+.DS_Store
+
+# Student data and course data — contains names and personnummer, do not commit
+Ungraded/
+Human_graded/
+
+# Course data — contains course information, do not commit
+Exam/
+Grading_rules/
+Solution/
+
+# Grading artifacts (regeneratable, may contain student data)
+results/*
+results/**/*
+
+# Python
+__pycache__/
+*.pyc
+.venv/

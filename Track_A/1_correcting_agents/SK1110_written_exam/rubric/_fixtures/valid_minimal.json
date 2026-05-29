@@ -1,0 +1,21 @@
+{
+  "exam_id": "TEST",
+  "global_deductions": [
+    {"id": "g1", "label": "test deduction", "points": -0.1}
+  ],
+  "problems": [
+    {
+      "n": 1,
+      "max_points": 1.0,
+      "items": [
+        {"id": "1.a", "label": "step a", "points": 0.5},
+        {"id": "1.b", "label": "step b", "points": 0.5,
+         "sub": [{"label": "sub", "points": 0.2}]}
+      ],
+      "special_cases": [
+        {"id": "sc1", "label": "case", "effect": "set_total",
+         "total_points": 0.4, "apply_global_deductions": false}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "exam_id": "BAD",
+  "global_deductions": [],
+  "problems": [
+    {
+      "n": 1,
+      "max_points": 1.0,
+      "items": [
+        {"id": "1.a", "label": "a", "points": 1.0}
+      ],
+      "special_cases": [
+        {"id": "sc1", "label": "case", "effect": "cap_total",
+         "total_points": 0.6, "apply_global_deductions": false}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1566 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SK1110 Auto-Grader Agentathon Demo</title>
+  <style>
+    :root {
+      --bg: #f7f4ee;
+      --paper: #fffdf8;
+      --ink: #17212b;
+      --muted: #5f6670;
+      --line: #d8d0c4;
+      --blue: #005293;
+      --cyan: #20a7b8;
+      --green: #1f8a5b;
+      --amber: #d99000;
+      --red: #b13d45;
+      --violet: #7353ba;
+      --shadow: 0 18px 60px rgba(23, 33, 43, 0.16);
+      font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      letter-spacing: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      overflow: hidden;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .deck {
+      position: relative;
+      height: 100vh;
+      min-height: 620px;
+      background:
+        linear-gradient(90deg, rgba(0, 82, 147, 0.08) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(0, 82, 147, 0.07) 1px, transparent 1px),
+        var(--bg);
+      background-size: 44px 44px;
+    }
+
+    .deck::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(105deg, rgba(255, 253, 248, 0.95), rgba(255, 253, 248, 0.68) 48%, rgba(247, 244, 238, 0.92)),
+        radial-gradient(circle at 78% 22%, rgba(217, 144, 0, 0.15), transparent 32%),
+        radial-gradient(circle at 16% 84%, rgba(31, 138, 91, 0.14), transparent 30%);
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 24px;
+      width: 100%;
+      height: 100%;
+      padding: 52px 72px 42px;
+      opacity: 0;
+      transform: translateX(5%);
+      pointer-events: none;
+      transition: opacity 360ms ease, transform 360ms ease;
+      z-index: 1;
+    }
+
+    .slide.current {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+      z-index: 2;
+    }
+
+    .slide.prev {
+      transform: translateX(-5%);
+    }
+
+    .slide-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      min-height: 42px;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .kicker::before {
+      content: "";
+      width: 38px;
+      height: 4px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--blue), var(--amber), var(--green));
+    }
+
+    .slide-number {
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .slide-body {
+      display: grid;
+      align-content: center;
+      gap: 28px;
+      min-height: 0;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      max-width: 980px;
+      font-size: 4.4rem;
+      line-height: 0.96;
+      font-weight: 850;
+    }
+
+    h2 {
+      max-width: 980px;
+      font-size: 3.25rem;
+      line-height: 1.02;
+      font-weight: 820;
+    }
+
+    h3 {
+      font-size: 1.24rem;
+      line-height: 1.2;
+      font-weight: 800;
+    }
+
+    .lead {
+      max-width: 860px;
+      color: var(--muted);
+      font-size: 1.34rem;
+      line-height: 1.38;
+    }
+
+    .body-copy {
+      max-width: 780px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.55;
+    }
+
+    .accent {
+      color: var(--blue);
+    }
+
+    .warn {
+      color: var(--red);
+    }
+
+    .ok {
+      color: var(--green);
+    }
+
+    .soft {
+      color: var(--muted);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 253, 248, 0.88);
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    .panel.flat {
+      box-shadow: none;
+      background: rgba(255, 253, 248, 0.76);
+    }
+
+    .title-layout {
+      grid-template-columns: minmax(0, 1.1fr) 420px;
+      align-items: center;
+    }
+
+    .title-mark {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 420px;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      border: 1px solid rgba(23, 33, 43, 0.16);
+      background:
+        linear-gradient(135deg, rgba(0, 82, 147, 0.14), rgba(32, 167, 184, 0.08)),
+        var(--paper);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .title-mark::before,
+    .title-mark::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(0, 82, 147, 0.24);
+      transform: rotate(-7deg);
+    }
+
+    .title-mark::before {
+      width: 250px;
+      height: 310px;
+      background: rgba(255, 253, 248, 0.85);
+    }
+
+    .title-mark::after {
+      width: 210px;
+      height: 260px;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 22px,
+          rgba(0, 82, 147, 0.14) 23px,
+          transparent 24px
+        );
+      transform: rotate(4deg) translate(20px, 12px);
+    }
+
+    .mark-core {
+      position: relative;
+      z-index: 1;
+      width: 190px;
+      height: 190px;
+      border: 12px solid var(--blue);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--blue);
+      font-size: 4.2rem;
+      font-weight: 850;
+      background: rgba(255, 253, 248, 0.92);
+      animation: floatIn 900ms ease both;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 253, 248, 0.82);
+      padding: 8px 13px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .pill strong {
+      color: var(--ink);
+    }
+
+    .metric {
+      display: grid;
+      gap: 8px;
+      min-height: 172px;
+      align-content: center;
+      border-top: 5px solid var(--blue);
+    }
+
+    .metric:nth-child(2) {
+      border-top-color: var(--green);
+    }
+
+    .metric:nth-child(3) {
+      border-top-color: var(--amber);
+    }
+
+    .metric-value {
+      font-size: 3.1rem;
+      line-height: 1;
+      font-weight: 850;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.35;
+    }
+
+    .metric-target {
+      color: var(--muted);
+      font-size: 0.88rem;
+      font-weight: 750;
+      text-transform: uppercase;
+    }
+
+    .list {
+      display: grid;
+      gap: 14px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .list li {
+      display: grid;
+      grid-template-columns: 26px 1fr;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.42;
+    }
+
+    .list li::before {
+      content: "";
+      width: 15px;
+      height: 15px;
+      margin-top: 5px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 0 5px rgba(32, 167, 184, 0.14);
+    }
+
+    .list li.negative::before {
+      background: var(--red);
+      box-shadow: 0 0 0 5px rgba(177, 61, 69, 0.13);
+    }
+
+    .list li.positive::before {
+      background: var(--green);
+      box-shadow: 0 0 0 5px rgba(31, 138, 91, 0.13);
+    }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .step {
+      position: relative;
+      min-height: 164px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 253, 248, 0.86);
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .step::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -17px;
+      width: 26px;
+      height: 2px;
+      background: var(--blue);
+      opacity: 0.4;
+    }
+
+    .step:last-child::after {
+      display: none;
+    }
+
+    .step-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      color: #fff;
+      background: var(--blue);
+      font-weight: 850;
+      margin-bottom: 18px;
+    }
+
+    .step:nth-child(2) .step-icon {
+      background: var(--cyan);
+    }
+
+    .step:nth-child(3) .step-icon {
+      background: var(--green);
+    }
+
+    .step:nth-child(4) .step-icon {
+      background: var(--amber);
+    }
+
+    .step:nth-child(5) .step-icon {
+      background: var(--violet);
+    }
+
+    .step p {
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.4;
+      margin-top: 8px;
+    }
+
+    .chart-toolbar,
+    .nav-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .toggle {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--paper);
+      color: var(--muted);
+      min-height: 38px;
+      padding: 7px 13px;
+      font-weight: 760;
+      cursor: pointer;
+      transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+    }
+
+    .toggle[aria-pressed="true"] {
+      border-color: var(--blue);
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .bar-chart {
+      display: grid;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 80px minmax(0, 1fr) 76px;
+      gap: 14px;
+      align-items: center;
+      min-height: 38px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .bar-label {
+      color: var(--muted);
+      font-weight: 780;
+    }
+
+    .bar-track {
+      height: 22px;
+      border-radius: 999px;
+      background: rgba(23, 33, 43, 0.08);
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--green), var(--amber), var(--red));
+      transition: width 500ms ease;
+    }
+
+    .bar-value {
+      color: var(--ink);
+      font-weight: 820;
+      text-align: right;
+    }
+
+    .distribution {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 26px;
+      align-items: center;
+    }
+
+    .stacked {
+      height: 82px;
+      display: flex;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(23, 33, 43, 0.12);
+      background: rgba(23, 33, 43, 0.08);
+    }
+
+    .stack-segment {
+      display: grid;
+      place-items: center;
+      color: #fff;
+      min-width: 0;
+      font-weight: 850;
+      font-variant-numeric: tabular-nums;
+      transition: width 360ms ease;
+    }
+
+    .stack-segment.exact {
+      background: var(--green);
+    }
+
+    .stack-segment.high {
+      background: var(--red);
+    }
+
+    .stack-segment.low {
+      background: var(--blue);
+    }
+
+    .legend {
+      display: grid;
+      gap: 12px;
+    }
+
+    .legend-item {
+      display: grid;
+      grid-template-columns: 16px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 1rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .swatch {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      background: var(--blue);
+    }
+
+    .swatch.green {
+      background: var(--green);
+    }
+
+    .swatch.red {
+      background: var(--red);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 8px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      font-size: 0.98rem;
+    }
+
+    .table th,
+    .table td {
+      padding: 13px 14px;
+      border-bottom: 1px solid rgba(216, 208, 196, 0.84);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .table th {
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+    }
+
+    .table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .grade-pair {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--red);
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .case-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .case-button {
+      min-height: 158px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 253, 248, 0.86);
+      padding: 18px;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .case-button:hover,
+    .case-button.active {
+      transform: translateY(-2px);
+      border-color: var(--blue);
+      box-shadow: 0 12px 30px rgba(0, 82, 147, 0.14);
+    }
+
+    .case-button span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.42;
+      margin-top: 10px;
+    }
+
+    .callout {
+      border-left: 6px solid var(--blue);
+      padding: 18px 20px;
+      background: rgba(255, 253, 248, 0.82);
+      color: var(--muted);
+      font-size: 1.14rem;
+      line-height: 1.45;
+    }
+
+    .takeaway {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 16px;
+      align-items: start;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(216, 208, 196, 0.9);
+    }
+
+    .takeaway:last-child {
+      border-bottom: 0;
+    }
+
+    .takeaway-index {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      color: #fff;
+      background: var(--blue);
+      font-weight: 850;
+    }
+
+    .takeaway:nth-child(2) .takeaway-index {
+      background: var(--red);
+    }
+
+    .takeaway:nth-child(3) .takeaway-index {
+      background: var(--green);
+    }
+
+    .takeaway p {
+      color: var(--muted);
+      line-height: 1.4;
+      margin-top: 4px;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      min-height: 34px;
+    }
+
+    .hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .key {
+      display: inline-grid;
+      place-items: center;
+      min-width: 26px;
+      height: 24px;
+      border: 1px solid var(--line);
+      border-bottom-width: 2px;
+      border-radius: 5px;
+      background: rgba(255, 253, 248, 0.92);
+      color: var(--ink);
+      font-size: 0.78rem;
+      font-weight: 850;
+    }
+
+    .progress {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 5px;
+      z-index: 5;
+      background: rgba(23, 33, 43, 0.08);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 10%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan), var(--green), var(--amber));
+      transition: width 220ms ease;
+    }
+
+    .controls {
+      position: fixed;
+      right: 22px;
+      bottom: 18px;
+      z-index: 6;
+      display: flex;
+      gap: 8px;
+    }
+
+    .icon-button {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 253, 248, 0.92);
+      color: var(--ink);
+      font-size: 1.1rem;
+      font-weight: 850;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(23, 33, 43, 0.12);
+    }
+
+    .dots {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%);
+      z-index: 6;
+      display: flex;
+      gap: 7px;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(23, 33, 43, 0.28);
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .dot.active {
+      width: 28px;
+      background: var(--blue);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+
+    .current .reveal {
+      animation: reveal 560ms ease forwards;
+      animation-delay: var(--delay, 80ms);
+    }
+
+    @keyframes reveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes floatIn {
+      from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @media (max-width: 980px) {
+      body {
+        overflow: auto;
+      }
+
+      .deck {
+        min-height: 100vh;
+        height: auto;
+      }
+
+      .slide {
+        position: relative;
+        min-height: 100vh;
+        padding: 34px 22px 78px;
+        display: none;
+        opacity: 1;
+        transform: none;
+      }
+
+      .slide.current {
+        display: grid;
+      }
+
+      h1 {
+        font-size: 3rem;
+      }
+
+      h2 {
+        font-size: 2.2rem;
+      }
+
+      .lead {
+        font-size: 1.12rem;
+      }
+
+      .grid-2,
+      .grid-3,
+      .title-layout,
+      .distribution {
+        grid-template-columns: 1fr;
+      }
+
+      .title-mark {
+        width: min(100%, 360px);
+        justify-self: center;
+      }
+
+      .pipeline,
+      .case-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .step::after {
+        display: none;
+      }
+
+      .bar-row {
+        grid-template-columns: 58px minmax(0, 1fr) 62px;
+      }
+
+      .dots {
+        display: none;
+      }
+
+      .footer {
+        padding-right: 96px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 1ms !important;
+        scroll-behavior: auto !important;
+        transition-duration: 1ms !important;
+      }
+    }
+
+    @media print {
+      body {
+        overflow: visible;
+      }
+
+      .deck {
+        height: auto;
+        background: #fff;
+      }
+
+      .deck::before,
+      .progress,
+      .controls,
+      .dots {
+        display: none;
+      }
+
+      .slide {
+        position: relative;
+        display: grid !important;
+        min-height: 100vh;
+        break-after: page;
+        opacity: 1 !important;
+        transform: none !important;
+        page-break-after: always;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck" aria-label="SK1110 auto-grader demo slides">
+    <div class="progress" aria-hidden="true"><div class="progress-fill"></div></div>
+
+    <section class="slide current" data-title="Title">
+      <header class="slide-header">
+        <div class="kicker">Agentathon demo</div>
+        <div class="slide-number">01 / 12</div>
+      </header>
+      <div class="slide-body grid-2 title-layout">
+        <div>
+          <h1 class="reveal">Can an AI agent grade a Swedish physics exam?</h1>
+          <p class="lead reveal" style="--delay: 180ms">
+            Phase 1 built a Claude Code auto-grader for the SK1110 written exam from
+            2026-03-09, then compared it problem-by-problem against teacher grades.
+          </p>
+          <div class="meta-row reveal" style="--delay: 280ms">
+            <span class="pill"><strong>9</strong> anonymized student PDFs</span>
+            <span class="pill"><strong>8</strong> problems, 1.0 p each</span>
+            <span class="pill"><strong>28/28</strong> unit tests passing</span>
+          </div>
+        </div>
+        <div class="title-mark reveal" style="--delay: 260ms" aria-hidden="true">
+          <div class="mark-core">A1</div>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>Jonas Sellberg · SK1110 auto-grader, track A1</span>
+        <span class="hint"><span class="key">Space</span><span class="key">Arrow</span> navigate</span>
+      </footer>
+    </section>
+
+    <section class="slide" data-title="Challenge">
+      <header class="slide-header">
+        <div class="kicker">The grading problem</div>
+        <div class="slide-number">02 / 12</div>
+      </header>
+      <div class="slide-body">
+        <h2 class="reveal">The hard part was not scoring one answer. It was staying faithful to the rubric.</h2>
+        <div class="grid-3">
+          <div class="panel flat reveal" style="--delay: 140ms">
+            <h3>Handwritten physics</h3>
+            <p class="body-copy">Work is spread across scanned pages, with algebra, diagrams, partial arguments, and missing steps.</p>
+          </div>
+          <div class="panel flat reveal" style="--delay: 220ms">
+            <h3>Closed rubric</h3>
+            <p class="body-copy">The agent can only award rubric items present in <code>rubric/sk1110-260309.json</code>.</p>
+          </div>
+          <div class="panel flat reveal" style="--delay: 300ms">
+            <h3>Swedish feedback</h3>
+            <p class="body-copy">Evidence and comments are produced in Swedish, matching the teacher-facing workflow.</p>
+          </div>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>Constraint: privacy-sensitive PDFs stay local and out of git.</span>
+        <span></span>
+      </footer>
+    </section>
+
+    <section class="slide" data-title="Workflow Inputs">
+      <header class="slide-header">
+        <div class="kicker">Workflow inputs</div>
+        <div class="slide-number">03 / 12</div>
+      </header>
+      <div class="slide-body">
+        <h2 class="reveal">The agentic workflow used five local input folders with distinct roles.</h2>
+        <div class="grid-3">
+          <div class="panel flat reveal" style="--delay: 120ms">
+            <h3><code>Exam/</code></h3>
+            <p class="body-copy">The official exam PDF. Used as the source of problem statements, numbering, and expected exam structure.</p>
+          </div>
+          <div class="panel flat reveal" style="--delay: 190ms">
+            <h3><code>Solution/</code></h3>
+            <p class="body-copy">Teacher solution PDF. Used to understand intended physics reasoning and correct final results.</p>
+          </div>
+          <div class="panel flat reveal" style="--delay: 260ms">
+            <h3><code>Grading_rules/</code></h3>
+            <p class="body-copy">The grading rubric PDF. Converted into the closed JSON rubric used by the grader.</p>
+          </div>
+          <div class="panel flat reveal" style="--delay: 330ms">
+            <h3><code>Human_graded/</code></h3>
+            <p class="body-copy">Teacher-annotated PDFs and XLSX grades. Used only as ground truth for evaluation and comparison.</p>
+          </div>
+          <div class="panel flat reveal" style="--delay: 400ms">
+            <h3><code>Ungraded/</code></h3>
+            <p class="body-copy">Raw student submissions. These are the PDFs the agent grades problem-by-problem.</p>
+          </div>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>Privacy-sensitive source material stays local and remains excluded from git.</span>
+        <span></span>
+      </footer>
+    </section>
+
+    <section class="slide" data-title="Markdown Outputs">
+      <header class="slide-header">
+        <div class="kicker">Workflow markdown</div>
+        <div class="slide-number">04 / 12</div>
+      </header>
+      <div class="slide-body">
+        <h2 class="reveal">Markdown files made the workflow inspectable between agent runs.</h2>
+        <div class="panel reveal" style="--delay: 180ms">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Markdown artifact</th>
+                <th>Role in the project</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>CLAUDE.md</code></td>
+                <td>Durable project state: phase status, decisions, results, reproduction notes, and follow-ups.</td>
+              </tr>
+              <tr>
+                <td><code>docs/superpowers/specs/...design.md</code></td>
+                <td>Approved Phase 1 design: goal, constraints, architecture, eval target, and risks.</td>
+              </tr>
+              <tr>
+                <td><code>docs/superpowers/plans/...phase1.md</code></td>
+                <td>Implementation plan: ordered task breakdown from scaffold through full eval review.</td>
+              </tr>
+              <tr>
+                <td><code>.claude/skills/.../SKILL.md</code></td>
+                <td>Operational grader instructions: page indexing, rubric loop, JSONL schema, and Swedish comments.</td>
+              </tr>
+              <tr>
+                <td><code>results/comparison.md</code></td>
+                <td>Demo evidence: aggregate metrics, per-student comparison, and top disagreements.</td>
+              </tr>
+              <tr>
+                <td><code>results/rubric_summary.md</code></td>
+                <td>Human-readable rubric digest for checking problem weights and special cases.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>The markdown trail doubles as memory, audit log, and handoff material.</span>
+        <span></span>
+      </footer>
+    </section>
+
+    <section class="slide" data-title="What Shipped">
+      <header class="slide-header">
+        <div class="kicker">Phase 1 shipped</div>
+        <div class="slide-number">05 / 12</div>
+      </header>
+      <div class="slide-body grid-2">
+        <div>
+          <h2 class="reveal">A reproducible grader, not just a prompt.</h2>
+          <p class="lead reveal" style="--delay: 140ms">
+            The demo packaged the grading behavior as a project skill plus a stdlib-only
+            evaluation harness that joins agent output to human grades.
+          </p>
+        </div>
+        <div class="panel reveal" style="--delay: 220ms">
+          <ul class="list">
+            <li class="positive">Rubric JSON validator: all 8 problems sum to 1.0 p.</li>
+            <li class="positive">Page indexing pass before grading begins.</li>
+            <li class="positive">Structured JSONL output per student and problem.</li>
+            <li class="positive">Eval script computes letter grades and comparison tables.</li>
+            <li class="positive">Post-review hardening committed after the demo run.</li>
+          </ul>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>Core artifacts: rubric, skill, eval module, comparison report.</span>
+        <span></span>
+      </footer>
+    </section>
+
+    <section class="slide" data-title="Workflow">
+      <header class="slide-header">
+        <div class="kicker">How it runs</div>
+        <div class="slide-number">06 / 12</div>
+      </header>
+      <div class="slide-body">
+        <h2 class="reveal">The agent is a small pipeline with explicit checkpoints.</h2>
+        <div class="pipeline">
+          <div class="step reveal" style="--delay: 100ms">
+            <div class="step-icon">1</div>
+            <h3>Student PDF</h3>
+            <p>One handwritten submission under <code>Ungraded/</code>.</p>
+          </div>
+          <div class="step reveal" style="--delay: 190ms">
+            <div class="step-icon">2</div>
+            <h3>Page index</h3>
+            <p>Locate where each problem appears before scoring.</p>
+          </div>
+          <div class="step reveal" style="--delay: 280ms">
+            <div class="step-icon">3</div>
+            <h3>Rubric loop</h3>
+            <p>Grade each problem against exact item and special-case rules.</p>
+          </div>
+          <div class="step reveal" style="--delay: 370ms">
+            <div class="step-icon">4</div>
+            <h3>JSONL row</h3>
+            <p>Persist points, evidence, comments, and page references.</p>
+          </div>
+          <div class="step reveal" style="--delay: 460ms">
+            <div class="step-icon">5</div>
+            <h3>Eval report</h3>
+            <p>Join by canvas ID and compare to teacher grades.</p>
+          </div>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>Letter grades are computed by eval, not by the agent.</span>
+        <span></span>
+      </footer>
+    </section>
+
+    <section class="slide" data-title="Headline Results">
+      <header class="slide-header">
+        <div class="kicker">Headline results</div>
+        <div class="slide-number">07 / 12</div>
+      </header>
+      <div class="slide-body">
+        <h2 class="reveal">Good point accuracy. Too generous at grade boundaries.</h2>
+        <div class="grid-3">
+          <div class="panel metric reveal" style="--delay: 120ms">
+            <div class="metric-value" data-count="6" data-suffix="/9">0/9</div>
+            <div class="metric-label">letter-grade agreement</div>
+            <div class="metric-target warn">actual: 6/9, target: >=7/9</div>
+          </div>
+          <div class="panel metric reveal" style="--delay: 220ms">
+            <div class="metric-value" data-count="0.14" data-decimals="2" data-suffix=" p">0.00 p</div>
+            <div class="metric-label">overall mean absolute error</div>
+            <div class="metric-target ok">target: <=0.20 p, met</div>
+          </div>
+          <div class="panel metric reveal" style="--delay: 320ms">
+            <div class="metric-value" data-count="29" data-suffix="/64">0/64</div>
+            <div class="metric-label">within-tolerance per problem</div>
+            <div class="metric-target soft">45% exact or within tolerance</div>
+          </div>
+        </div>
+        <p class="callout reveal" style="--delay: 440ms">
+          The useful demo result is the tension: per-problem points are close enough to be promising,
+          while pass/fail and higher-grade boundaries need stricter calibration.
+        </p>
+      </div>
+      <footer class="footer">
+        <span>Comparison: 9 matched students, 0 unmatched agent or human rows.</span>
+        <span></span>
+      </footer>
+    </section>
+
+    <section class="slide" data-title="Problem MAE">
+      <header class="slide-header">
+        <div class="kicker">Where errors concentrate</div>
+        <div class="slide-number">08 / 12</div>
+      </header>
+      <div class="slide-body grid-2">
+        <div>
+          <h2 class="reveal">Most problems were close. Problems 5 and 7 need attention.</h2>
+          <p class="lead reveal" style="--delay: 140ms">
+            Toggle the chart order to see the exam sequence or the largest error sources.
+          </p>
+          <div class="chart-toolbar reveal" style="--delay: 220ms" aria-label="Chart order controls">
+            <button class="toggle" data-order="exam" aria-pressed="true">Exam order</button>
+            <button class="toggle" data-order="error" aria-pressed="false">Largest error first</button>
+          </div>
+        </div>
+        <div class="panel reveal" style="--delay: 240ms">
+          <div id="maeChart" class="bar-chart" aria-label="Per-problem MAE chart"></div>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>MAE range: 0.03 p to 0.26 p per problem.</span>
+        <span></span>
+      </footer>
+    </section>
+
+    <section class="slide" data-title="Bias">
+      <header class="slide-header">
+        <div class="kicker">Scoring tendency</div>
+        <div class="slide-number">09 / 12</div>
+      </header>
+      <div class="slide-body grid-2">
+        <div>
+          <h2 class="reveal">The agent over-scored more often than it under-scored.</h2>
+          <p class="lead reveal" style="--delay: 140ms">
+            Mean signed error was +0.067 p per problem. That is small numerically, but consequential near grade thresholds.
+          </p>
+          <div class="chart-toolbar reveal" style="--delay: 220ms" aria-label="Distribution display controls">
+            <button class="toggle" data-dist="count" aria-pressed="true">Counts</button>
+            <button class="toggle" data-dist="percent" aria-pressed="false">Percent</button>
+          </div>
+        </div>
+        <div class="panel distribution reveal" style="--delay: 260ms">
+          <div>
+            <div class="stacked" aria-label="Exact, high, and low score distribution">
+              <div class="stack-segment exact" data-kind="exact">28</div>
+              <div class="stack-segment high" data-kind="high">26</div>
+              <div class="stack-segment low" data-kind="low">10</div>
+            </div>
+          </div>
+          <div class="legend">
+            <div class="legend-item"><span class="swatch green"></span><span>Exact</span><strong data-legend="exact">28</strong></div>
+            <div class="legend-item"><span class="swatch red"></span><span>Agent higher</span><strong data-legend="high">26</strong></div>
+            <div class="legend-item"><span class="swatch"></span><span>Agent lower</span><strong data-legend="low">10</strong></div>
+          </div>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>All three letter-grade disagreements were too generous, not too strict.</span>
+        <span></span>
+      </footer>
+    </section>
+
+    <section class="slide" data-title="Grade Boundaries">
+      <header class="slide-header">
+        <div class="kicker">Boundary failures</div>
+        <div class="slide-number">10 / 12</div>
+      </header>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div>
+            <h2 class="reveal">The risky cases are grade-boundary cases.</h2>
+            <p class="lead reveal" style="--delay: 140ms">
+              Student names are omitted here. The important pattern is that the agent sometimes gave enough extra A-part credit
+              to cross a formal threshold.
+            </p>
+          </div>
+          <div class="panel reveal" style="--delay: 220ms">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Case</th>
+                  <th>Agent / teacher</th>
+                  <th>Pattern</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Boundary case 1</td>
+                  <td><span class="grade-pair">C / F</span></td>
+                  <td>A-del too generous: 3.5 vs 2.5.</td>
+                </tr>
+                <tr>
+                  <td>Boundary case 2</td>
+                  <td><span class="grade-pair">C / E</span></td>
+                  <td>Passed the 3.0 A-del gate plus B-credit bump.</td>
+                </tr>
+                <tr>
+                  <td>Boundary case 3</td>
+                  <td><span class="grade-pair">B / C</span></td>
+                  <td>B-del generosity pushed C to B.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p class="callout reveal" style="--delay: 360ms">
+          For colleagues: the grader is already useful as a structured second pass,
+          but final grade decisions need examiner review whenever the score is close to a threshold.
+        </p>
+      </div>
+      <footer class="footer">
+        <span>Privacy note: no names or personnummer appear in this demo deck.</span>
+        <span></span>
+      </footer>
+    </section>
+
+    <section class="slide" data-title="What Worked">
+      <header class="slide-header">
+        <div class="kicker">What worked</div>
+        <div class="slide-number">11 / 12</div>
+      </header>
+      <div class="slide-body">
+        <h2 class="reveal">Special-case reasoning was the strongest qualitative signal.</h2>
+        <div class="case-grid">
+          <button class="case-button reveal active" style="--delay: 120ms" data-case="smoke">
+            <h3>Perfect smoke test</h3>
+            <span>One student matched the teacher on all 8 scored problems, including special deductions.</span>
+          </button>
+          <button class="case-button reveal" style="--delay: 220ms" data-case="rules">
+            <h3>Special cases detected</h3>
+            <span>Examples include forgotten n factor, spherical interface, and f instead of s prime.</span>
+          </button>
+          <button class="case-button reveal" style="--delay: 320ms" data-case="structure">
+            <h3>Structured comments</h3>
+            <span>The JSONL output preserves points, evidence, Swedish comments, and page references.</span>
+          </button>
+        </div>
+        <p id="caseDetail" class="callout reveal" style="--delay: 420ms">
+          In the smoke test, the agent achieved an 8/8 problem match and reproduced several teacher-like deductions.
+        </p>
+      </div>
+      <footer class="footer">
+        <span>Click a tile to change the emphasis.</span>
+        <span></span>
+      </footer>
+    </section>
+
+    <section class="slide" data-title="Takeaways">
+      <header class="slide-header">
+        <div class="kicker">Pitch to colleagues</div>
+        <div class="slide-number">12 / 12</div>
+      </header>
+      <div class="slide-body grid-2">
+        <div>
+          <h2 class="reveal">The next phase is calibration and reuse.</h2>
+          <p class="lead reveal" style="--delay: 140ms">
+            Phase 1 proves the workflow can run end-to-end. Phase 2 should make it exam-agnostic and safer around decisions that matter most.
+          </p>
+        </div>
+        <div class="panel reveal" style="--delay: 220ms">
+          <div class="takeaway">
+            <div class="takeaway-index">1</div>
+            <div>
+              <h3>Keep the structured rubric loop</h3>
+              <p>It makes grading inspectable, reproducible, and easy to compare against human ground truth.</p>
+            </div>
+          </div>
+          <div class="takeaway">
+            <div class="takeaway-index">2</div>
+            <div>
+              <h3>Add threshold-aware caution</h3>
+              <p>Near pass/fail and B-del thresholds, require stricter evidence or route to human review.</p>
+            </div>
+          </div>
+          <div class="takeaway">
+            <div class="takeaway-index">3</div>
+            <div>
+              <h3>Parameterize for future exams</h3>
+              <p>Generalize over rubric JSON, exam metadata, page indexing, and comparison files.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>Bottom line: promising as an examiner assistant, not a standalone grader yet.</span>
+        <span></span>
+      </footer>
+    </section>
+
+    <div class="dots" aria-label="Slide picker"></div>
+    <div class="controls" aria-label="Slide navigation">
+      <button class="icon-button" id="prevSlide" aria-label="Previous slide">‹</button>
+      <button class="icon-button" id="nextSlide" aria-label="Next slide">›</button>
+    </div>
+  </main>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const progress = document.querySelector(".progress-fill");
+    const dots = document.querySelector(".dots");
+    const maeData = [
+      { label: "Problem 1", value: 0.03 },
+      { label: "Problem 2", value: 0.20 },
+      { label: "Problem 3", value: 0.09 },
+      { label: "Problem 4", value: 0.11 },
+      { label: "Problem 5", value: 0.26 },
+      { label: "Problem 6", value: 0.07 },
+      { label: "Problem 7", value: 0.23 },
+      { label: "Problem 8", value: 0.17 }
+    ];
+    const distribution = {
+      exact: { label: "Exact", value: 28 },
+      high: { label: "Agent higher", value: 26 },
+      low: { label: "Agent lower", value: 10 }
+    };
+    const caseText = {
+      smoke: "In the smoke test, the agent achieved an 8/8 problem match and reproduced several teacher-like deductions.",
+      rules: "Special-case detection was valuable because common physics mistakes often deserve a fixed override rather than additive partial credit.",
+      structure: "The structured output is the bridge to evaluation: every score can be traced to a problem, page reference, evidence note, and Swedish comment."
+    };
+    let current = 0;
+    let countsPlayed = new WeakSet();
+
+    function makeDots() {
+      slides.forEach((slide, index) => {
+        const dot = document.createElement("button");
+        dot.className = "dot";
+        dot.type = "button";
+        dot.setAttribute("aria-label", `Go to slide ${index + 1}: ${slide.dataset.title}`);
+        dot.addEventListener("click", () => goTo(index));
+        dots.appendChild(dot);
+      });
+    }
+
+    function goTo(index) {
+      const next = Math.max(0, Math.min(index, slides.length - 1));
+      slides.forEach((slide, i) => {
+        slide.classList.toggle("current", i === next);
+        slide.classList.toggle("prev", i < next);
+      });
+      current = next;
+      progress.style.width = `${((current + 1) / slides.length) * 100}%`;
+      Array.from(dots.children).forEach((dot, i) => dot.classList.toggle("active", i === current));
+      window.location.hash = `slide-${current + 1}`;
+      playCounters(slides[current]);
+      if (slides[current].querySelector("#maeChart")) renderMaeChart(getActiveOrder());
+      if (slides[current].querySelector(".stacked")) renderDistribution(getActiveDist());
+    }
+
+    function playCounters(slide) {
+      if (countsPlayed.has(slide)) return;
+      const counters = slide.querySelectorAll("[data-count]");
+      if (!counters.length) return;
+      countsPlayed.add(slide);
+      counters.forEach((counter) => {
+        const target = Number(counter.dataset.count);
+        const decimals = Number(counter.dataset.decimals || 0);
+        const suffix = counter.dataset.suffix || "";
+        const start = performance.now();
+        const duration = 900;
+        function tick(now) {
+          const progressValue = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - progressValue, 3);
+          const value = target * eased;
+          counter.textContent = `${value.toFixed(decimals)}${suffix}`;
+          if (progressValue < 1) requestAnimationFrame(tick);
+          else counter.textContent = `${target.toFixed(decimals)}${suffix}`;
+        }
+        requestAnimationFrame(tick);
+      });
+    }
+
+    function getActiveOrder() {
+      return document.querySelector("[data-order][aria-pressed='true']")?.dataset.order || "exam";
+    }
+
+    function renderMaeChart(order) {
+      const chart = document.querySelector("#maeChart");
+      if (!chart) return;
+      const data = [...maeData];
+      if (order === "error") data.sort((a, b) => b.value - a.value);
+      chart.innerHTML = "";
+      data.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "bar-row";
+        const label = document.createElement("div");
+        label.className = "bar-label";
+        label.textContent = item.label.replace("Problem ", "P");
+        const track = document.createElement("div");
+        track.className = "bar-track";
+        const fill = document.createElement("div");
+        fill.className = "bar-fill";
+        fill.style.width = "0%";
+        if (item.value <= 0.1) fill.style.background = "var(--green)";
+        else if (item.value <= 0.2) fill.style.background = "var(--amber)";
+        else fill.style.background = "var(--red)";
+        track.appendChild(fill);
+        const value = document.createElement("div");
+        value.className = "bar-value";
+        value.textContent = `${item.value.toFixed(2)} p`;
+        row.append(label, track, value);
+        chart.appendChild(row);
+        requestAnimationFrame(() => {
+          fill.style.width = `${Math.min(100, (item.value / 0.30) * 100)}%`;
+        });
+      });
+    }
+
+    function getActiveDist() {
+      return document.querySelector("[data-dist][aria-pressed='true']")?.dataset.dist || "count";
+    }
+
+    function renderDistribution(mode) {
+      const total = Object.values(distribution).reduce((sum, item) => sum + item.value, 0);
+      document.querySelectorAll(".stack-segment").forEach((segment) => {
+        const item = distribution[segment.dataset.kind];
+        const percent = (item.value / total) * 100;
+        segment.style.width = `${percent}%`;
+        segment.textContent = mode === "percent" ? `${Math.round(percent)}%` : item.value;
+      });
+      document.querySelectorAll("[data-legend]").forEach((legend) => {
+        const item = distribution[legend.dataset.legend];
+        const percent = (item.value / total) * 100;
+        legend.textContent = mode === "percent" ? `${percent.toFixed(0)}%` : item.value;
+      });
+    }
+
+    document.querySelectorAll("[data-order]").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll("[data-order]").forEach((peer) => peer.setAttribute("aria-pressed", "false"));
+        button.setAttribute("aria-pressed", "true");
+        renderMaeChart(button.dataset.order);
+      });
+    });
+
+    document.querySelectorAll("[data-dist]").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll("[data-dist]").forEach((peer) => peer.setAttribute("aria-pressed", "false"));
+        button.setAttribute("aria-pressed", "true");
+        renderDistribution(button.dataset.dist);
+      });
+    });
+
+    document.querySelectorAll(".case-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".case-button").forEach((peer) => peer.classList.remove("active"));
+        button.classList.add("active");
+        document.querySelector("#caseDetail").textContent = caseText[button.dataset.case];
+      });
+    });
+
+    document.querySelector("#prevSlide").addEventListener("click", () => goTo(current - 1));
+    document.querySelector("#nextSlide").addEventListener("click", () => goTo(current + 1));
+
+    document.addEventListener("keydown", (event) => {
+      if (["ArrowRight", "PageDown", " "].includes(event.key)) {
+        event.preventDefault();
+        goTo(current + 1);
+      }
+      if (["ArrowLeft", "PageUp", "Backspace"].includes(event.key)) {
+        event.preventDefault();
+        goTo(current - 1);
+      }
+      if (event.key === "Home") goTo(0);
+      if (event.key === "End") goTo(slides.length - 1);
+    });
+
+    let touchStartX = null;
+    document.addEventListener("touchstart", (event) => {
+      touchStartX = event.changedTouches[0].clientX;
+    }, { passive: true });
+    document.addEventListener("touchend", (event) => {
+      if (touchStartX === null) return;
+      const delta = event.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(delta) > 52) goTo(delta < 0 ? current + 1 : current - 1);
+      touchStartX = null;
+    }, { passive: true });
+
+    makeDots();
+    const initial = Number((window.location.hash.match(/slide-(\d+)/) || [])[1]);
+    goTo(Number.isFinite(initial) && initial > 0 ? initial - 1 : 0);
+  </script>
+</body>
+</html>

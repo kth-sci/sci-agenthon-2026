@@ -1,0 +1,189 @@
+{
+  "exam_id": "SK1110-260309",
+  "global_deductions": [
+    {"id": "missing_unit_answer", "label": "Enhet saknas i svaret", "points": -0.2},
+    {"id": "missing_unit_intermediate", "label": "Enhet saknas på många mellanresultat", "points": -0.1},
+    {"id": "unreasonable_answer", "label": "Orimligt svar", "points": -0.2},
+    {"id": "unreasonable_noted", "label": "Orimligt svar men med kommentar om orimlighet", "points": 0.0},
+    {"id": "correct_but_called_unreasonable", "label": "Rätt/rimligt svar men med kommentar om orimlighet", "points": -0.2},
+    {"id": "unit_error_wrong_answer", "label": "Enhetsfel som leder till fel svar", "points": -0.2},
+    {"id": "dimension_error", "label": "Dimensionsfel", "points": -0.2},
+    {"id": "rounding_error", "label": "Avrundningsfel (>1 värdesiffra fel)", "points": -0.1},
+    {"id": "arithmetic_slip", "label": "Räknefel/slarvfel utan orimligt svar", "points": -0.1}
+  ],
+  "problems": [
+    {
+      "n": 1,
+      "max_points": 1.0,
+      "items": [
+        {"id": "1.a", "label": "Omvandla ljudintensitetsnivå till ljudintensitet", "points": 0.3},
+        {"id": "1.b", "label": "Uttryck för hur intensitet beror av effekt och avstånd", "points": 0.2,
+         "sub": [{"label": "korrekt utformad absorption", "points": 0.1}]},
+        {"id": "1.c", "label": "Lösa ut effekten", "points": 0.2,
+         "sub": [{"label": "utan/felaktigt utformad absorbans, sub-point forfeit", "points": 0.1}]},
+        {"id": "1.d", "label": "Sätta in och räkna ut effekten", "points": 0.3,
+         "sub": [{"label": "sätta in rätt absorbans", "points": 0.2}]}
+      ],
+      "special_cases": [
+        {"id": "no_absorption", "label": "Räknat utan absorption (eller felaktigt utformad)",
+         "effect": "set_total", "total_points": 0.6, "apply_global_deductions": false},
+        {"id": "positive_iL", "label": "Positivt värde på ljudintensitetsnivån",
+         "effect": "set_total", "total_points": 0.8, "apply_global_deductions": false}
+      ]
+    },
+    {
+      "n": 2,
+      "max_points": 1.0,
+      "items": [
+        {"id": "2.a", "label": "Förstå att elektrisk effekt blir till värme i motstånd", "points": 0.1},
+        {"id": "2.b", "label": "Rätt uträknad elektrisk effekt P", "points": 0.2,
+         "sub": [{"label": "P = U^2/R", "points": 0.1}]},
+        {"id": "2.c", "label": "Rätt uträknad resistans R", "points": 0.2,
+         "sub": [{"label": "R = rho L / A", "points": 0.1}]},
+        {"id": "2.d", "label": "Rätt uträknad tvärsnittsarea", "points": 0.3,
+         "sub": [{"label": "A = pi r^2", "points": 0.1}]},
+        {"id": "2.e", "label": "Rätt uträknad diameter", "points": 0.2}
+      ],
+      "special_cases": [
+        {"id": "factor_sqrt1000", "label": "Fel faktor sqrt(1000)",
+         "effect": "set_total", "total_points": 0.9, "apply_global_deductions": false},
+        {"id": "factor_1000_uncommented", "label": "Fel faktor 1000 utan kommentar om orimlighet",
+         "effect": "set_total", "total_points": 0.7, "apply_global_deductions": false},
+        {"id": "rc_circuit", "label": "Räknat på RC-krets för att hitta R",
+         "effect": "set_total", "total_points": 0.6, "apply_global_deductions": false}
+      ]
+    },
+    {
+      "n": 3,
+      "max_points": 1.0,
+      "items": [
+        {"id": "3.a", "label": "Förstå att cirkelbanan bestäms av Lorentzkraften", "points": 0.1},
+        {"id": "3.b", "label": "F = qvB", "points": 0.2},
+        {"id": "3.c", "label": "Rätt uträknad hastighet v", "points": 0.3,
+         "sub": [{"label": "E_kin = m v^2 / 2", "points": 0.1}]},
+        {"id": "3.d", "label": "Rätt uträknad radie r", "points": 0.3,
+         "sub": [{"label": "r = m v / (q B)", "points": 0.1}]},
+        {"id": "3.e", "label": "Rätt uträknat avstånd från jordytan", "points": 0.1,
+         "sub": [{"label": "Rätt figur på sökt avstånd", "points": 0.1}]}
+      ],
+      "special_cases": [
+        {"id": "circle_around_earth", "label": "Cirkelbana utritad runt jorden men rätt svar",
+         "effect": "set_total", "total_points": 0.9, "apply_global_deductions": false},
+        {"id": "proton_creates_b", "label": "Protonen skapar magnetfältet",
+         "effect": "set_total", "total_points": 0.5, "apply_global_deductions": false},
+        {"id": "gravity_with_v", "label": "Gravitationskraften med rätt hastighet",
+         "effect": "set_total", "total_points": 0.5, "apply_global_deductions": false}
+      ]
+    },
+    {
+      "n": 4,
+      "max_points": 1.0,
+      "items": [
+        {"id": "4.a", "label": "Rayleigh-kriteriet i någon form (i objekt/bild, som höjd/vinkel)", "points": 0.2},
+        {"id": "4.b", "label": "Sätta in rätt lambda och D", "points": 0.2},
+        {"id": "4.c", "label": "Räkna ut s och/eller s' från förstoring och fokallängd", "points": 0.3},
+        {"id": "4.d", "label": "Jämföra resultat med pixelstorlek", "points": 0.1},
+        {"id": "4.e", "label": "Svara i objektsrymden (och jämföra pixel i rätt rymd)", "points": 0.2}
+      ],
+      "special_cases": [
+        {"id": "f_instead_of_sprime", "label": "Räkna med f istället för s', rätt i övrigt",
+         "effect": "set_total", "total_points": 0.7, "apply_global_deductions": false},
+        {"id": "tried_s_sprime_failed", "label": "Försöka ta fram s och s' men misslyckas, rätt i övrigt",
+         "effect": "set_total", "total_points": 0.7, "apply_global_deductions": false},
+        {"id": "sprime_when_resolution_matches_pixel", "label": "Räknat ut s' när upplösningen matchar pixelstorlek, fel f/m",
+         "effect": "set_total", "total_points": 0.7, "apply_global_deductions": false},
+        {"id": "resolution_matches_pixel", "label": "Matchar upplösningen med pixelstorlek",
+         "effect": "set_total", "total_points": 0.7, "apply_global_deductions": false},
+        {"id": "max_resolution_from_pixel", "label": "Räkna ut maximal upplösning från pixelstorlek (1,6 µm)",
+         "effect": "set_total", "total_points": 0.3, "apply_global_deductions": false}
+      ]
+    },
+    {
+      "n": 5,
+      "max_points": 1.0,
+      "items": [
+        {"id": "5.a.1", "label": "Anta ett rimligt bildavstånd vilket ger värdet på f", "points": 0.1},
+        {"id": "5.a.2", "label": "Använda linsmakarformeln", "points": 0.1},
+        {"id": "5.a.3", "label": "Sätta oändlig krökningsradie på den plana ytan", "points": 0.1},
+        {"id": "5.a.4", "label": "Lösa ut och beräkna andra krökningsradien", "points": 0.1},
+        {"id": "5.a.5", "label": "Skissa linsens form", "points": 0.1},
+        {"id": "5.b.1", "label": "Tydligt visa att krökningsradien minskar med 5 mm",
+         "points": 0.2,
+         "sub": [{"label": "endast konstaterande utan motivering", "points": 0.1}]},
+        {"id": "5.b.2", "label": "Sätta in och beräkna ny fokallängd (inkl. andra ytan plan)", "points": 0.1},
+        {"id": "5.b.3", "label": "Presentera skillnaden tydligt med rätt enhet och tecken", "points": 0.2}
+      ],
+      "special_cases": [
+        {"id": "spherical_interface", "label": "Räkna på en sfärisk gränsyta",
+         "effect": "set_total", "total_points": 0.6, "apply_global_deductions": false}
+      ]
+    },
+    {
+      "n": 6,
+      "max_points": 1.0,
+      "items": [
+        {"id": "6.a", "label": "B-fält för kort spole", "points": 0.1},
+        {"id": "6.b", "label": "Rätt approximation vid Z=10 m", "points": 0.1},
+        {"id": "6.c", "label": "Rätt uträknad radie på spole a = 0,04 m", "points": 0.3},
+        {"id": "6.d", "label": "Rätt uträknad induktans L = 1,13 mH", "points": 0.4,
+         "sub": [
+           {"label": "Rätt formel för induktans", "points": 0.1},
+           {"label": "Rätt B-fält i spolen", "points": 0.1},
+           {"label": "Rätt magnetiskt flöde", "points": 0.1}
+         ]},
+        {"id": "6.e", "label": "Rätt uträknad kapacitans C = 0,1 nF", "points": 0.1,
+         "sub": [{"label": "Rätt formel för resonansfrekvens", "points": 0.1}]}
+      ],
+      "special_cases": [
+        {"id": "forgot_n_factor", "label": "Glömt faktor N i induktans",
+         "effect": "set_total", "total_points": 0.8, "apply_global_deductions": false},
+        {"id": "right_radius_wrong_l_right_c", "label": "Rätt radie och rätt C givet fel L",
+         "effect": "set_total", "total_points": 0.6, "apply_global_deductions": false},
+        {"id": "right_method_no_numbers", "label": "Helt rätt lösningsgång men inga uträknade värden",
+         "effect": "set_total", "total_points": 0.6, "apply_global_deductions": false}
+      ]
+    },
+    {
+      "n": 7,
+      "max_points": 1.0,
+      "items": [
+        {"id": "7.a", "label": "i1' = i2 = 30 deg", "points": 0.2,
+         "sub": [{"label": "Rätt figur med strålen parallell med sidan", "points": 0.1}]},
+        {"id": "7.b", "label": "i1 = i2' = 41 deg", "points": 0.4,
+         "sub": [{"label": "Snells lag", "points": 0.1}]},
+        {"id": "7.c", "label": "Rätt uträknad brytningsvinkel", "points": 0.2,
+         "sub": [{"label": "Rätt formel brytningsvinkel delta_m = 2i - alpha", "points": 0.1}]},
+        {"id": "7.d", "label": "Rätt våglängdsberoende på brytningsindex / dispersion", "points": 0.1},
+        {"id": "7.e", "label": "Motivering hur brytningsindex påverkar brytningsvinkeln", "points": 0.1}
+      ],
+      "special_cases": [
+        {"id": "small_angle_approx", "label": "Korrekt lösning för små vinklar (sin(i) = i)",
+         "effect": "set_total", "total_points": 0.7, "apply_global_deductions": false}
+      ]
+    },
+    {
+      "n": 8,
+      "max_points": 1.0,
+      "items": [
+        {"id": "8.a", "label": "Rätt formel för första ringens maximum", "points": 0.3,
+         "sub": [
+           {"label": "Rätt formel diffraktion cirkulär öppning", "points": 0.2},
+           {"label": "theta_max = 1,34 theta_min", "points": 0.1}
+         ]},
+        {"id": "8.b", "label": "Rätt uppmätta vinklar i bild, blå=1-1,2 deg, röd=1,5-1,7 deg", "points": 0.4,
+         "sub": [
+           {"label": "Uppmätt avstånd på 3 mm för månens synvinkel", "points": 0.1},
+           {"label": "Rätt figur över intensiteten eller vinklar", "points": 0.1}
+         ]},
+        {"id": "8.c", "label": "Rätt antagna 2 våglängder (450, 550, 650 nm)", "points": 0.1},
+        {"id": "8.d", "label": "Rätt uträknad diameter", "points": 0.2}
+      ],
+      "special_cases": [
+        {"id": "interference_not_diffraction", "label": "Räknat på interferens mellan spalter/gitter",
+         "effect": "set_total", "total_points": 0.5, "apply_global_deductions": false},
+        {"id": "only_one_wavelength", "label": "Räknat på endast en våglängd",
+         "effect": "set_total", "total_points": 0.8, "apply_global_deductions": false}
+      ]
+    }
+  ]
+}
