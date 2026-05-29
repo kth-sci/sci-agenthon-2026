@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>SCI Agentathon 2026 — Interactive Summary · claude-opus-4-7</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="generator" content="claude-opus-4-7 (Claude Opus 4.7, 1M context)" />
+<style>
+  :root {
+    --bg-0: #07101e;
+    --bg-1: #0e1a30;
+    --bg-2: #16243f;
+    --bg-3: #1d2f52;
+    --ink-0: #f5f0e6;
+    --ink-1: #cfd4e1;
+    --ink-2: #8e96a8;
+    --copper: #ffbc6e;
+    --copper-dim: #d28c46;
+    --blue: #66b2ff;
+    --green: #7adfa3;
+    --red: #ff8a8a;
+    --violet: #c39bff;
+    --line: #2b3a5d;
+    --line-2: #3c4f78;
+    --shadow: 0 10px 40px rgba(0,0,0,.35);
+    --r: 14px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg-0); color: var(--ink-0); font: 16px/1.55 -apple-system, "Segoe UI", Roboto, system-ui, sans-serif; }
+  a { color: var(--copper); }
+  ::selection { background: var(--copper); color: #112; }
+
+  /* ===== top model badge ===== */
+  .top-badge {
+    position: fixed; top: 16px; right: 16px; z-index: 100;
+    background: var(--copper); color: #15203a; font-weight: 700;
+    padding: 6px 14px; border-radius: 999px; font-size: 13px;
+    box-shadow: var(--shadow);
+    border: 1px solid #ffd6a0;
+  }
+  .top-badge::before { content: "▲ "; }
+
+  /* ===== layout ===== */
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+  /* ===== hero ===== */
+  header.hero {
+    position: relative;
+    background: radial-gradient(1200px 600px at 50% 20%, rgba(102,178,255,.13), transparent 60%),
+                linear-gradient(180deg, #07101e 0%, #0e1a30 100%);
+    padding: 64px 0 0 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center;
+  }
+  @media (max-width: 960px) { .hero-grid { grid-template-columns: 1fr; } }
+  .hero-meta .kicker {
+    text-transform: uppercase; letter-spacing: 2px; color: var(--copper); font-weight: 800; font-size: 14px;
+  }
+  .hero-meta h1 {
+    font-size: clamp(34px, 4.4vw, 60px); line-height: 1.04; margin: 14px 0 12px 0; letter-spacing: -0.5px;
+  }
+  .hero-meta h1 .accent { color: var(--copper); }
+  .hero-meta .lede { color: var(--ink-1); max-width: 56ch; }
+  .hero-stats { display: flex; gap: 32px; margin-top: 22px; flex-wrap: wrap; }
+  .hero-stats .stat { display: flex; align-items: baseline; gap: 8px; }
+  .hero-stats .num { font-size: 36px; font-weight: 800; color: var(--copper); }
+  .hero-stats .lab { color: var(--ink-2); text-transform: uppercase; letter-spacing: 1.5px; font-size: 12px; }
+
+  .hero-img {
+    border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    background: #0a1325;
+  }
+  .hero-img img { display: block; width: 100%; height: auto; }
+
+  /* ===== discovery banner ===== */
+  .discovery {
+    margin: 48px 0 0;
+    background: linear-gradient(135deg, rgba(255,188,110,.10), rgba(102,178,255,.06));
+    border: 1px solid var(--copper-dim);
+    border-radius: var(--r);
+    padding: 22px 26px;
+    display: flex; gap: 20px; align-items: flex-start;
+  }
+  .discovery .tag {
+    flex: 0 0 auto;
+    background: var(--copper); color: #142239;
+    padding: 4px 10px; border-radius: 999px; font-weight: 800; font-size: 12px; letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .discovery .body { font-size: 18px; line-height: 1.5; }
+  .discovery .body em { color: var(--copper); font-style: normal; font-weight: 600; }
+
+  /* ===== sections ===== */
+  section { padding: 56px 0; border-bottom: 1px solid var(--line); }
+  section h2 {
+    font-size: 28px; margin: 0 0 6px 0; letter-spacing: -0.3px;
+  }
+  section .sub { color: var(--ink-2); margin: 0 0 28px; }
+
+  /* ===== schedule timeline ===== */
+  .schedule { display: grid; grid-template-columns: 1fr; gap: 4px; }
+  .row {
+    display: grid; grid-template-columns: 120px 1fr 200px;
+    align-items: stretch;
+    background: var(--bg-1);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+  }
+  .row:hover {
+    transform: translateX(4px);
+    border-color: var(--copper-dim);
+    box-shadow: 0 6px 22px rgba(0,0,0,.3);
+  }
+  .row .time {
+    background: var(--bg-2); color: var(--copper);
+    padding: 14px 14px; font-weight: 700; font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+    border-right: 1px solid var(--line);
+    font-size: 14px;
+  }
+  .row .activity { padding: 14px 14px; }
+  .row .activity .name { font-weight: 700; }
+  .row .activity .desc { color: var(--ink-2); font-size: 14px; margin-top: 2px; }
+  .row .where { color: var(--ink-1); padding: 14px 14px; border-left: 1px solid var(--line); font-size: 14px; }
+  .row.section-head {
+    background: transparent; border: 0; border-radius: 0;
+    grid-template-columns: 1fr; padding: 22px 6px 6px 6px;
+    text-transform: uppercase; letter-spacing: 2.5px; color: var(--copper); font-weight: 800; font-size: 12px;
+  }
+  .row.section-head:hover { transform: none; box-shadow: none; }
+
+  /* ===== tracks ===== */
+  .tracks-tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+  .tab {
+    background: var(--bg-1); border: 1px solid var(--line); color: var(--ink-1);
+    padding: 10px 16px; border-radius: 10px 10px 0 0; cursor: pointer;
+    font-weight: 700; font-size: 14px; transition: background .15s ease, color .15s ease;
+  }
+  .tab .chip { display: inline-block; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 6px; background: var(--copper); color: #15203a; margin-right: 8px; font-weight: 800; }
+  .tab.active { background: var(--bg-2); color: var(--copper); border-color: var(--copper-dim); border-bottom-color: var(--bg-2); }
+  .panel {
+    background: var(--bg-2); border: 1px solid var(--line);
+    border-radius: 0 10px 10px 10px; padding: 22px 26px;
+    display: none;
+  }
+  .panel.active { display: block; }
+  .panel h3 { margin: 0 0 6px; }
+  .panel .lead-line { color: var(--copper); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+  .panel .desc { color: var(--ink-1); }
+  .pills { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0 18px; }
+  .pill {
+    background: rgba(102,178,255,.08); border: 1px solid #29426f; color: var(--ink-1);
+    padding: 4px 10px; border-radius: 999px; font-size: 12px;
+  }
+  .pill.copper { background: rgba(255,188,110,.10); border-color: var(--copper-dim); color: var(--copper); }
+  .subteams { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 760px) { .subteams { grid-template-columns: 1fr; } }
+  .subteam {
+    background: var(--bg-1); border: 1px solid var(--line); border-radius: 10px; padding: 14px;
+  }
+  .subteam .h { font-weight: 700; color: var(--copper); margin-bottom: 4px; }
+  .subteam .b { color: var(--ink-1); font-size: 14px; }
+
+  /* ===== predictions ===== */
+  .pred-row { display: grid; grid-template-columns: 70px 1fr 90px 110px; gap: 10px; align-items: center; margin: 10px 0; }
+  .pred-row .ttag { font-weight: 800; color: var(--copper); }
+  .pred-row .barwrap { background: var(--bg-1); border: 1px solid var(--line); border-radius: 8px; height: 28px; position: relative; overflow: hidden; }
+  .pred-row .bar { height: 100%; background: linear-gradient(90deg, var(--copper-dim), var(--copper)); width: 0; transition: width 1.2s cubic-bezier(.2,.8,.2,1); }
+  .pred-row .bar.b-blue { background: linear-gradient(90deg, #2c6bb3, var(--blue)); }
+  .pred-row .bar.b-green { background: linear-gradient(90deg, #2c8f5a, var(--green)); }
+  .pred-row .bar.b-violet { background: linear-gradient(90deg, #6a4aa1, var(--violet)); }
+  .pred-row .num { font-weight: 800; font-size: 20px; }
+  .pred-row .pct { color: var(--ink-2); text-align: right; }
+  .pred-confidence { color: var(--ink-2); font-size: 13px; margin-top: 8px; }
+  .pred-rationale { background: var(--bg-1); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; margin-top: 14px; color: var(--ink-1); }
+  .pred-rationale strong { color: var(--copper); }
+  .pred-rationale ul { margin: 8px 0 0; padding-left: 18px; }
+  .pred-rationale li { margin: 4px 0; }
+
+  /* ===== survey chart ===== */
+  .survey-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  @media (max-width: 980px) { .survey-grid { grid-template-columns: 1fr; } }
+  .chart {
+    background: var(--bg-1); border: 1px solid var(--line); border-radius: var(--r); padding: 20px;
+  }
+  .chart h4 { margin: 0 0 14px; font-size: 14px; color: var(--ink-2); text-transform: uppercase; letter-spacing: 1.2px; }
+  .respondents { background: var(--bg-1); border: 1px solid var(--line); border-radius: var(--r); padding: 8px; max-height: 460px; overflow: auto; }
+  .resp {
+    display: grid; grid-template-columns: 50px 1fr;
+    padding: 8px 10px; border-radius: 8px; cursor: pointer; align-items: start;
+    transition: background .12s ease;
+  }
+  .resp:hover { background: var(--bg-2); }
+  .resp .tag {
+    font-weight: 800; font-size: 11px; padding: 2px 6px; border-radius: 6px; text-align: center;
+    background: var(--bg-3); color: var(--ink-1); align-self: start;
+  }
+  .resp .tag.A { background: rgba(255,188,110,.18); color: var(--copper); }
+  .resp .tag.B { background: rgba(102,178,255,.18); color: var(--blue); }
+  .resp .tag.C { background: rgba(195,155,255,.18); color: var(--violet); }
+  .resp .tag.X { background: rgba(170,170,170,.15); color: var(--ink-2); }
+  .resp .body { font-size: 13px; color: var(--ink-1); }
+  .resp .body .dept { color: var(--ink-2); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+  .resp .body .quote {
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .resp.expanded .body .quote { -webkit-line-clamp: unset; overflow: visible; }
+
+  .filter-bar { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+  .fb {
+    background: var(--bg-2); border: 1px solid var(--line); color: var(--ink-1);
+    padding: 6px 10px; border-radius: 999px; cursor: pointer; font-size: 12px;
+  }
+  .fb.active { background: var(--copper); color: #15203a; border-color: var(--copper); }
+
+  /* ===== expects ===== */
+  .expects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  @media (max-width: 900px) { .expects { grid-template-columns: 1fr; } }
+  .expect-card {
+    background: var(--bg-1); border: 1px solid var(--line); border-radius: var(--r); padding: 18px 20px;
+  }
+  .expect-card h4 { margin: 0 0 8px; color: var(--copper); }
+  .expect-card p { margin: 0; color: var(--ink-1); font-size: 14px; }
+
+  /* ===== footer ===== */
+  footer { padding: 36px 0 80px; color: var(--ink-2); font-size: 13px; }
+  footer .row-foot { display: flex; flex-wrap: wrap; gap: 12px 32px; justify-content: space-between; align-items: center; }
+  footer code { background: var(--bg-2); border: 1px solid var(--line); padding: 1px 6px; border-radius: 6px; color: var(--ink-1); }
+</style>
+</head>
+<body>
+
+<div class="top-badge">claude-opus-4-7</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-meta">
+        <div class="kicker">SCI Agentathon · KTH · 26 May 2026</div>
+        <h1>Think · Act · <span class="accent">Observe</span> · Repeat</h1>
+        <p class="lede">
+          An eight-hour, three-track, ~45-faculty hands-on event where KTH School of Engineering Sciences
+          puts agents to work on real teaching, research, and administrative problems —
+          one plenary, two coding sessions, end-of-day live demos.
+        </p>
+        <div class="hero-stats">
+          <div class="stat"><div class="num">45</div><div class="lab">enrolled</div></div>
+          <div class="stat"><div class="num">3</div><div class="lab">tracks</div></div>
+          <div class="stat"><div class="num">8h</div><div class="lab">build time</div></div>
+          <div class="stat"><div class="num">42</div><div class="lab">survey responses</div></div>
+        </div>
+      </div>
+      <div class="hero-img">
+        <img src="slogan_claude-opus-4-7.png" alt="Think · Act · Observe · Repeat — SCI Agentathon 2026" />
+      </div>
+    </div>
+
+    <!-- discovery -->
+    <div class="discovery">
+      <span class="tag">Single discovery</span>
+      <div class="body">
+        Among the 42 faculty who described a use case in the registration survey,
+        <em>only ~14 % named a teaching problem</em> — yet Track A (Teaching) is the track with the deepest prepared
+        infrastructure (ungraded exam PDFs, a Mastery Learning Loop skill, human-graded reference set);
+        meanwhile <em>~52 %</em> described problems that fall under Track C (admin, knowledge, lab automation),
+        which is also the only track that ships <em>without</em> a fixed tutorial. <strong>The room with the highest demand has the lowest scaffolding.</strong>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>What people expect</h2>
+    <p class="sub">Inferred from the program, prep materials, and 42 free-text survey responses.</p>
+    <div class="expects">
+      <div class="expect-card">
+        <h4>To leave with a working thing, not a tutorial.</h4>
+        <p>The day's centrepiece is a 16:00 live-demo block — one demo per sub-team. Sub-teams are told they "converge on a demoable result", not "complete the exercise". Faculty arrive with named projects (MEMEX, lab monitoring, eISP filler) and want something they can show colleagues on Wednesday.</p>
+      </div>
+      <div class="expect-card">
+        <h4>To compare Claude, Codex, and Antigravity in anger.</h4>
+        <p>Participant instructions <em>require</em> Claude Desktop, Claude Code, and (if no Claude sub) Codex; Antigravity is "useful in Track B if you already have a workflow built around it". Many participants want a side-by-side feel for which CLI works for their workflow.</p>
+      </div>
+      <div class="expect-card">
+        <h4>To understand the agent loop well enough to teach it.</h4>
+        <p>Multiple respondents (#27, #37) say they're attending to prepare a course or department retreat on AI. The plenary's "Agents = Brain + Memory + Tools + Loop" framing is engineered exactly for that hand-off — and that's why the slogan is the loop itself.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>The day in 11 blocks</h2>
+    <p class="sub">Hover a row for emphasis. Mouse-over the time column to see what kind of block it is.</p>
+    <div class="schedule" id="schedule"></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>The three tracks</h2>
+    <p class="sub">Click a tab to see what each track has prepared, who's running it, and what sub-teams will build.</p>
+    <div class="tracks-tabs" id="track-tabs">
+      <div class="tab active" data-track="A"><span class="chip">A</span>Course syllabus → teaching assistant</div>
+      <div class="tab" data-track="B"><span class="chip">B</span>Research &amp; HPC workflow agents</div>
+      <div class="tab" data-track="C"><span class="chip">C</span>Open agent exploration</div>
+    </div>
+    <div id="track-panels"></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What the 42 respondents actually want to build</h2>
+    <p class="sub">Every survey free-text answer, hand-categorised by best-fit track. Click any row to expand.</p>
+    <div class="survey-grid">
+      <div>
+        <div class="chart">
+          <h4>Stated problems by best-fit track</h4>
+          <svg id="bar" viewBox="0 0 600 280" style="width:100%; height:auto"></svg>
+          <div style="color: var(--ink-2); font-size: 12px; margin-top: 8px;">
+            Rows where the respondent left the question blank or gave only "Yes I would build an AI" are
+            counted as <em>flexible</em>; they will distribute across tracks at sign-up time.
+          </div>
+        </div>
+        <div class="chart" style="margin-top: 16px;">
+          <h4>Respondents by KTH department / division</h4>
+          <svg id="depts" viewBox="0 0 600 280" style="width:100%; height:auto"></svg>
+        </div>
+      </div>
+      <div>
+        <div class="filter-bar">
+          <div class="fb active" data-f="all">All 42</div>
+          <div class="fb" data-f="A">Teaching (A)</div>
+          <div class="fb" data-f="B">Research (B)</div>
+          <div class="fb" data-f="C">Knowledge / lab (C)</div>
+          <div class="fb" data-f="X">Flexible</div>
+        </div>
+        <div class="respondents" id="resp-list"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Prediction: how the 45 split across rooms</h2>
+    <p class="sub">A point forecast with reasoning, derived from the survey content + room affordances.</p>
+
+    <div class="pred-row">
+      <div class="ttag">A</div>
+      <div class="barwrap"><div class="bar" data-pct="24"></div></div>
+      <div class="num">11</div>
+      <div class="pct">24%</div>
+    </div>
+    <div class="pred-row">
+      <div class="ttag">B</div>
+      <div class="barwrap"><div class="bar b-blue" data-pct="33"></div></div>
+      <div class="num">15</div>
+      <div class="pct">33%</div>
+    </div>
+    <div class="pred-row">
+      <div class="ttag">C</div>
+      <div class="barwrap"><div class="bar b-violet" data-pct="42"></div></div>
+      <div class="num">19</div>
+      <div class="pct">42%</div>
+    </div>
+
+    <div class="pred-rationale">
+      <strong>Reasoning.</strong>
+      <ul>
+        <li><strong>Track C (~19).</strong> Highest stated demand. ~52% of described problems (eISP, scheduling, RAG over regulations, lab monitoring, credit-transfer matching, travel claims, budget predictions, hardware automation) are Track C territory. Applied Physics dominates the dept distribution and their lab-automation needs anchor here.</li>
+        <li><strong>Track B (~15).</strong> Second-largest by stated demand (~28%), but punching above its survey weight because the prepared sub-teams — HPC workflow, agentic debugging, scientific postprocessing — directly match the deepest-described problems (Andrea Volpato's MEMEX, the Nearl refactor, NAISS cluster orchestration, MD-trajectory postprocessing).</li>
+        <li><strong>Track A (~11).</strong> Smallest. Only ~14% named a teaching problem, and the math department is the only division that strongly clusters here. Counterweight: Track A has the most demo-ready material, so curiosity walk-ins will push the number up.</li>
+        <li><strong>Confidence:</strong> ±3 per track. The "flexible" cohort (10 respondents who left the question blank or said "no specific problem") is the swing vote and will choose by physical proximity — Track A is in Salongen (same room as plenary), so it gets walk-ins of convenience.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="row-foot">
+      <div>
+        Sources: <code>Agentathon_2026_Program.pdf</code>, <code>Agentathon_2026_Participant_instructions.pdf</code>,
+        <code>Plenary/Claude_Design_SCI&nbsp;Agentathon · 26 May 2026.pdf</code>,
+        <code>ai-agentathon-for-faculty-svar-2026-05-19.xlsx</code>,
+        the Track A &amp; B README skeletons, and TrackC/README.txt.
+      </div>
+      <div>
+        Artifact: <code>event_summary_claude-opus-4-7.html</code> · slogan <code>slogan_claude-opus-4-7.png</code><br/>
+        Generated by <strong style="color:var(--copper)">claude-opus-4-7</strong> (Claude Opus 4.7, 1M context) on 2026-05-26.
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* =========== schedule data =========== */
+const schedule = [
+  ["sec", "Morning plenary"],
+  ["08:30 → 09:15", "Arrival in Salongen", "card-holders from 08:30; KTHB opens to all at 09:00", "Salongen, KTHB"],
+  ["09:15 → 09:20", "Welcome and house rules", "Fredrik Lundell", "Salongen, KTHB"],
+  ["09:20 → 09:45", "Agents. What are they?", "Artem Kulachenko — brain · memory · tools · loop", "Salongen, KTHB"],
+  ["09:45 → 09:55", "Live demo", "Artem Kulachenko", "Salongen, KTHB"],
+  ["09:55 → 10:05", "Track introductions", "three-minute pitches by each track lead", "Salongen, KTHB"],
+  ["10:05 → 10:15", "Sub-team formation", "self-organising on the spot", "Salongen, KTHB"],
+  ["sec", "Coding session 1"],
+  ["10:15 → 10:30", "Hands-on starter", "track lead runs it in each track room", "Track rooms"],
+  ["10:30 → 12:00", "Coding session 1", "sub-teams build their first deliverable", "Track rooms"],
+  ["sec", "Lunch & cross-track update"],
+  ["12:00 → 13:00", "Lunch", "lunch boxes catered to Salongen at 12:00", "Salongen, KTHB"],
+  ["13:00 → 13:15", "Cross-track update", "3-minute status per track", "Salongen, KTHB"],
+  ["sec", "Coding session 2"],
+  ["13:15 → 15:45", "Coding session 2", "sub-teams converge on a demoable result", "Track rooms"],
+  ["15:45 → 16:00", "Demo setup", "sub-teams move to Salongen and set up", "Salongen, KTHB"],
+  ["sec", "Demos & wrap-up"],
+  ["16:00 → 16:45", "End-of-day live demos", "one short demo per sub-team", "Salongen, KTHB"],
+  ["16:45 → 17:00", "Wrap-up", "lessons learnt, next steps", "Salongen, KTHB"],
+  ["17:00", "Close", "", ""]
+];
+const schedRoot = document.getElementById('schedule');
+schedule.forEach(r => {
+  if (r[0] === "sec") {
+    const d = document.createElement('div');
+    d.className = "row section-head";
+    d.textContent = r[1];
+    schedRoot.appendChild(d);
+  } else {
+    const d = document.createElement('div');
+    d.className = "row";
+    d.innerHTML = `
+      <div class="time">${r[0]}</div>
+      <div class="activity"><div class="name">${r[1]}</div><div class="desc">${r[2]}</div></div>
+      <div class="where">${r[3] || ""}</div>
+    `;
+    schedRoot.appendChild(d);
+  }
+});
+
+/* =========== tracks =========== */
+const tracks = {
+  A: {
+    title: "Course syllabus → working teaching assistant",
+    leadLine: "Lead · Artem Kulachenko + Jonas Sellberg",
+    room: "Salongen, KTH Library (same room as plenary)",
+    desc: "Two or more sub-teams in parallel: grading and feedback agents, student-facing question-and-answer agents.",
+    pills: ["grading", "feedback", "tutoring", "Mastery Learning Loop", "Claude skills", "PDF exams"],
+    subteams: [
+      ["Correcting agents · SE1020 written exam",
+       "8 ungraded student PDFs, 8 human-graded references, a solution key, and a Grading_rules.pdf. The deliverable: an agent that grades a student paper and produces feedback comparable to the human grader."],
+      ["Correcting agents · SE2134 mixed homework",
+       "Same shape, different course: scanned homework PDFs, a solution sample, and a parallel human-graded set. Tests cross-course robustness."],
+      ["Tutoring agents · MiLLy",
+       "The Mastery Learning Loop skill (SKILL.md ships ready): analyse skills in a task, then quiz Conceptual → Procedural → Predictive → Corrective → Transfer, one question at a time."]
+    ]
+  },
+  B: {
+    title: "Research & HPC workflow agents",
+    leadLine: "Lead · Marco Laudato",
+    room: "Faxén, Fluid Mechanics lab, Teknikringen 8, floor 1",
+    desc: "Sub-teams pick a direction: orchestration on the cluster, agentic debugging, or interactive postprocessing. Shared message: agents help research computing when they make assumptions visible, checks explicit, and outputs reproducible.",
+    pills: ["HPC", "Slurm", "agentic debugging", "postprocessing", "scientific reproducibility"],
+    subteams: [
+      ["01 · HPC simulation workflow",
+       "Drives a damped-oscillator sweep on the cluster. Comes with sweep_parameters.csv, a Slurm script, modules.sh, and three pre-canned failure logs (bad path, missing module, timeout). The agent's job is to read the logs and fix the workflow."],
+      ["02 · Research code debugging",
+       "A Python oscillator + diagnostics + integrators package with a real test suite (run_tests.sh, conftest.py, test_oscillator.py, test_diagnostics.py). Sub-team's agent makes the failing tests pass without breaking the passing ones."],
+      ["03 · Scientific postprocessing",
+       "A reference vs. challenge dataset pair (raw_runs.csv, trajectories_sample.csv, metadata.json). The agent recovers physics from the challenge data given the reference as ground truth."]
+    ]
+  },
+  C: {
+    title: "Open agent exploration: KTH systems, knowledge work, lab automation",
+    leadLine: "Lead · Wei Ouyang (SciLifeLab)",
+    room: "Hållfasthetslära seminarierum, Teknikringen 8D, floor 1",
+    desc: "Open exploration, no fixed tutorial. Wei shows a starter set of agent tools, then participants pick what they want to build. Natural home for administrative workflows, retrieval-augmented knowledge agents, and lab automation. Materials live at kth-sci.github.io/sci-agenthon-2026/track-c.html.",
+    pills: ["eISP", "RAG", "Canvas API", "lab automation", "scheduling", "credit transfer", "travel claims"],
+    subteams: [
+      ["Knowledge agents",
+       "RAG over program regulations, course descriptions, and admin docs. Open question per survey #18: vector DB vs. interconnected .md wiki? Sandboxing against prompt injection."],
+      ["Administrative agents",
+       "eISP filler (#22), scheduling and email reminders (#28), travel claim filler (#42), budget overview (#35), Canvas-API automation (#23)."],
+      ["Lab automation",
+       "Lab monitoring + preventive maintenance agent — vacuum/pump/water-leak signals → Slack/SMS alerts (#15). Hardware control under automation (#5). Robotics-meets-AI (#6)."],
+      ["Document review agents",
+       "KTH-course-vs-other-university match scoring for credit transfer (#10), literature-study agents (#35), daily summaries of field searches (#32)."]
+    ]
+  }
+};
+const panelsRoot = document.getElementById('track-panels');
+Object.entries(tracks).forEach(([k, t], idx) => {
+  const p = document.createElement('div');
+  p.className = "panel" + (k === 'A' ? ' active' : '');
+  p.id = "panel-" + k;
+  const pills = t.pills.map((x,i) => `<span class="pill ${i===0?'copper':''}">${x}</span>`).join('');
+  const subs = t.subteams.map(s => `<div class="subteam"><div class="h">${s[0]}</div><div class="b">${s[1]}</div></div>`).join('');
+  p.innerHTML = `
+    <div class="lead-line">${t.leadLine}</div>
+    <h3>${t.title}</h3>
+    <div class="desc"><strong>Room:</strong> ${t.room}<br/>${t.desc}</div>
+    <div class="pills">${pills}</div>
+    <div class="subteams">${subs}</div>
+  `;
+  panelsRoot.appendChild(p);
+});
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + tab.dataset.track).classList.add('active');
+  });
+});
+
+/* =========== survey data =========== */
+const responses = [
+  // [id, track-tag, dept, problem]
+  [1,  "X", "Teknisk Mekanik",                                       "General orientation with how to create and use an agent at work"],
+  [2,  "X", "Engineering mechanics / Aerospace",                     "Can only attend the morning (oral exam in the afternoon); colleague Huina Mao will represent the group."],
+  [3,  "B", "Engineering Mechanics / Material & Structural Mechanics","Related to research"],
+  [4,  "B", "Applied Physics / BON",                                  "Develop a local reconstruction pipeline for our micro-CT system; use AI-based approaches to lower the barrier to building and extending a flexible reconstruction pipeline with artefact-removal."],
+  [5,  "C", "Applied Physics",                                        "Use AI agents to control multiple pieces of hardware and run them in automation."],
+  [6,  "C", "Computer Science",                                       "How can robots have the brain of AI and how to make AI have bodies?"],
+  [7,  "X", "Applied Physics, LAMP",                                  "(no problem specified)"],
+  [8,  "B", "Applied Physics",                                        "Bring MEMEX project — a portable Git-tracked layer for human-AI work — into a real test with researchers. Scientific case: adapting an RGB-to-spectrum upsampler from CIE-observer to real camera/film sensors via numerical minimization on sensor-weighted errors."],
+  [9,  "C", "TekMek / SMF",                                           "Use AI agents to keep track of parallel administrative processes."],
+  [10, "C", "Dept. Applied Physics",                                  "AI-agent to find the degree of correspondence between a KTH course description and one from another university — decision support for credit transfer."],
+  [11, "A", "Mathematics",                                            "How to use AI for doing research and teaching/assessing in math."],
+  [12, "X", "APHYS / BON",                                            "(no problem specified)"],
+  [13, "B", "Department of Applied Physics",                          "Use an AI agent to refactor the Nearl Python package (3D dynamic features from MD trajectories), modularising core components and workflow management."],
+  [14, "A", "Mathematics",                                            "Agents as TAs in labs; agents that assess software submitted by students for solving project tasks."],
+  [15, "C", "Applied Physics, Quantum Light & Matter",                "Lab monitoring + preventive maintenance agent — track vacuum, pumps, power failures, water leaks; Slack/SMS alerts; service-interval planning."],
+  [16, "B", "Physics / Nuclear Engineering",                          "Set up an AI agent on HPC cluster (Linux terminal) to help students debug Monte-Carlo simulation input files, interpret Slurm errors, write sbatch scripts."],
+  [17, "X", "Engineering Mechanics / Fluid Mechanics",                "(no problem specified)"],
+  [18, "C", "Physics",                                                "RAG agent for program regulations, accreditation/eligibility admin processes; local small open-source LLM (Gemma 4 E4B / Qwen3.5:4B); ground responses, sandbox against prompt injection."],
+  [19, "A", "Physics, condensed matter theory",                       "Maybe an agent that grades homework — see how well it does."],
+  [20, "X", "Engineering Mechanics",                                  "(no problem specified)"],
+  [21, "X", "Mathematics / Skolchef",                                 "(no problem specified)"],
+  [22, "C", "Aphys / QLAMP",                                          "Agent that assists supervisors in filling out the eISP."],
+  [23, "C", "Mathematics",                                            "Admin tasks (course-schedule consistency checking), Canvas API exploration, AI-assisted design of assessments and grading criteria."],
+  [24, "B", "Mathematics",                                            "Automating design and training of neural networks for imaging problems."],
+  [25, "B", "Applied Physics",                                        "Improve the data/image process with AI — speed, quality, and accuracy."],
+  [26, "B", "Applied Physics / Lamp",                                 "Efficient software development."],
+  [27, "X", "KTH Physics / PAM",                                      "Surveying agent applications at KTH (research automation, grading, document review) to prepare a course at the Physics retreat in October 2026."],
+  [28, "C", "TekMek-SMD",                                             "Agent for scheduling and emailing reminders; workflow simplification for back-and-forth email-heavy tasks."],
+  [29, "B", "Physics",                                                "Build an AI agent addressing a specific physics problem."],
+  [30, "X", "Physics, Nuclear Science and Engineering",               "(no problem specified)"],
+  [31, "B", "Engineering Mechanics / Fluid Mechanics",                "What measurable impact does sustained generative-AI use have on students' critical thinking and attention spans, and how can these effects be mitigated?"],
+  [32, "C", "Teknik",                                                 "Daily summaries of field searches; coding-test-iteration cycles."],
+  [33, "X", "Teknisk mekanik",                                        "(no problem specified)"],
+  [34, "X", "SCI / matematik / numerisk analys (SFG)",                "(no problem specified)"],
+  [35, "C", "Applied Physics",                                        "Agent for budget predictions + economy overview from VIS; literature-studies agent that extracts user-specified data."],
+  [36, "B", "Tillämpad fysik",                                        "Agentic systems for complex simulations on NAISS clusters (multi-program flow with login); RAG over a personal reference library (Zotero)."],
+  [37, "A", "Mathematics / Numerical analysis, optimization, systems","How to use AI in research (surveys, references, suggesting directions, proof-helping); and how to use AI in teaching (lectures, homework/exam setup, grading, materials)."],
+  [38, "A", "Department of Engineering Mechanics",                    "AI-guided allocation of lab times for experimental solid-mechanics students; feedback agent for writing scientific lab reports with KTH-library-grounded citations."],
+  [39, "A", "Applied Physics, Bio-opto-nano Division",                "Automatic grading of hand-written student exams."],
+  [40, "A", "Applied Physics / BON",                                  "Answering common questions of students in a given course; dynamic online self-learning/supporting tutorials."],
+  [41, "X", "Physics",                                                "Would take the chance to start building an AI."],
+  [42, "C", "Applied Physics",                                        "Agent which fills travel claims."]
+];
+
+/* ----- per-track counts ----- */
+const counts = {A:0, B:0, C:0, X:0};
+const deptMap = {};
+responses.forEach(r => {
+  counts[r[1]] = (counts[r[1]]||0)+1;
+  // simplify dept
+  let d = r[2].toLowerCase();
+  let cat;
+  if (d.match(/applied physics|aphys|tillämpad|lamp|qlamp|bon|pam|nuclear/)) cat = "Applied Physics & adjacent";
+  else if (d.match(/mathematics|matematik|numerisk|sfg/)) cat = "Mathematics";
+  else if (d.match(/mechanics|tekmek|teknisk mekanik|smf|smd|fluid|aerospace|engineering mechanics/)) cat = "Engineering Mechanics";
+  else if (d.match(/physics/)) cat = "Physics";
+  else if (d.match(/computer|teknik/)) cat = "Other";
+  else cat = "Other";
+  deptMap[cat] = (deptMap[cat]||0)+1;
+});
+
+/* ----- bar chart (track demand) ----- */
+function drawBar(svgId, data, color){
+  const svg = document.getElementById(svgId);
+  const padL = 150, padR = 60, padT = 14, padB = 14;
+  const w = 600, h = 280;
+  const max = Math.max(...Object.values(data));
+  const rowH = (h - padT - padB) / Object.keys(data).length;
+  const colors = {
+    "Track A · Teaching": "#ffbc6e",
+    "Track B · Research / HPC": "#66b2ff",
+    "Track C · Knowledge / Admin / Lab": "#c39bff",
+    "Flexible (no problem stated)": "#7a8198"
+  };
+  let html = "";
+  let i = 0;
+  for (const [k, v] of Object.entries(data)) {
+    const y = padT + i*rowH + 6;
+    const barW = (v / max) * (w - padL - padR);
+    const col = color || colors[k] || "#ffbc6e";
+    html += `<text x="${padL-10}" y="${y+rowH/2 + 2}" text-anchor="end" fill="#cfd4e1" font-size="13" font-family="ui-sans-serif">${k}</text>`;
+    html += `<rect x="${padL}" y="${y}" width="${barW}" height="${rowH-14}" rx="4" fill="${col}"/>`;
+    html += `<text x="${padL + barW + 8}" y="${y+rowH/2 + 2}" fill="#f5f0e6" font-size="13" font-weight="700" font-family="ui-sans-serif">${v}</text>`;
+    i++;
+  }
+  svg.innerHTML = html;
+}
+
+drawBar("bar", {
+  "Track A · Teaching": counts.A,
+  "Track B · Research / HPC": counts.B,
+  "Track C · Knowledge / Admin / Lab": counts.C,
+  "Flexible (no problem stated)": counts.X
+});
+
+const orderedDepts = Object.entries(deptMap).sort((a,b)=>b[1]-a[1]);
+drawBar("depts", Object.fromEntries(orderedDepts), "#66b2ff");
+
+/* ----- respondent list ----- */
+const list = document.getElementById('resp-list');
+function renderList(filter){
+  list.innerHTML = "";
+  responses.forEach(r => {
+    if (filter !== "all" && r[1] !== filter) return;
+    const div = document.createElement('div');
+    div.className = "resp";
+    div.innerHTML = `
+      <div class="tag ${r[1]}">${r[1]==='X'?'?':r[1]}</div>
+      <div class="body"><div class="dept">#${String(r[0]).padStart(2,'0')} · ${r[2]}</div><div class="quote">${r[3]}</div></div>
+    `;
+    div.addEventListener('click', () => div.classList.toggle('expanded'));
+    list.appendChild(div);
+  });
+}
+renderList("all");
+document.querySelectorAll('.fb').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.fb').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    renderList(b.dataset.f);
+  });
+});
+
+/* ----- animate prediction bars on load ----- */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.querySelectorAll('.pred-row .bar').forEach(b => {
+      b.style.width = b.dataset.pct + "%";
+    });
+  }, 200);
+});
+</script>
+</body>
+</html>

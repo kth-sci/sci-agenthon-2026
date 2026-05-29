@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KTH SCI Agentathon 2026 Summary · Gemini 3.5 Flash</title>
+    <!-- Google Fonts Inter & JetBrains Mono -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+    <style>
+        :root {
+            --bg-primary: #0b0f19;
+            --bg-secondary: #111827;
+            --bg-tertiary: #1f2937;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --accent-blue: #6366f1;
+            --accent-purple: #8b5cf6;
+            --accent-cyan: #06b6d4;
+            --accent-pink: #ec4899;
+            --border-color: #374151;
+            --kth-blue: #004791;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-bottom: 5rem;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-blue);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, #001f3f 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background-opacity: 0.9;
+        }
+
+        .nav-container {
+            max-w: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo svg {
+            fill: none;
+            stroke: var(--accent-blue);
+            stroke-width: 2;
+        }
+
+        .logo-text span {
+            color: var(--accent-blue);
+        }
+
+        .model-badge {
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .container {
+            max-w: 1200px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 3rem;
+            align-items: center;
+            margin-bottom: 4rem;
+            background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.1), transparent 50%);
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        .hero-text p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .meta-tag {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .meta-tag::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-cyan);
+            border-radius: 50%;
+        }
+
+        .meta-tag.venue::before {
+            background-color: var(--accent-purple);
+        }
+
+        .slogan-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .slogan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .slogan-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 1rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            transition: transform 0.5s ease;
+        }
+
+        .slogan-card:hover .slogan-image {
+            transform: scale(1.02);
+        }
+
+        .slogan-label {
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-purple);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+        }
+
+        .slogan-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        /* Discovery Section */
+        .discovery-box {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .discovery-box::after {
+            content: 'DISCOVERY';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 5rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.02);
+            letter-spacing: 0.1em;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .discovery-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #a5b4fc;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .discovery-title svg {
+            width: 24;
+            height: 24;
+            stroke: var(--accent-cyan);
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .discovery-text {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        /* Track Analysis Dashboard */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title::after {
+            content: '';
+            flex-grow: 1;
+            height: 1px;
+            background-color: var(--border-color);
+        }
+
+        .track-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .track-card-info {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .track-card-info:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-blue);
+        }
+
+        .track-card-info.track-a:hover { border-color: var(--accent-blue); }
+        .track-card-info.track-b:hover { border-color: var(--accent-purple); }
+        .track-card-info.track-c:hover { border-color: var(--accent-cyan); }
+
+        .track-card-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .track-badge-mini {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .track-a .track-badge-mini { background-color: rgba(99, 102, 241, 0.15); color: #818cf8; }
+        .track-b .track-badge-mini { background-color: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+        .track-c .track-badge-mini { background-color: rgba(6, 182, 212, 0.15); color: #22d3ee; }
+
+        .track-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .track-room {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 1rem;
+        }
+
+        .track-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .track-stats {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+            margin-top: auto;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-bar-container {
+            width: 100%;
+            height: 8px;
+            background-color: var(--bg-tertiary);
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-bottom: 0.75rem;
+        }
+
+        .stat-bar {
+            height: 100%;
+            border-radius: 9999px;
+            transition: width 1s ease-out;
+        }
+
+        .track-a .stat-bar { background-color: var(--accent-blue); }
+        .track-b .stat-bar { background-color: var(--accent-purple); }
+        .track-c .stat-bar { background-color: var(--accent-cyan); }
+
+        .stat-values {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-count {
+            font-size: 1.75rem;
+            font-weight: 800;
+        }
+
+        .track-a .stat-count { color: #818cf8; }
+        .track-b .stat-count { color: #a78bfa; }
+        .track-c .stat-count { color: #22d3ee; }
+
+        .stat-pct {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Timeline / Schedule Section */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto 4rem auto;
+            padding: 1rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 31px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 5rem;
+            margin-bottom: 2rem;
+            transition: transform 0.2s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(5px);
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 20px;
+            top: 4px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+        .timeline-item:hover .timeline-marker {
+            border-color: var(--accent-blue);
+            background-color: var(--accent-blue);
+        }
+
+        .timeline-item.active .timeline-marker {
+            border-color: var(--accent-cyan);
+            background-color: var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+        }
+
+        .timeline-time {
+            position: absolute;
+            left: -80px;
+            top: 4px;
+            width: 80px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-align: right;
+            padding-right: 1.5rem;
+        }
+
+        .timeline-content {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+            border-radius: 12px;
+        }
+
+        .timeline-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Participant Explorer */
+        .explorer-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+        }
+
+        .explorer-header {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-input-container {
+            position: relative;
+            flex-grow: 1;
+            min-width: 250px;
+        }
+
+        .search-input {
+            width: 100%;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.875rem;
+            top: 50%;
+            transform: translateY(-50%);
+            stroke: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .filter-select {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem 2rem 0.75rem 1rem;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            cursor: pointer;
+            outline: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1rem;
+        }
+
+        .filter-select:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .results-count {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .participants-table-container {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        .participants-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .participants-table th {
+            background-color: var(--bg-tertiary);
+            padding: 1rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+
+        .participants-table td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+
+        .participants-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .participants-table tr:hover td {
+            background-color: rgba(255, 255, 255, 0.01);
+        }
+
+        .id-cell {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .dept-cell {
+            font-weight: 500;
+            min-width: 180px;
+        }
+
+        .q-cell {
+            color: var(--text-primary);
+            max-width: 500px;
+            word-wrap: break-word;
+            white-space: pre-line;
+        }
+
+        .track-cell span {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            white-space: nowrap;
+        }
+
+        .track-cell-a { background-color: rgba(99, 102, 241, 0.12); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.2); }
+        .track-cell-b { background-color: rgba(139, 92, 246, 0.12); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.2); }
+        .track-cell-c { background-color: rgba(6, 182, 212, 0.12); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.2); }
+
+        footer {
+            margin-top: 5rem;
+            border-top: 1px solid var(--border-color);
+            padding: 2.5rem 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--accent-blue);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                <div class="logo-text">KTH SCI <span>Agentathon 2026</span></div>
+            </a>
+            <div class="model-badge">Gemini 3.5 Flash</div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-text">
+                <div class="inline-flex items-center gap-2 bg-accent/20 text-accent-light text-xs font-semibold px-3 py-1 rounded-full mb-6 border border-accent/30" style="display:inline-block; background-color: rgba(99, 102, 241, 0.15); color: #818cf8; font-size:0.75rem; padding: 0.25rem 0.75rem; border-radius: 9999px; margin-bottom:1.5rem;">
+                    SCI Faculty & Researchers Hackathon &middot; May 26, 2026
+                </div>
+                <h1>Intelligence in<br>Scientific Workflows</h1>
+                <p>A full-day agentic AI hackathon for KTH School of Engineering Sciences. We explore the boundaries of AI agents in teaching, computing research, and KTH admin systems.</p>
+                
+                <div class="hero-meta">
+                    <div class="meta-tag">Tuesday, 26 May 2026</div>
+                    <div class="meta-tag venue">KTH Library + Teknikringen 8</div>
+                    <div class="meta-tag">42 Enrolled Participants</div>
+                </div>
+            </div>
+            
+            <div class="slogan-card">
+                <div class="slogan-label">Event Tagline & Loop</div>
+                <div class="slogan-text">Think &bull; Act &bull; Observe &bull; Repeat</div>
+                <!-- Slogan Artwork -->
+                <img src="slogan_gemini_3_5_flash.png" alt="Think Act Observe Repeat Artwork" class="slogan-image">
+            </div>
+        </section>
+
+        <!-- Discovery Box -->
+        <section class="discovery-box">
+            <div class="discovery-title">
+                <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                Key Model Discovery
+            </div>
+            <div class="discovery-text">
+                We discovered that the event's introductory presentation slides were co-created with AI, where the human provided the outline and copywriting while Claude generated the layout and SVGs—fixing a human spelling mistake ("presentaiton" to "presentation") but introducing its own spacing error ("presentationdone") in the process.
+            </div>
+        </section>
+
+        <!-- Track Breakdown Dashboard -->
+        <section>
+            <h2 class="section-title">Track Analysis & Predictions</h2>
+            <div class="track-grid">
+                
+                <!-- Track A -->
+                <div class="track-card-info track-a">
+                    <div class="track-card-header">
+                        <div class="track-badge-mini">Track A</div>
+                        <h3 class="track-name">Teaching Assistant Agents</h3>
+                        <div class="track-room">Salongen, KTH Library (KTHB)</div>
+                        <p class="track-desc">From syllabus to automated TAs. Building grading assistance, homework feedback, and student-facing tutoring agents like KTH's <strong>MiLLy</strong>.</p>
+                    </div>
+                    <div class="track-stats">
+                        <div class="stat-label">Predicted Attendance</div>
+                        <div class="stat-bar-container">
+                            <div class="stat-bar" style="width: 26%;"></div>
+                        </div>
+                        <div class="stat-values">
+                            <div class="stat-count">11</div>
+                            <div class="stat-pct">26.2% of participants</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Track B -->
+                <div class="track-card-info track-b">
+                    <div class="track-card-header">
+                        <div class="track-badge-mini">Track B</div>
+                        <h3 class="track-name">Research & HPC Workflows</h3>
+                        <div class="track-room">Faxén, Fluid Mechanics Lab</div>
+                        <p class="track-desc">Command-line agents on clusters. Creating SLURM pre-submission validators, debugging physical code (Verlet steppers), and automated data post-processing.</p>
+                    </div>
+                    <div class="track-stats">
+                        <div class="stat-label">Predicted Attendance</div>
+                        <div class="stat-bar-container">
+                            <div class="stat-bar" style="width: 40.5%;"></div>
+                        </div>
+                        <div class="stat-values">
+                            <div class="stat-count">17</div>
+                            <div class="stat-pct">40.5% of participants</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Track C -->
+                <div class="track-card-info track-c">
+                    <div class="track-card-header">
+                        <div class="track-badge-mini">Track C</div>
+                        <h3 class="track-name">Administrative & Knowledge</h3>
+                        <div class="track-room">Hållfasthetslära Seminarierum</div>
+                        <p class="track-desc">Open exploration of KTH admin. Fulfilling travel claims, eISP forms, budget tools, Canvas API, scheduling reminders, and laboratory condition monitoring.</p>
+                    </div>
+                    <div class="track-stats">
+                        <div class="stat-label">Predicted Attendance</div>
+                        <div class="stat-bar-container">
+                            <div class="stat-bar" style="width: 33.3%;"></div>
+                        </div>
+                        <div class="stat-values">
+                            <div class="stat-count">14</div>
+                            <div class="stat-pct">33.3% of participants</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Interactive Schedule Section -->
+        <section>
+            <h2 class="section-title">Program Schedule</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-time">08:30</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Arrival & Networking</div>
+                        <div class="timeline-subtitle">Salongen, KTH Library &bull; Card-holders enter from 08:30, public at 09:00</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-time">09:15</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Welcome & House Rules</div>
+                        <div class="timeline-subtitle">Salongen, KTH Library &bull; Fredrik Lundell</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item active">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-time">09:20</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Plenary Presentation: "Agents. What are they?"</div>
+                        <div class="timeline-subtitle">Salongen, KTH Library &bull; Artem Kulachenko (Current Session)</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-time">09:45</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Live Demo & Track Introductions</div>
+                        <div class="timeline-subtitle">Salongen, KTH Library &bull; Artem Kulachenko & Track Leads</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-time">10:15</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Coding Session 1: Sub-team Formation & Setup</div>
+                        <div class="timeline-subtitle">Track Rooms &bull; Starter hands-on exercises led by room hosts</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-time">12:00</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Catered Lunch & Cross-track Updates</div>
+                        <div class="timeline-subtitle">Salongen, KTH Library &bull; 3-minute status update from each track room</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-time">13:15</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Coding Session 2: Converging on Demos</div>
+                        <div class="timeline-subtitle">Track Rooms &bull; Sub-teams build a fully functional, verifiable AI loop</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-time">16:00</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">End-of-day Live Showcase</div>
+                        <div class="timeline-subtitle">Salongen, KTH Library &bull; One short live demo per sub-team</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Participant Explorer Section -->
+        <section>
+            <h2 class="section-title">Participant & Project Explorer</h2>
+            <div class="explorer-card">
+                <div class="explorer-header">
+                    <div class="search-controls">
+                        <div class="search-input-container">
+                            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <input type="text" id="searchInput" class="search-input" placeholder="Search by department, question or keyword...">
+                        </div>
+                        <select id="trackFilter" class="filter-select">
+                            <option value="all">All Tracks</option>
+                            <option value="a">Track A (Teaching)</option>
+                            <option value="b">Track B (Research & HPC)</option>
+                            <option value="c">Track C (Admin & Exploration)</option>
+                        </select>
+                    </div>
+                    <div class="results-count">Showing <span id="displayedCount">42</span> of 42 participants</div>
+                </div>
+
+                <div class="participants-table-container">
+                    <table class="participants-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 60px;">ID</th>
+                                <th style="width: 250px;">Department/Division</th>
+                                <th>Proposed AI Project / Question</th>
+                                <th style="width: 220px;">Predicted Track</th>
+                            </tr>
+                        </thead>
+                        <tbody id="participantsBody">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 KTH School of Engineering Sciences. Created for SCI Agentathon 2026.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem;">Analysis and dashboard generated by <strong>Gemini 3.5 Flash</strong> (Antigravity AI).</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // Data injected from pandas analysis
+        const participantsData = [
+  {
+    "id": 1,
+    "department": "Teknisk Mekanik",
+    "question": "General orientation with how to create and use an agent at work",
+    "track": "Track C: Administrative & Knowledge Exploration"
+  },
+  {
+    "id": 2,
+    "department": "Engineering mechanics / Aerospace",
+    "question": "Jag kan endast vara med på förmiddagen den 26 maj då jag har muntlig examination i min kurs på eftermiddagen. Min kollega Huina Mao har dock anmält sig och genom henne kan vi inom avdelningen/forskargruppen få vidareutveckling lokalt.",
+    "track": "Track A: Course Syllabus to Teaching Assistant"
+  },
+  {
+    "id": 3,
+    "department": "Engineering Mechanics / Material and Structural Mechanics",
+    "question": "Related to research",
+    "track": "Track B: Research & HPC Workflows"
+  },
+  {
+    "id": 4,
+    "department": "Applied Physics/BON",
+    "question": "I would like to use this opportunity to seek support in developing a local reconstruction pipeline for our micro‑CT system in the lab. While several open‑source reconstruction packages already exist, implementing and systematically comparing different methods is time‑consuming and requires substantial effort.\nAt present, we rely on the proprietary reconstruction pipeline supplied with the system. This solution offers limited technical support and does not allow us to add new functions or further develop the pipeline ourselves. As a result, our ability to improve image quality, implement additional artefact‑removal methods, or explore new scanning and reconstruction techniques is constrained.\nMy goal is to use AI‑based approaches to lower the barrier to building and extending a flexible reconstruction pipeline. In particular, I am interested in creating a framework that allows the integration of additional artefact‑removal functions beyond those currently available, while remaining adaptable for future methodological development.\nI am aware that one day is a very short time for such an ambitious task. However, receiving guidance on how to structure and initiate this effort during the workshop would be extremely valuable, as it would allow me to continue developing and refining the pipeline independently afterwards.",
+    "track": "Track B: Research & HPC Workflows"
+  },
+  {
+    "id": 5,
+    "department": "Applied physics",
+    "question": "How to use AI-Agentahton to control multiple pieces of hardware and run them in automation.",
+    "track": "Track C: Administrative & Knowledge Exploration"
+  },
+  {
+    "id": 6,
+    "department": "Computer Science",
+    "question": "How can the robots have the brain of AI and how to make AI have bodies?",
+    "track": "Track C: Administrative & Knowledge Exploration"
+  },
+  {
+    "id": 7,
+    "department": "Applied Physics, LAMP",
+    "question": "*(No specific problem listed - joining for general exploration and learning)*",
+    "track": "Track B: Research & HPC Workflows"
+  },
+  {
+    "id": 8,
+    "department": "Applied Physics",
+    "question": "I want to use the AI Agentathon to bring a project I have been building, MEMEX, into a setting where I can test it properly with other researchers and smart people instead of keeping it as a private workflow experiment. MEMEX started from a simple frustration: too much human-AI work is trapped inside one tool, one model, or one session. What I am trying to build instead is a portable layer of plain text, code, and Git-tracked artifacts where instructions, memory, decisions, and executable work can stay documented and reusable over time. The broader question I want to explore is whether a structure like this can genuinely help a researcher move into a neighboring field faster and with more rigor, rather than only making familiar work slightly easier. MEMEX want also try to solve how to document the research process and make it more documented and sharable to people learning research.\n\nThe scientific case study I want to use is a concrete problem in color science and hyperspectral imaging: adapting a state-of-the-art RGB-to-spectrum upsampler, usually fitted to the CIE standard observer, to a camera or film sensor with different spectral sensitivities. Once the target is no longer only human colorimetry but a real imaging system, the mismatch becomes interesting. An upsampler can be perfectly reasonable in tristimulus terms and still be wrong for the sensor that actually integrates the light. The question I want to work on is whether one can fit an explicit correction, through numerical minimization on measured spectra and sensor-weighted errors, so that the reconstructed spectra become better matched to a real camera or film response rather than only to the standard observer.\n\nDuring the hackathon I want to use MEMEX to hold that whole process together: literature notes, assumptions, datasets, calibration code, intermediate results, and evaluation on held-out tests. For me the experiment has two outputs. One is scientific: a concrete result on how RGB-to-spectrum methods can be adapted from standard-observer colorimetry to real sensors. The other is methodological: a serious test of whether a curated and well framed human-AI workflow can make research more continuous, shareable, and efficient when I am working slightly outside my home field. If it works, the result is not just a demo for a day, but a documented open-source research structure that remains useful afterwards and can keep with the researcher experience.\n\nHappy to share more information or the codebase of MEMEX if interested.\n\nBest regards,\nAndrea Volpato",
+    "track": "Track B: Research & HPC Workflows"
+  },
+  {
+    "id": 9,
+    "department": "TekMek/SMF",
+    "question": "How can I use AI agents to keep track of parallell administrative processes?",
+    "track": "Track C: Administrative & Knowledge Exploration"
+  },
+  {
+    "id": 10,
+    "department": "Dept. Applied Physics",
+    "question": "AI-agent to find the degree of correspondence between a KTH course description and a course description from another university. Could be used as a decision support for when deciding about credit transfer.",
+    "track": "Track A: Course Syllabus to Teaching Assistant"
+  },
+  {
+    "id": 11,
+    "department": "Mathematics",
+    "question": "How to use ai for doing research and teaching/assessing in math",
+    "track": "Track A: Course Syllabus to Teaching Assistant"
+  },
+  {
+    "id": 12,
+    "department": "APHYS/BON",
+    "question": "*(No specific problem listed - joining for general exploration and learning)*",
+    "track": "Track B: Research & HPC Workflows"
+  },
+  {
+    "id": 13,
+    "department": "Department of Applied Physics",
+    "question": "Nearl (https://github.com/miemiemmmm/Nearl) is a Python package to extract 3D dynamic features from MD trajectories. This application aims to improve the reusability of the trajectory and improve the capacity of machine learning models in solving molecular systems, and incorporate structural dynamics. In this hackathon, I wish to employ an AI agent to refactor the Nearl package’s Python layer to modularize the core components and workflow management process.",
+    "track": "Track B: Research & HPC Workflows"
+  },
+  {
+    "id": 14,
+    "department": "Mathematics",
+    "question": "- Setting up agents that can serve as TAs in helping students in labs.\n- Setting up agents that can assess software submitted by students for solving tasks in a project",
+    "track": "Track A: Course Syllabus to Teaching Assistant"
+  },
+  {
+    "id": 15,
+    "department": "Applied Physics, Quantum Light and Matter",
+    "question": "I would like to build an AI agent for laboratory monitoring and preventive maintenance. The agent would continuously track key lab conditions such as vacuum pressures, pump status, power failures, water leaks, and other critical signals from our equipment and infrastructure. Its main purpose would be to detect abnormal values or fault conditions early and immediately alert the relevant people in our group through Slack and SMS, so that issues can be handled before they damage experiments, equipment, or samples.\n\nIn addition to real-time monitoring, the agent would also help with maintenance planning by keeping track of service intervals for the equipment used in the lab. That would make it easier to schedule routine servicing, reduce downtime, and avoid failures caused by missed maintenance. I think this would be a strong and practical workshop project because it solves a real need in our lab, combines monitoring with intelligent alerting and planning, and could deliver clear value very quickly.",
+    "track": "Track C: Administrative & Knowledge Exploration"
+  },
+  {
+    "id": 16,
+    "department": "Physics/Nuclear Engineering",
+    "question": "I don't think I want to do it during the workshop, but my aim is to set up an AI agent on my HPC cluster that would run in a terminal and help students to set up and debug input files for MC simulations, and help to interpret and process results. Also, I'd like the agent to help with setting up Slurm execution (sbatch) scripts and interpreting errors. So, the agent needs to run in the Linux terminal, and be available to different users.",
+    "track": "Track B: Research & HPC Workflows"
+  },
+  {
+    "id": 17,
+    "department": "Engineering Mechanics/Fluid Mechanics",
+    "question": "*(No specific problem listed - joining for general exploration and learning)*",
+    "track": "Track B: Research & HPC Workflows"
+  },
+  {
+    "id": 18,
+    "department": "Physics",
+    "question": "RAG solutions where an agent can help answer questions about a program, regulations about how education is organized, administrative processes like ackreditation, eligibility, etc. I'd like to explore using smaller-scale open-source LLM that can run locally, e.g. Gemma 4 E4B or Qwen3.5:4B. Questions to think about:\n- Minimal set of skills the agent needs to function\n- Pros and cons of different memory structures to populate when ingesting the documents making up the knowledge base - interconnected .md wiki tree structure? Vector db?\n- How to ground the responses reliably in the documents provided (ideally the answers would include pointers to the relevant sections of the docs)\n- Security: when opened to a large group of students, I want the agent to only respond to questions that it is intended for, and politely decline any attempts to get it to engage in other conversations. It also becomes susceptible to prompt-injection security risks, which means the agent should run in a sandboxed environment to limit the blast radius in case something goes wrong.",
+    "track": "Track C: Administrative & Knowledge Exploration"
+  },
+  {
+    "id": 19,
+    "department": "Physics, condensed matter theory",
+    "question": "I am not sure, to be honest. Maybe writing an agent that can grade homework and see how well it does.",
+    "track": "Track A: Course Syllabus to Teaching Assistant"
+  },
+  {
+    "id": 20,
+    "department": "Engineering Mechanics",
+    "question": "*(No specific problem listed - joining for general exploration and learning)*",
+    "track": "Track B: Research & HPC Workflows"
+  },
+  {
+    "id": 21,
+    "department": "Mathematics/Skolchef",
+    "question": "*(No specific problem listed - joining for general exploration and learning)*",
+    "track": "Track C: Administrative & Knowledge Exploration"
+  },
+  {
+    "id": 22,
+    "department": "Aphys/QLAMP",
+    "question": "An agent that assists supervisors in filling out the eISP",
+    "track": "Track C: Administrative & Knowledge Exploration"
+  },
+  {
+    "id": 23,
+    "department": "Mathematics",
+    "question": "-Various administrative tasks, e.g., checking if course-schedules fulfill certain conditions.\n-Explore possibilities with the Canvas API.\n-AI-assisted design of assessments and grading criteria.",
+    "track": "Track A: Course Syllabus to Teaching Assistant"
+  },
+  {
+    "id": 24,
+    "department": "Mathematics",
+    "question": "Automating design and training of neural networks for various problems in imaging.",
+    "track": "Track B: Research & HPC Workflows"
+  },
+  {
+    "id": 25,
+    "department": "Applied Physics",
+    "question": "How to improve the data/image process with AI, including processing speed, quality of results, and accuracy (can be tested reliably).",
+    "track": "Track B: Research & HPC Workflows"
+  },
+  {
+    "id": 26,
+    "department": "Applied physics/Lamp",
+    "question": "Efficient software development",
+    "track": "Track B: Research & HPC Workflows"
+  },
+  {
+    "id": 27,
+    "department": "KTH Physics / PAM",
+    "question": "I do not have a specific problem in mind but am interested in understanding the potential applications of AI agents for different tasks at KTH, including \nresearch (e.g. automatization of computational research tasks), \nteaching (automated grading of tests, feedback on student reports, etc.)\nadministration (e.g., automated drafting and review of documents)\n\nThis will help me prepare for organizing a course in AI at the Department of Physics' retreat in October 2026.",
+    "track": "Track C: Administrative & Knowledge Exploration"
+  },
+  {
+    "id": 28,
+    "department": "Tekmek-SMD",
+    "question": "An agent to help with scheduling and emailing reminders to others. Right now a lot of time is spent on this where there can be an agent that streamlines  and prioritizes these processes. \nAlso I think there is an opportunity for using an Ai agent to help with workflow simplification and also help with unique workflows. Sometimes there are some very specific workflows that requires slot of back and forth emailing. An AI agent that can help with these would be very helpful to minimize the time waiting for response.",
+    "track": "Track C: Administrative & Knowledge Exploration"
+  },
+  {
+    "id": 29,
+    "department": "Physics",
+    "question": "How to build an AI agent addressing a specific physics problem.",
+    "track": "Track B: Research & HPC Workflows"
+  },
+  {
+    "id": 30,
+    "department": "Physics, Nuclear Science and Engineering",
+    "question": "*(No specific problem listed - joining for general exploration and learning)*",
+    "track": "Track B: Research & HPC Workflows"
+  },
+  {
+    "id": 31,
+    "department": "Engineering Mechanics/Fluid Mechanics",
+    "question": "What measurable impact does sustained use of generative AI have on students’ critical thinking and attention spans, and how can these effects be mitigated?",
+    "track": "Track A: Course Syllabus to Teaching Assistant"
+  },
+  {
+    "id": 32,
+    "department": "Teknik",
+    "question": "Daily summaries of field searches.\nCoding-testing-iterations",
+    "track": "Track C: Administrative & Knowledge Exploration"
+  },
+  {
+    "id": 33,
+    "department": "Teknisk mekanik",
+    "question": "*(No specific problem listed - joining for general exploration and learning)*",
+    "track": "Track B: Research & HPC Workflows"
+  },
+  {
+    "id": 34,
+    "department": "SCI / matematikinstitutionen / numerisk analys = SFG",
+    "question": "*(No specific problem listed - joining for general exploration and learning)*",
+    "track": "Track B: Research & HPC Workflows"
+  },
+  {
+    "id": 35,
+    "department": "Appl physics",
+    "question": "I want an agent that can do budget predictions and help me have economy overview with data from vis(or the new system)  and other manual input.\nI also want to program agents to do literature studies and extract the kind of data I ask for",
+    "track": "Track C: Administrative & Knowledge Exploration"
+  },
+  {
+    "id": 36,
+    "department": "Tillämpad fysik",
+    "question": "1/ Agentic systems for complex simulations (output from one program decides what to do next, etc). How to make this work with the login procedures of the NAISS computer clusters. \n\n2/ Some efficient system of finding and synthesizing information into smart answers actively using my own library of references, possibly using this together with zotero. This is not \"agent first\" but something else (RAG?).",
+    "track": "Track B: Research & HPC Workflows"
+  },
+  {
+    "id": 37,
+    "department": "Mathematics/Numerical analysis, optimization and systems theory",
+    "question": "I would like to work on two questions. I am not sure if both are applicable.\n1. How to use AI in research. What can be achieved? To give a survey and find references? To suggest research directions? To help proving results?\n2. How to use AI in teaching. What can be achieved? Assistance in lecturing? Assistance in setting up homeworks and exams? Assistance in grading homeworks and exams? Assistance in creating material for students to read?",
+    "track": "Track A: Course Syllabus to Teaching Assistant"
+  },
+  {
+    "id": 38,
+    "department": "Department of Engineering Mechanics",
+    "question": "I would like to create an agent that provides an AI-guided allocation of lab times for students in my experimental solid mechanics lecture. This includes the interaction between the students and the AI agent to support them based on the course content outlined during the lecture. A related goal is to create a direct feedback agent that helps students in writing scientific lab reports, again based on guidelines from the course but also extended by information from e.g. the KTH library when it comes to review literature (scientific publications) and how to use citations/references properly.",
+    "track": "Track A: Course Syllabus to Teaching Assistant"
+  },
+  {
+    "id": 39,
+    "department": "Applied Physics, Bio-opto-nano Division",
+    "question": "Automatic grading of hand-written student exams",
+    "track": "Track A: Course Syllabus to Teaching Assistant"
+  },
+  {
+    "id": 40,
+    "department": "Applied Physics /BON",
+    "question": "Answering common questions of students in a given course context, and design of dynamic online self-learning/supporting tutorials for students.",
+    "track": "Track A: Course Syllabus to Teaching Assistant"
+  },
+  {
+    "id": 41,
+    "department": "Physics",
+    "question": "Yes I would take the chance to start building an AI.",
+    "track": "Track C: Administrative & Knowledge Exploration"
+  },
+  {
+    "id": 42,
+    "department": "Applied Physics",
+    "question": "Agent which fills travel claims",
+    "track": "Track C: Administrative & Knowledge Exploration"
+  }
+];
+
+        const searchInput = document.getElementById('searchInput');
+        const trackFilter = document.getElementById('trackFilter');
+        const participantsBody = document.getElementById('participantsBody');
+        const displayedCount = document.getElementById('displayedCount');
+
+        function getTrackClass(track) {
+            if (track.includes('Track A')) return 'track-cell-a';
+            if (track.includes('Track B')) return 'track-cell-b';
+            return 'track-cell-c';
+        }
+
+        function getTrackShort(track) {
+            if (track.includes('Track A')) return 'Track A';
+            if (track.includes('Track B')) return 'Track B';
+            return 'Track C';
+        }
+
+        function renderParticipants(data) {
+            participantsBody.innerHTML = '';
+            if (data.length === 0) {
+                participantsBody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 3rem;">No participants matching your filters</td></tr>`;
+                displayedCount.textContent = '0';
+                return;
+            }
+
+            data.forEach(p => {
+                const tr = document.createElement('tr');
+                
+                const tdId = document.createElement('td');
+                tdId.className = 'id-cell';
+                tdId.textContent = `#${String(p.id).padStart(2, '0')}`;
+                
+                const tdDept = document.createElement('td');
+                tdDept.className = 'dept-cell';
+                tdDept.textContent = p.department;
+                
+                const tdQ = document.createElement('td');
+                tdQ.className = 'q-cell';
+                tdQ.textContent = p.question;
+                
+                const tdTrack = document.createElement('td');
+                tdTrack.className = 'track-cell';
+                const span = document.createElement('span');
+                span.className = getTrackClass(p.track);
+                span.textContent = p.track;
+                tdTrack.appendChild(span);
+                
+                tr.appendChild(tdId);
+                tr.appendChild(tdDept);
+                tr.appendChild(tdQ);
+                tr.appendChild(tdTrack);
+                
+                participantsBody.appendChild(tr);
+            });
+
+            displayedCount.textContent = data.length;
+        }
+
+        function filterData() {
+            const query = searchInput.value.toLowerCase();
+            const filterVal = trackFilter.value;
+
+            const filtered = participantsData.filter(p => {
+                const matchesSearch = p.department.toLowerCase().includes(query) || 
+                                     p.question.toLowerCase().includes(query);
+                
+                let matchesTrack = true;
+                if (filterVal === 'a') matchesTrack = p.track.includes('Track A');
+                else if (filterVal === 'b') matchesTrack = p.track.includes('Track B');
+                else if (filterVal === 'c') matchesTrack = p.track.includes('Track C');
+
+                return matchesSearch && matchesTrack;
+            });
+
+            renderParticipants(filtered);
+        }
+
+        searchInput.addEventListener('input', filterData);
+        trackFilter.addEventListener('change', filterData);
+
+        // Initial render
+        renderParticipants(participantsData);
+    </script>
+</body>
+</html>

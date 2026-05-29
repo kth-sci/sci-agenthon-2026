@@ -1,0 +1,892 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCI Agentathon 2026 Summary - GPT-5 Codex</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #202124;
+      --muted: #667085;
+      --line: #d9dee7;
+      --paper: #fffaf3;
+      --panel: #ffffff;
+      --soft: #f4f6f8;
+      --kth: #b41f30;
+      --kth-dark: #7f1420;
+      --teal: #137a78;
+      --amber: #b86b13;
+      --violet: #6b4aa3;
+      --blue: #3867b7;
+      --green: #377a3c;
+      --shadow: 0 22px 50px rgba(32, 33, 36, .12);
+      --radius: 8px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(180,31,48,.08), transparent 420px),
+        var(--paper);
+    }
+
+    a { color: inherit; }
+
+    .page {
+      width: min(1180px, calc(100vw - 32px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      min-height: 92vh;
+      display: grid;
+      align-items: center;
+      padding: 28px 0 40px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 750;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+
+    .mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: conic-gradient(from 160deg, var(--kth), #e2a33b, var(--teal), var(--kth));
+      box-shadow: inset 0 0 0 4px rgba(255,255,255,.78);
+    }
+
+    .model-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid rgba(180,31,48,.28);
+      border-radius: 999px;
+      background: rgba(255,255,255,.74);
+      font-size: 13px;
+      color: var(--kth-dark);
+      font-weight: 720;
+      white-space: nowrap;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, .82fr) minmax(360px, 1.18fr);
+      gap: 34px;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(44px, 7.4vw, 94px);
+      line-height: .92;
+      letter-spacing: 0;
+    }
+
+    .lede {
+      font-size: clamp(18px, 2vw, 24px);
+      line-height: 1.35;
+      margin: 0 0 24px;
+      color: #3d4147;
+      max-width: 650px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 22px 0 28px;
+    }
+
+    button,
+    .button {
+      appearance: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 14px;
+      background: var(--panel);
+      color: var(--ink);
+      font-weight: 720;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform .16s ease, background .16s ease, border-color .16s ease, color .16s ease;
+      text-decoration: none;
+    }
+
+    button:hover,
+    .button:hover {
+      transform: translateY(-1px);
+      border-color: rgba(180,31,48,.45);
+    }
+
+    .button.primary {
+      background: var(--kth);
+      color: white;
+      border-color: var(--kth);
+    }
+
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      max-width: 620px;
+    }
+
+    .fact {
+      border: 1px solid rgba(32,33,36,.1);
+      border-radius: var(--radius);
+      padding: 13px 14px;
+      background: rgba(255,255,255,.76);
+    }
+
+    .fact strong {
+      display: block;
+      font-size: 21px;
+      line-height: 1.1;
+      margin-bottom: 5px;
+    }
+
+    .fact span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .slogan-card {
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(32,33,36,.1);
+    }
+
+    .slogan-card img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+
+    .slogan-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      font-size: 12px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+
+    .slogan-meta strong { color: var(--ink); }
+
+    section {
+      padding: 44px 0;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      margin: 0;
+      max-width: 560px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .panel {
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(32,33,36,.1);
+      border-radius: 10px;
+      box-shadow: 0 14px 32px rgba(32,33,36,.07);
+    }
+
+    .inventory {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .inventory-card {
+      padding: 18px;
+      min-height: 210px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .inventory-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 5px;
+      background: var(--accent, var(--kth));
+    }
+
+    .inventory-card h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .inventory-card p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .chips {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      display: inline-flex;
+      padding: 5px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--soft);
+      color: #475467;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .tabs button[aria-pressed="true"] {
+      background: var(--ink);
+      color: white;
+      border-color: var(--ink);
+    }
+
+    .schedule {
+      overflow: hidden;
+    }
+
+    .schedule-row {
+      display: grid;
+      grid-template-columns: 126px 1fr 190px;
+      gap: 18px;
+      padding: 16px 18px;
+      border-top: 1px solid var(--line);
+      align-items: center;
+    }
+
+    .schedule-row:first-child { border-top: 0; }
+    .schedule-row[hidden] { display: none; }
+
+    .time {
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+      color: var(--kth-dark);
+    }
+
+    .activity strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .activity span,
+    .place {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .tracks-layout {
+      display: grid;
+      grid-template-columns: .92fr 1.08fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .track-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .track-card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255,255,255,.9);
+      padding: 16px;
+      text-align: left;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .track-card[aria-pressed="true"] {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+    }
+
+    .letter {
+      display: grid;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--accent) 16%, white);
+      color: var(--accent);
+      font-size: 26px;
+      font-weight: 900;
+    }
+
+    .track-card h3 {
+      margin: 0 0 5px;
+      font-size: 18px;
+    }
+
+    .track-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .track-detail {
+      padding: 22px;
+      min-height: 424px;
+    }
+
+    .track-detail h3 {
+      font-size: 28px;
+      margin: 0 0 8px;
+    }
+
+    .track-kicker {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .forecast {
+      display: grid;
+      gap: 14px;
+      margin: 18px 0;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 90px 1fr 70px;
+      gap: 12px;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 720;
+    }
+
+    .bar-shell {
+      height: 14px;
+      border-radius: 999px;
+      background: #edf0f4;
+      overflow: hidden;
+    }
+
+    .bar {
+      height: 100%;
+      width: var(--w);
+      background: var(--accent);
+      border-radius: inherit;
+    }
+
+    .forecast-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .expect-card {
+      padding: 18px;
+    }
+
+    .expect-card h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .expect-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .discovery {
+      padding: 30px;
+      background:
+        linear-gradient(135deg, rgba(180,31,48,.12), rgba(19,122,120,.10)),
+        rgba(255,255,255,.78);
+      border: 1px solid rgba(180,31,48,.18);
+      border-radius: 10px;
+    }
+
+    .discovery .label {
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: 12px;
+      color: var(--kth-dark);
+      font-weight: 850;
+      margin-bottom: 8px;
+    }
+
+    .discovery p {
+      margin: 0;
+      font-size: clamp(25px, 3.2vw, 40px);
+      line-height: 1.12;
+      font-weight: 850;
+    }
+
+    .sources {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .source-card {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.65);
+    }
+
+    footer {
+      padding: 30px 0 46px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 920px) {
+      .hero { min-height: auto; }
+      .hero-grid,
+      .tracks-layout,
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+      .inventory,
+      .sources {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .section-head {
+        display: block;
+      }
+      .section-head p { margin-top: 10px; }
+    }
+
+    @media (max-width: 620px) {
+      .page { width: min(100vw - 20px, 1180px); }
+      .topbar { align-items: start; flex-direction: column; }
+      .facts,
+      .inventory,
+      .sources {
+        grid-template-columns: 1fr;
+      }
+      .schedule-row {
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+      .bar-row {
+        grid-template-columns: 72px 1fr 54px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div>
+        <div class="topbar">
+          <div class="brand"><span class="mark"></span><span>SCI Agentathon 2026</span></div>
+          <div class="model-badge">Artifact by GPT-5 Codex</div>
+        </div>
+
+        <div class="hero-grid">
+          <div>
+            <h1>Event summary for people choosing a track.</h1>
+            <p class="lede">A one-day faculty agentathon at KTH: morning grounding, two hands-on build sessions, then live demos. The useful mental model is not "watch a model be clever"; it is "put a scoped agent into real work and verify what it claims."</p>
+            <div class="hero-actions">
+              <a class="button primary" href="#forecast">Track forecast</a>
+              <a class="button" href="#tracks">Track guide</a>
+              <a class="button" href="#discovery">Discovery</a>
+            </div>
+            <div class="facts">
+              <div class="fact"><strong>26 May 2026</strong><span>09:00 to 17:00, KTH Library and Teknikringen 8</span></div>
+              <div class="fact"><strong>~45 people</strong><span>Audience size stated in participant instructions</span></div>
+              <div class="fact"><strong>3 tracks</strong><span>Teaching, research/HPC, and open exploration</span></div>
+              <div class="fact"><strong>16:00 demos</strong><span>One short demo per sub-team in Salongen</span></div>
+            </div>
+          </div>
+
+          <figure class="slogan-card">
+            <img src="GPT5_Codex_event_slogan.png" alt="Think Act Observe Repeat event slogan poster">
+            <figcaption class="slogan-meta">
+              <span><strong>Slogan:</strong> Think · Act · Observe · Repeat</span>
+              <span>Generated for GPT-5 Codex</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </header>
+
+    <section id="inventory">
+      <div class="section-head">
+        <h2>Folder Read</h2>
+        <p>The workspace is a mixed event kit: official schedule PDFs, track-specific skeletons, real grading examples, a research-code mini-repo, a Track C web page, and a 42-row registration response workbook.</p>
+      </div>
+      <div class="inventory">
+        <article class="panel inventory-card" style="--accent: var(--kth);">
+          <h3>Core event docs</h3>
+          <p>Program, participant instructions, and the registration workbook establish date, rooms, schedule, tool setup, audience size, and participant problem signals.</p>
+          <div class="chips"><span class="chip">2 PDFs</span><span class="chip">42 responses</span><span class="chip">~45 audience</span></div>
+        </article>
+        <article class="panel inventory-card" style="--accent: var(--teal);">
+          <h3>Track A</h3>
+          <p>Teaching materials include grading tasks, exam and homework PDFs, human-graded reference files, and a tutoring-agent skill called MiLLy.</p>
+          <div class="chips"><span class="chip">grading</span><span class="chip">feedback</span><span class="chip">course Q&A</span></div>
+        </article>
+        <article class="panel inventory-card" style="--accent: var(--blue);">
+          <h3>Track B</h3>
+          <p>The research/HPC track is the most scaffolded: Markdown guides, role templates, Python tests, SLURM examples, logs, sample data, and demo report templates.</p>
+          <div class="chips"><span class="chip">HPC</span><span class="chip">debugging</span><span class="chip">post-processing</span></div>
+        </article>
+        <article class="panel inventory-card" style="--accent: var(--amber);">
+          <h3>Track C</h3>
+          <p>The local README points to the published Track C page: open exploration for KTH systems, knowledge work, lab automation, documents, and participant-defined projects.</p>
+          <div class="chips"><span class="chip">admin</span><span class="chip">RAG</span><span class="chip">lab automation</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="schedule">
+      <div class="section-head">
+        <h2>Day Flow</h2>
+        <p>The timetable is structured to get people out of passive listening quickly: less than one hour of plenary, then scoped sub-team work, a short cross-track update, and live demos.</p>
+      </div>
+      <div class="tabs" role="group" aria-label="Schedule filter">
+        <button type="button" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" data-filter="plenary" aria-pressed="false">Plenary</button>
+        <button type="button" data-filter="build" aria-pressed="false">Build</button>
+        <button type="button" data-filter="share" aria-pressed="false">Share</button>
+      </div>
+      <div class="panel schedule" id="schedule-list">
+        <div class="schedule-row" data-phase="plenary">
+          <div class="time">08:30-09:15</div>
+          <div class="activity"><strong>Arrival</strong><span>Card-holders from 08:30; KTHB opens to all at 09:00.</span></div>
+          <div class="place">Salongen, KTHB</div>
+        </div>
+        <div class="schedule-row" data-phase="plenary">
+          <div class="time">09:15-10:15</div>
+          <div class="activity"><strong>Welcome, agent overview, live demo, track intros</strong><span>Agents are framed as brain, memory, tools, and a repeated loop.</span></div>
+          <div class="place">Salongen, KTHB</div>
+        </div>
+        <div class="schedule-row" data-phase="build">
+          <div class="time">10:15-12:00</div>
+          <div class="activity"><strong>Hands-on starter and coding session 1</strong><span>Sub-teams choose direction and produce the first deliverable.</span></div>
+          <div class="place">Track rooms</div>
+        </div>
+        <div class="schedule-row" data-phase="share">
+          <div class="time">12:00-13:15</div>
+          <div class="activity"><strong>Lunch and cross-track update</strong><span>Lunch boxes at 12:00, then 3-minute status per track.</span></div>
+          <div class="place">Salongen, KTHB</div>
+        </div>
+        <div class="schedule-row" data-phase="build">
+          <div class="time">13:15-15:45</div>
+          <div class="activity"><strong>Coding session 2</strong><span>Sub-teams converge on something demoable and defensible.</span></div>
+          <div class="place">Track rooms</div>
+        </div>
+        <div class="schedule-row" data-phase="share">
+          <div class="time">16:00-17:00</div>
+          <div class="activity"><strong>Live demos and wrap-up</strong><span>One short demo per sub-team, then lessons learned and next steps.</span></div>
+          <div class="place">Salongen, KTHB</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tracks">
+      <div class="section-head">
+        <h2>Track Guide</h2>
+        <p>Each track has a different promise. Track A turns course material into teaching support, Track B puts coding agents under research-computing constraints, and Track C absorbs the many real KTH workflows that do not fit the first two.</p>
+      </div>
+
+      <div class="tracks-layout">
+        <div class="track-list" id="track-buttons">
+          <button class="track-card" type="button" data-track="A" aria-pressed="true" style="--accent: var(--teal);">
+            <span class="letter">A</span>
+            <span><h3>Course syllabus to teaching assistant</h3><p>Best for grading, feedback, tutoring, Canvas/course support, and course Q&A.</p></span>
+          </button>
+          <button class="track-card" type="button" data-track="B" aria-pressed="false" style="--accent: var(--blue);">
+            <span class="letter">B</span>
+            <span><h3>Research and HPC workflow agents</h3><p>Best for cluster handoffs, scientific code, tests, pipelines, and defensible plots.</p></span>
+          </button>
+          <button class="track-card" type="button" data-track="C" aria-pressed="false" style="--accent: var(--amber);">
+            <span class="letter">C</span>
+            <span><h3>Open agent exploration</h3><p>Best for administrative work, knowledge retrieval, lab automation, document workflows, and custom ideas.</p></span>
+          </button>
+        </div>
+
+        <article class="panel track-detail" id="track-detail" style="--accent: var(--teal);">
+          <div class="track-kicker" id="track-kicker"></div>
+          <h3 id="track-title"></h3>
+          <p id="track-summary"></p>
+          <div class="forecast" id="track-forecast"></div>
+          <div class="two-col">
+            <div class="expect-card panel">
+              <h3>People will expect</h3>
+              <ul id="track-expect"></ul>
+            </div>
+            <div class="expect-card panel">
+              <h3>Good demo shape</h3>
+              <ul id="track-demo"></ul>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="forecast">
+      <div class="section-head">
+        <h2>Predicted Track Split</h2>
+        <p>The workbook has 42 registration responses but no explicit track-choice column. I classified each free-text problem statement by the event's track definitions, then scaled the signal to the stated audience size of about 45.</p>
+      </div>
+      <div class="panel track-detail">
+        <div class="forecast" id="forecast-bars"></div>
+        <p class="forecast-note">Prediction: Track A 10 people, Track B 14 people, Track C 21 people. The uncertainty is highest for broad research/teaching responses and blank entries; the strongest signal is that many people bring administrative, knowledge, lab, or general workflow questions that naturally land in Track C.</p>
+      </div>
+    </section>
+
+    <section id="expectations">
+      <div class="section-head">
+        <h2>Expected Value</h2>
+        <p>Participants are likely to judge the day by whether they leave with a concrete agent pattern they can reuse, not by how comprehensive the theory is.</p>
+      </div>
+      <div class="two-col">
+        <article class="panel expect-card">
+          <h3>What participants probably want</h3>
+          <ul>
+            <li>A working starter pattern for their own daily work.</li>
+            <li>Clear boundaries on what data, folders, and tools agents may touch.</li>
+            <li>Enough tool setup help to avoid spending the day installing software.</li>
+            <li>Evidence that outputs can be checked, regenerated, and corrected.</li>
+          </ul>
+        </article>
+        <article class="panel expect-card">
+          <h3>What organizers probably want</h3>
+          <ul>
+            <li>Visible cross-track demos by 16:00.</li>
+            <li>Reusable examples departments can copy after the event.</li>
+            <li>Faculty who can organize similar local agentathons.</li>
+            <li>A practical distinction between agent speed and verified usefulness.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="discovery">
+      <div class="discovery">
+        <div class="label">Single discovery</div>
+        <p>The event is framed as three tracks, but the registration signal points to one shared need: faculty want agents that tame messy daily workflows, so Track C is likely to become the largest and most heterogeneous room.</p>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="section-head">
+        <h2>Sources Reviewed</h2>
+        <p>Local files and the Track C page linked from the workspace README.</p>
+      </div>
+      <div class="sources">
+        <div class="source-card"><strong>Program and instructions</strong><br>Agentathon_2026_Program.pdf; Agentathon_2026_Participant_instructions.pdf</div>
+        <div class="source-card"><strong>Registration workbook</strong><br>ai-agentathon-for-faculty-svar-2026-05-19.xlsx, 42 rows</div>
+        <div class="source-card"><strong>Plenary material</strong><br>Human_SCI Agentathon; Claude_Design_SCI Agentathon; TrackB_kickoff</div>
+        <div class="source-card"><strong>Track A files</strong><br>Correcting agents, course tasks, reference human grading, tutoring-agent skill</div>
+        <div class="source-card"><strong>Track B files</strong><br>Markdown guides, role templates, Python workflows, tests, logs, data, demo templates</div>
+        <div class="source-card"><strong>Track C page</strong><br>https://kth-sci.github.io/sci-agenthon-2026/track-c.html</div>
+      </div>
+    </section>
+
+    <footer>
+      GPT-5 Codex artifact. Slogan image generated with image-generation tooling and copied into this workspace as GPT5_Codex_event_slogan.png.
+    </footer>
+  </main>
+
+  <script>
+    const tracks = {
+      A: {
+        color: "var(--teal)",
+        title: "Track A - Course syllabus to teaching assistant",
+        room: "Salongen, KTH Library",
+        lead: "Artem Kulachenko and Jonas Sellberg",
+        predicted: 10,
+        source: 9,
+        pct: 22,
+        summary: "Track A should attract people who want immediate teaching leverage: grading assistance, feedback agents, tutoring loops, Canvas/course support, and student-facing question-answering.",
+        tags: ["teaching", "grading", "student support"],
+        expect: [
+          "Realistic examples against actual homework and exam material.",
+          "A way to compare AI grading with human-graded references.",
+          "Student-facing help that stays grounded in a course context.",
+          "Guardrails around academic integrity and feedback quality."
+        ],
+        demo: [
+          "Show one grading or tutoring agent on a real anonymized artifact.",
+          "Compare agent output with a reference rubric or human-graded file.",
+          "End with a reusable course-folder pattern."
+        ]
+      },
+      B: {
+        color: "var(--blue)",
+        title: "Track B - Research and HPC workflow agents",
+        room: "Faxén, Fluid Mechanics lab",
+        lead: "Marco Laudato",
+        predicted: 14,
+        source: 13,
+        pct: 31,
+        summary: "Track B is for people who want disciplined coding-agent practice in research computing: cluster orchestration, debugging, tested numerical work, and reproducible post-processing.",
+        tags: ["research code", "HPC", "verification"],
+        expect: [
+          "A scoped workspace and written role for the agent.",
+          "Commands that can regenerate an artifact.",
+          "A test or validation story that makes results defensible.",
+          "Practical handling of SLURM, logs, data, and Python workflows."
+        ],
+        demo: [
+          "Run the command that regenerates the deliverable.",
+          "Show a failing condition, the fix or validator, and the verification.",
+          "State what the scientific toy does and does not prove."
+        ]
+      },
+      C: {
+        color: "var(--amber)",
+        title: "Track C - Open agent exploration",
+        room: "Hållfasthetslära seminarierum, Teknikringen 8D",
+        lead: "Wei Ouyang",
+        predicted: 21,
+        source: 20,
+        pct: 47,
+        summary: "Track C will likely be the broadest track because many responses ask for administrative automation, RAG over local documents, lab monitoring, document workflows, scheduling, budget overview, travel claims, and general orientation.",
+        tags: ["admin", "knowledge work", "lab automation"],
+        expect: [
+          "Freedom to bring a real KTH workflow rather than a preset tutorial.",
+          "Help turning vague daily friction into a narrow demoable agent.",
+          "Browser, document, spreadsheet, and integration-oriented patterns.",
+          "A path for heterogeneous groups to still demo something concrete."
+        ],
+        demo: [
+          "Pick one workflow with a before and after.",
+          "Show the agent using a tool, file, browser page, or document source.",
+          "Name the data boundary and the human approval point."
+        ]
+      }
+    };
+
+    const totalAudience = 45;
+
+    function renderTrack(trackId) {
+      const track = tracks[trackId];
+      const detail = document.getElementById("track-detail");
+      detail.style.setProperty("--accent", track.color);
+      document.getElementById("track-title").textContent = track.title;
+      document.getElementById("track-summary").textContent = track.summary;
+      document.getElementById("track-kicker").innerHTML = [
+        `<span class="chip">${track.room}</span>`,
+        `<span class="chip">Lead: ${track.lead}</span>`,
+        ...track.tags.map(tag => `<span class="chip">${tag}</span>`)
+      ].join("");
+      document.getElementById("track-forecast").innerHTML = `
+        <div class="bar-row" style="--accent:${track.color};">
+          <span>Forecast</span>
+          <span class="bar-shell"><span class="bar" style="--w:${track.pct}%"></span></span>
+          <span>${track.predicted}/${totalAudience}</span>
+        </div>
+        <p class="forecast-note">${track.source} of 42 registration responses were classified as this track before scaling to the stated audience size.</p>
+      `;
+      document.getElementById("track-expect").innerHTML = track.expect.map(item => `<li>${item}</li>`).join("");
+      document.getElementById("track-demo").innerHTML = track.demo.map(item => `<li>${item}</li>`).join("");
+
+      document.querySelectorAll(".track-card").forEach(button => {
+        button.setAttribute("aria-pressed", String(button.dataset.track === trackId));
+      });
+    }
+
+    function renderForecast() {
+      const entries = Object.entries(tracks);
+      document.getElementById("forecast-bars").innerHTML = entries.map(([id, track]) => `
+        <div class="bar-row" style="--accent:${track.color};">
+          <span>Track ${id}</span>
+          <span class="bar-shell"><span class="bar" style="--w:${track.pct}%"></span></span>
+          <span>${track.predicted}</span>
+        </div>
+      `).join("");
+    }
+
+    document.getElementById("track-buttons").addEventListener("click", event => {
+      const button = event.target.closest(".track-card");
+      if (button) renderTrack(button.dataset.track);
+    });
+
+    document.querySelectorAll(".tabs button").forEach(button => {
+      button.addEventListener("click", () => {
+        const filter = button.dataset.filter;
+        document.querySelectorAll(".tabs button").forEach(next => {
+          next.setAttribute("aria-pressed", String(next === button));
+        });
+        document.querySelectorAll(".schedule-row").forEach(row => {
+          row.hidden = filter !== "all" && row.dataset.phase !== filter;
+        });
+      });
+    });
+
+    renderTrack("A");
+    renderForecast();
+  </script>
+</body>
+</html>
