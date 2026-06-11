@@ -37,6 +37,8 @@ Service CLIs:
   receipts <args...>      Pull billing data from OpenAI / Anthropic Admin
                           APIs and stage receipt PDFs for Findity upload.
                           See `kth receipts help`.
+  canvas <args...>        Read / export KTH Canvas LMS (canvas.kth.se).
+                          See `kth canvas help` for subcommands.
 
 Browser automation:
   All browser interactions (login, MFA, form filling, page navigation)
@@ -55,6 +57,7 @@ case "$cmd" in
   wisum)    exec "$(dirname "$0")/kth-wisum" "$@" ;;
   findity)  exec "$(dirname "$0")/kth-findity" "$@" ;;
   receipts) exec "$(dirname "$0")/kth-receipts" "$@" ;;
+  canvas)   exec "$(dirname "$0")/kth-canvas" "$@" ;;
   help|-h|--help) usage ;;
   *)
     echo "kth: unknown command '$cmd'" >&2

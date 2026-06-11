@@ -69,7 +69,8 @@ shows what services are available.
 | "Search WISUM for a monitor" | Searches KTH's purchasing catalog |
 | "Order the cart Simin forwarded me" | Drives WISUM checkout to the final step (you click Submit) |
 | "Read the latest news on the intranet" | Navigates intra.kth.se and extracts content |
-| "I want to automate Canvas" | Walks you through adding a new KTH service as a skill |
+| "Dump all material for my Canvas course to markdown" | Reads canvas.kth.se via its REST API and exports the course to a local markdown tree |
+| "I want to automate some other KTH service" | Walks you through adding a new KTH service as a skill |
 
 ## What's in this repo
 
@@ -78,13 +79,14 @@ Track_C/
 ├── AGENT_QUICKSTART.md      ← The agent reads this to onboard you
 ├── CLAUDE.md                ← Architecture + operating principles
 ├── install.sh               ← Symlinks CLIs + skills, seeds config
-├── bin/                     ← 8 CLIs (pure API, no browser dependency)
-├── skills/                  ← 6 agent skills (Chrome extension based)
+├── bin/                     ← 9 CLIs (pure API, no browser dependency)
+├── skills/                  ← 7 agent skills (Chrome extension based)
 │   ├── kth/                 Login + SSO + routing
 │   ├── kth-findity/         Travel expenses (Findity/Hogia)
 │   ├── kth-efh/             E-invoices (Unit4 EFH)
 │   ├── kth-wisum/           Purchasing (WISUM)
 │   ├── kth-intra/           Intranet portal
+│   ├── kth-canvas/          Canvas LMS (read + markdown dump)
 │   └── kth-service-onboarding/  How to add new services
 └── config/                  ← Config templates (your real config stays local)
 ```

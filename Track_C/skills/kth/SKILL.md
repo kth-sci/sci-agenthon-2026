@@ -121,6 +121,8 @@ Load `kth-service-onboarding` and follow it to discover the new service.
 | intranet, intra, announcements, internal news     | `kth-intra`                |
 | invoice, faktura, attest, EFH, Inwise, Unit4      | `kth-efh`                  |
 | purchasing, order, WISUM, bestalla, varukorg      | `kth-wisum`                |
+| Canvas, canvas.kth.se, LMS, course material, kursrum, a `/courses/<id>` URL | `kth-canvas` |
+| Prisma, VR, Vetenskapsrådet, grant application, research council, `prisma.research.se` | `kth-prisma` |
 | agrprod, Inwise (specific URL: `agrprodweb01.ug.kth.se/agrprod/`) | `kth-efh`  |
 | any other KTH service URL the user pastes         | `kth-service-onboarding`   |
 

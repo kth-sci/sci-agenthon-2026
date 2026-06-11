@@ -48,7 +48,8 @@ Testing. One browser, one session, one set of cookies.
 │   ├── kth-findity         Findity expense CLI (bearer + curl).     │
 │   ├── kth-findity-upload  Batch receipt upload (bearer + API).     │
 │   ├── kth-findity-process Post-upload PATCH automation.            │
-│   └── kth-receipts        OpenAI/Anthropic Admin API billing.      │
+│   ├── kth-receipts        OpenAI/Anthropic Admin API billing.      │
+│   └── kth-canvas          Canvas LMS read + markdown dump (token). │
 │                                                                    │
 │  config/                  Templates only — no real user data:      │
 │   ├── kth-cli.example.env  → ~/.config/kth-cli/config.env          │
@@ -61,6 +62,8 @@ Testing. One browser, one session, one set of cookies.
 │   ├── kth-intra/                                                   │
 │   ├── kth-efh/                                                     │
 │   ├── kth-wisum/                                                   │
+│   ├── kth-canvas/                                                  │
+│   ├── kth-prisma/           ← VR/Vetenskapsrådet grant portal     │
 │   └── kth-service-onboarding/  ← meta-skill: add a new KTH service │
 │                                                                    │
 │  install.sh               Symlinks CLIs and skills, seeds the      │
@@ -140,6 +143,8 @@ The Chrome extension's `javascript_tool` is the workhorse; `computer`
 | **EFH (Unit4)** | Cookies from warm Chrome session | JSON API at `/agrprod/EI02/rest/*`. Pure curl with cookie jar. |
 | **WISUM** | Shibboleth cookies from warm Chrome | ASMX JSON at `/KTH/ws/TreeWebService.asmx`. Pure curl. Checkout wizard needs `computer` clicks (ASP.NET postbacks). |
 | **Intra** | KTH SSO cookie in Chrome | Read-only page scraping via `javascript_tool`. |
+| **Canvas** | Personal access token minted at `/profile/settings`, read from the post-Generate dialog via `javascript_tool`, stored at `~/.config/kth-cli/.canvas-token` | REST API at `/api/v1/*`. Pure curl with `Authorization: Bearer`; pagination follows `Link: rel="next"`. `kth canvas dump <id>` exports a course to markdown. |
+| **Prisma (VR)** | SAML cookie in warm Chrome; user logs in (never the agent). Form opens READ-only → click "Open in edit mode" | Scripted `javascript_tool` in the live page (ASP.NET MVC + jQuery + TinyMCE; anti-CSRF → no pure curl). GUID-named fields, native-setter + event dispatch, `tinyMCE.setContent`. Some commits (SCB Add, grid rows, CV add/remove) need a real `computer` click. **Agent never clicks Register/Submit.** See `kth-prisma`. |
 
 ## Services on the roadmap
 
@@ -150,6 +155,8 @@ The Chrome extension's `javascript_tool` is the workhorse; `computer`
 | `https://intra.kth.se/`                     | intra              | `kth-intra`          | shipped    |
 | `https://agrprodweb01.ug.kth.se/agrprod/`   | efh (Inwise)       | `kth-efh`            | shipped    |
 | `https://www.wisum.its.umu.se/KTH/`         | wisum              | `kth-wisum`          | shipped    |
+| `https://canvas.kth.se/`                    | canvas (LMS)       | `kth-canvas`         | shipped    |
+| `https://prisma.research.se/`               | prisma (VR)        | `kth-prisma`         | shipped    |
 
 Update this table whenever a service skill is added.
 
